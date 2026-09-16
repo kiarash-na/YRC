@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import { useState } from "react";
 import { cn } from "cn";
 
@@ -36,10 +37,13 @@ const Header = ({ className }: HeaderProps) => {
       <div className="flex items-center justify-between px-6 py-6">
         <div className="z-50">
           <div className="flex items-center gap-2">
-            <img
+            <Image
               src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-wordmark.svg"
               alt="Logo"
-              className="h-9"
+              width={180}
+              height={36}
+              unoptimized
+              className="h-9 w-auto"
             />
           </div>
         </div>
@@ -90,7 +94,7 @@ const Header = ({ className }: HeaderProps) => {
                   >
                     <a href={item.href} className="group relative inline-block">
                       <motion.span
-                        className="relative z-10 text-4xl font-black text-foreground uppercase transition-transform duration-300 md:text-6xl"
+                        className="relative z-10 text-h2 font-bold text-foreground uppercase transition-transform duration-300 md:text-display"
                         initial={{ opacity: 1, filter: "blur(0px)" }}
                         whileHover={{ opacity: 0.8, filter: "blur(6px)" }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -121,7 +125,7 @@ const Header = ({ className }: HeaderProps) => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-2 font-mono text-sm tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+                    className="group flex items-center gap-2 text-caption font-medium text-muted-foreground transition-colors hover:text-foreground"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.8 + index * 0.1, duration: 0.3 }}
