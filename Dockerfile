@@ -28,6 +28,10 @@ COPY . .
 # Disable Next.js telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# NEXT_PUBLIC_* vars are inlined at build time; Dokploy passes them as build args
+ARG NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT
+ENV NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=$NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT
+
 RUN pnpm build
 
 # Production image, copy all the files and run next
