@@ -22,3 +22,17 @@ Push to `dev` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`) 
 - Never hardcode output format (`f-*`) or quality: automatic format conversion (AVIF/WebP via Accept header) and default quality 80 are already optimal per ImageKit docs. Use `transformation` only for sizing/cropping.
 - No query strings in `src`; use the `queryParameters` prop. `src` is a relative path against the urlEndpoint.
 - Videos: `preload="none"` + an `ik-thumbnail.jpg` poster via `buildSrc`.
+
+# YRC — Yas Rise Company
+
+## Project
+
+YRC is the Yas Rise running/community website.
+
+Current environment:
+- Local workspace: /opt/data/workspace/yrc/
+- Dev website: https://yrc-dev.kiarash.online/
+- Production website: https://yasrise.run/
+- Framework: Next.js
+- UI: shadcn/ui + Tailwind
+- External media: ImageKit

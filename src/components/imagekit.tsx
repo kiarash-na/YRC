@@ -1,1 +1,1 @@
-export { Image, Video } from "@imagekit/next";
+export { Image, Video, buildSrc } from "@imagekit/next";

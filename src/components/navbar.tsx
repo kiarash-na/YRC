@@ -1,9 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
 import { useState } from "react";
 import { cn } from "cn";
+
+import { Image } from "@/components/imagekit";
+import { Button } from "@/components/ui/button";
 
 interface MenuItem {
   label: string;
@@ -11,23 +13,21 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: "Home", href: "#" },
-  { label: "Projects", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+  { label: "Runs & Events", href: "#runs" },
+  { label: "Community", href: "#community" },
+  { label: "About", href: "#about" },
 ];
 
 const socialLinks = [
-  { label: "X [Twitter]", href: "#" },
   { label: "Instagram", href: "#" },
-  { label: "ArtStation", href: "#" },
+  { label: "Strava", href: "#" },
 ];
 
-interface HeaderProps {
+interface NavbarProps {
   className?: string;
 }
 
-const Header = ({ className }: HeaderProps) => {
+const Navbar = ({ className }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -38,17 +38,25 @@ const Header = ({ className }: HeaderProps) => {
         <div className="z-50">
           <div className="flex items-center gap-2">
             <Image
-              src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-wordmark.svg"
-              alt="Logo"
-              width={180}
-              height={36}
-              unoptimized
+              src="/YRC/Brand/Logo/logo-black.png"
+              alt="YRC — Yas Rise Community"
+              width={1080}
+              height={1080}
+              priority
               className="h-9 w-auto"
             />
           </div>
         </div>
 
-        <div className="z-50">
+        <div className="z-50 flex items-center gap-6">
+          <Button
+            size="lg"
+            className="uppercase tracking-wider"
+            render={<a href="#join" />}
+            nativeButton={false}
+          >
+            Join YRC
+          </Button>
           <button
             onClick={toggleMenu}
             className="text-lg tracking-wider text-foreground transition-colors hover:text-muted-foreground"
@@ -92,7 +100,11 @@ const Header = ({ className }: HeaderProps) => {
                     transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
                     className="mb-5"
                   >
-                    <a href={item.href} className="group relative inline-block">
+                    <a
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="group relative inline-block"
+                    >
                       <motion.span
                         className="relative z-10 text-h2 font-bold text-foreground uppercase transition-transform duration-300 md:text-display"
                         initial={{ opacity: 1, filter: "blur(0px)" }}
@@ -143,4 +155,4 @@ const Header = ({ className }: HeaderProps) => {
   );
 };
 
-export { Header };
+export { Navbar };
