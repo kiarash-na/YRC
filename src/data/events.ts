@@ -36,3 +36,5 @@ export const upcomingEvent: YrcEvent = {
   cta: "VIEW EVENT",
   href: "#runs",
 };
+
+export const upcomingEvents: YrcEvent[] = [upcomingEvent];
