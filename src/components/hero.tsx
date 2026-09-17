@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
 
 const lqip = (src: string, updatedAt: string) =>
-  buildSrc({
-    src,
-    urlEndpoint,
-    transformation: [{ quality: 10, blur: 90 }],
-    queryParameters: { updatedAt },
-  });
+  urlEndpoint
+    ? buildSrc({
+        src,
+        urlEndpoint,
+        transformation: [{ quality: 10, blur: 90 }],
+        queryParameters: { updatedAt },
+      })
+    : "";
 
 interface HeroImage {
   src: string;
