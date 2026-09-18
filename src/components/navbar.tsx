@@ -42,7 +42,7 @@ const Navbar = ({ className }: NavbarProps) => {
 
   return (
     <section className={cn("", className)}>
-      <div className="relative flex items-center justify-between px-6 py-6">
+      <div className="container relative flex items-center justify-between py-6">
         <div className="z-50">
           <Link
             href="/"

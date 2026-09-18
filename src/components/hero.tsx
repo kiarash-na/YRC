@@ -102,7 +102,7 @@ const Hero = (props: Props) => {
 
   return (
     <section className={cn("relative overflow-hidden py-32", className)}>
-      <div className="relative z-10 container mx-auto px-4">
+      <div className="relative z-10 container">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             {badge && (
@@ -132,7 +132,7 @@ const Hero = (props: Props) => {
               {buttons?.primary && (
                 <Button
                   size="lg"
-                  className="w-full bg-yrc-accent text-yrc-accent-foreground hover:bg-yrc-accent/80 sm:w-auto"
+                  className="w-full sm:w-auto"
                   render={<a href={buttons.primary.url} />}
                   nativeButton={false}
                 >

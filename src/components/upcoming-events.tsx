@@ -13,7 +13,7 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
     <section id="upcoming-events" className={cn("py-32", className)}>
       <div className="container">
         <div className="mb-9 flex max-w-3xl flex-col gap-5 lg:mb-14">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Calendar
           </p>
           <h2 className="text-h2 md:text-h1">Upcoming Events</h2>

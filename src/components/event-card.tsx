@@ -36,7 +36,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
         <div className="flex flex-wrap items-center gap-3">
           <Badge
             variant="outline"
-            className="h-6 px-3 text-caption font-bold tracking-[0.2em] uppercase"
+            className="h-6 px-3 text-caption font-bold tracking-[0.2em] text-yrc-accent uppercase"
           >
             {event.category}
           </Badge>

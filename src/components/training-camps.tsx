@@ -77,7 +77,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-5">
           <Badge
             variant="outline"
-            className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
+            className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase"
           >
             <Mountain className="size-3.5" />
             Camps & Trips
