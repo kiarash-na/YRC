@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
-const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
-
 interface CollageImage {
   src: string;
   alt: string;
@@ -24,27 +22,27 @@ const items = [
 
 const images: CollageImage[] = [
   {
-    src: `${basePath}/photo_5953857689656346515_w.jpg`,
+    src: "/YRC/5.png",
     alt: "YRC community member mid-run during an international event",
-    updatedAt: "1789681284418",
+    updatedAt: "1789773523121",
     className: "row-span-2",
   },
   {
-    src: `${basePath}/M06.jpg`,
+    src: "/YRC/43.png",
     alt: "YRC runners together on race day",
-    updatedAt: "1789681293386",
+    updatedAt: "1789773522891",
     className: "col-span-2",
   },
   {
-    src: `${basePath}/3.jpg`,
+    src: "/YRC/31.png",
     alt: "YRC group sharing a moment after training",
-    updatedAt: "1789681291699",
+    updatedAt: "1789773521365",
     className: "",
   },
   {
-    src: `${basePath}/03-1.jpg`,
+    src: "/YRC/11.png",
     alt: "Runners on the course during a YRC event",
-    updatedAt: "1789681290358",
+    updatedAt: "1789773520930",
     className: "",
   },
 ];

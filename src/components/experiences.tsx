@@ -22,9 +22,9 @@ const experiences: Experience[] = [
     description:
       "Selected road, trail and endurance events chosen with attention to quality, experience and the needs of athletes.",
     image: {
-      src: "/YRC/Pillars/Pillars-move",
+      src: "/YRC/17.png",
       alt: "YRC runners in motion on a group run",
-      updatedAt: "1789641881097",
+      updatedAt: "1789773525014",
     },
   },
   {
@@ -33,9 +33,9 @@ const experiences: Experience[] = [
     description:
       "Specialized camps and trips built around sporting experiences, preparation, motivation and meaningful time together.",
     image: {
-      src: "/YRC/Pillars/pillars-connect",
+      src: "/YRC/48.png",
       alt: "YRC community members connecting after a run",
-      updatedAt: "1789641870615",
+      updatedAt: "1789773524236",
     },
   },
   {
@@ -44,9 +44,9 @@ const experiences: Experience[] = [
     description:
       "A community built around sustainable training, shared goals, continuous growth and people moving forward together.",
     image: {
-      src: "/YRC/Pillars/pillars-grow",
+      src: "/YRC/22.png",
       alt: "YRC runner pushing through a training session",
-      updatedAt: "1789641875693",
+      updatedAt: "1789773524301",
     },
   },
 ];

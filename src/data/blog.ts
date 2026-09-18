@@ -110,7 +110,7 @@ export const secondaryStories: BlogPost[] = [
     date: "August 2026",
     readTime: "10 min read",
     image: {
-      src: `${basePath}/03-1.jpg`,
+      src: `${basePath}/M01.jpg`,
       alt: "Runners on the course during a YRC event",
       updatedAt: "1789681290358",
     },
@@ -125,7 +125,7 @@ export const secondaryStories: BlogPost[] = [
     date: "August 2026",
     readTime: "5 min read",
     image: {
-      src: `${basePath}/photo_5953857689656346515_w.jpg`,
+      src: `${basePath}/4.jpg`,
       alt: "YRC community member mid-run with the group",
       updatedAt: "1789681284418",
     },
@@ -145,7 +145,7 @@ export const latestArticles: BlogPost[] = [
     date: "July 2026",
     readTime: "4 min read",
     image: {
-      src: `${basePath}/photo_5953857689656346514_w.jpg`,
+      src: `${basePath}/03.jpg`,
       alt: "YRC runners gathering before a community run",
       updatedAt: "1789681310000",
     },

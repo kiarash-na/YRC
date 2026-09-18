@@ -23,7 +23,7 @@ const camps: Camp[] = [
     description:
       "Focused training blocks in the mountains — building endurance, strength and routine together.",
     image: {
-      src: "/YRC/Pillars/Pillars-move",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M01.jpg",
       alt: "YRC runners in motion on a group run",
       updatedAt: "1789641881097",
     },
@@ -34,7 +34,7 @@ const camps: Camp[] = [
     description:
       "Structured build-up toward a shared goal race — training, pacing and race-day support side by side.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/photo_5953857689656346514_w.jpg",
+      src: "/YRC/35.png",
       alt: "YRC runner during a marathon race day",
       updatedAt: "1789681285053",
     },
@@ -46,7 +46,7 @@ const camps: Camp[] = [
     description:
       "Technical terrain, elevation and time outside — training that doubles as exploration.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-roman-odintsov-5859136.jpg",
+      src: "/YRC/36.png",
       alt: "Runner outdoors during a YRC trip",
       updatedAt: "1789681295806",
     },
@@ -58,9 +58,9 @@ const camps: Camp[] = [
     description:
       "Trips that mix training with travel, recovery and time together — the experience matters as much as the sessions.",
     image: {
-      src: "/YRC/Pillars/pillars-connect",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
       alt: "YRC community members connecting after a run",
-      updatedAt: "1789641870615",
+      updatedAt: "1789681140651",
     },
     href: TALLY_POPUP_HASH,
   },

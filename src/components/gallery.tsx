@@ -14,44 +14,44 @@ const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
 
 const images: GalleryImage[] = [
   {
-    src: `${basePath}/M06.jpg`,
+    src: "/YRC/2.png",
     alt: "YRC runners together on race day",
-    updatedAt: "1789681293386",
+    updatedAt: "1789773523821",
     className: "md:col-span-5 md:rotate-[-1.5deg]",
     aspect: "aspect-4/3",
   },
   {
-    src: `${basePath}/photo_5953857689656346515_w.jpg`,
+    src: `${basePath}/M05.jpg`,
     alt: "YRC community member mid-run",
-    updatedAt: "1789681284418",
+    updatedAt: "1789681303886",
     className: "md:col-span-4 md:mt-16 md:rotate-[1.5deg]",
     aspect: "aspect-4/3 md:aspect-3/4",
   },
   {
-    src: `${basePath}/pexels-roman-odintsov-5859136.jpg`,
+    src: "/YRC/50.png",
     alt: "Runner outdoors during a YRC trip",
-    updatedAt: "1789681295806",
+    updatedAt: "1789773523340",
     className: "hidden md:col-span-3 md:mt-32 md:block md:rotate-[-1deg]",
     aspect: "aspect-3/4",
   },
   {
-    src: `${basePath}/3.jpg`,
+    src: `${basePath}/03.jpg`,
     alt: "YRC group sharing a moment after training",
     updatedAt: "1789681291699",
     className: "md:col-span-4 md:col-start-2 md:-mt-10 md:rotate-[2deg]",
     aspect: "aspect-4/3",
   },
   {
-    src: `${basePath}/03-1.jpg`,
+    src: `${basePath}/4.jpg`,
     alt: "Runners on the course during a YRC event",
     updatedAt: "1789681290358",
     className: "md:col-span-4 md:-mt-6 md:rotate-[-2deg]",
     aspect: "aspect-4/3",
   },
   {
-    src: `${basePath}/Untitled-1-02.jpg`,
+    src: `${basePath}/pexels-roman-odintsov-5859136.jpg`,
     alt: "YRC community exploring a new place together",
-    updatedAt: "1789681149365",
+    updatedAt: "1789681295806",
     className: "hidden md:col-span-4 md:col-start-2 md:block md:rotate-[1deg]",
     aspect: "aspect-3/2",
   },
@@ -91,7 +91,7 @@ const Gallery = ({ className }: GalleryProps) => {
         </div>
 
         <div className="mx-auto mt-14 grid max-w-6xl grid-cols-2 gap-4 md:mt-20 md:grid-cols-12 md:gap-6">
-          {images.map((image) => (
+          {images.map((image, index) => (
             <div
               key={image.src}
               className={cn(
@@ -108,6 +108,17 @@ const Gallery = ({ className }: GalleryProps) => {
                 queryParameters={{ updatedAt: image.updatedAt }}
                 className="object-cover"
               />
+              {index === 0 && (
+                <Image
+                  src="/YRC/Stickers/1.png"
+                  alt=""
+                  aria-hidden
+                  width={160}
+                  height={160}
+                  queryParameters={{ updatedAt: "1789773268550" }}
+                  className="pointer-events-none absolute top-3 right-3 z-10 h-auto w-12 rotate-6 grayscale md:w-16"
+                />
+              )}
             </div>
           ))}
         </div>

@@ -30,9 +30,9 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "Start the week together. A relaxed community run for every level, followed by time to connect.",
     image: {
-      src: "/YRC/Pillars/Pillars-move",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
       alt: "YRC runners in motion on a group run",
-      updatedAt: "1789641881097",
+      updatedAt: "1789681293386",
     },
     cta: "VIEW EVENT",
     href: "/events",
@@ -48,9 +48,9 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "Off the road and into the landscape. A guided trail run through uneven terrain, built around effort, focus and the outdoors.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-roman-odintsov-5859136.jpg",
+      src: "/YRC/45.png",
       alt: "Open landscape on a YRC trail run",
-      updatedAt: "1789641870615",
+      updatedAt: "1789773517855",
     },
     cta: "VIEW EVENT",
     href: "/events",
@@ -66,45 +66,9 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "The city before it wakes. An early run that starts in the dark and finishes with the light — quiet streets, steady pace, shared silence.",
     image: {
-      src: "/YRC/Home page/Hero-right",
+      src: "/YRC/41.png",
       alt: "Runner moving through early morning light",
-      updatedAt: "1789641779716",
-    },
-    cta: "VIEW EVENT",
-    href: "/events",
-  },
-  {
-    category: "Speed Session",
-    date: "Wednesday · 11 November 2026",
-    time: "19:00",
-    title: "YRC Interval Night",
-    location: "Track to be announced",
-    distance: "Interval Sets",
-    level: "Intermediate / Advanced",
-    description:
-      "Structured speed work under the lights. Repeats, recoveries and progression — a session designed to make you faster, together.",
-    image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
-      alt: "YRC athletes pushing the pace during a speed session",
-      updatedAt: "1789681291699",
-    },
-    cta: "VIEW EVENT",
-    href: "/events",
-  },
-  {
-    category: "International Event",
-    date: "Sunday · 6 December 2026",
-    time: "08:30",
-    title: "YRC Race Meetup — Valencia",
-    location: "Valencia, Spain",
-    distance: "Marathon / 10K",
-    level: "All Levels",
-    description:
-      "YRC travels together. A community meetup around race day in Valencia — shared preparation, shared experience, one start line.",
-    image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/3.jpg",
-      alt: "YRC runners together at an international race",
-      updatedAt: "1789641875693",
+      updatedAt: "1789773516271",
     },
     cta: "VIEW EVENT",
     href: "/events",

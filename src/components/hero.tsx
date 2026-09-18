@@ -70,15 +70,15 @@ const defaultProps: HeroProps = {
     },
   },
   imageProduct: {
-    src: "/YRC/Home page/Hero-left",
+    src: "/YRC/26.png",
     alt: "YRC runners training together",
-    updatedAt: "1789641774014",
+    updatedAt: "1789773525964",
   },
   imagesPortrait: [
     {
-      src: "/YRC/Home page/Hero-right",
+      src: "/YRC/33.png",
       alt: "YRC community member out on a run",
-      updatedAt: "1789641779716",
+      updatedAt: "1789773525796",
     },
   ],
 };
