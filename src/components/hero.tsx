@@ -119,7 +119,7 @@ const Hero = (props: Props) => {
               {subheading && (
                 <>
                   <br />
-                  <span className="text-yrc-accent">{subheading}</span>
+                  <span className="text-muted-foreground">{subheading}</span>
                 </>
               )}
             </h1>
