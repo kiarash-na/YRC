@@ -7,7 +7,9 @@ import { TrainingCamps } from "@/components/training-camps";
 import { StructuredCourses } from "@/components/structured-courses";
 import { TrainingProcess } from "@/components/training-process";
 import { StrengthMobility } from "@/components/strength-mobility";
-import { upcomingEvents } from "@/data/events";
+import { CourseDetails } from "@/components/course-details";
+import { Faq } from "@/components/faq";
+import { upcomingEvents, courseDetails, faqs } from "@/data/events";
 
 export const metadata: Metadata = {
   title: "Events — YRC",
@@ -25,6 +27,8 @@ export default function EventsPage() {
       <StructuredCourses />
       <TrainingProcess />
       <StrengthMobility />
+      <CourseDetails details={courseDetails} />
+      <Faq items={faqs} />
     </main>
   );
 }
