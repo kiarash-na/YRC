@@ -41,7 +41,7 @@ const Footer = ({
     { name: "Strava", href: "#" },
   ],
   legal = [],
-  brandName = "YRC",
+  brandName = "YASRISE.CO",
   className,
 }: FooterProps) => {
   return (
@@ -106,7 +106,7 @@ const Footer = ({
         className="mt-10 w-full overflow-hidden text-primary md:mt-14 lg:mt-20"
         aria-label={brandName}
       >
-        <div className="text-center text-[clamp(8rem,32vw,28rem)] leading-[0.75] font-bold tracking-tight select-none [mask-image:linear-gradient(to_bottom,black_55%,transparent)]">
+        <div className="text-center text-[clamp(3rem,12.5vw,11rem)] leading-[0.85] font-bold tracking-tight select-none [mask-image:linear-gradient(to_bottom,black_55%,transparent)]">
           {brandName}
         </div>
       </div>
