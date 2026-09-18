@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Blog22 } from "@/components/blog22";
 import { Blog52 } from "@/components/blog52";
 import { JoinCta } from "@/components/join-cta";
 
@@ -13,6 +14,7 @@ export default function BlogsPage() {
   return (
     <main className="flex-1">
       <Blog52 />
+      <Blog22 />
       <JoinCta />
     </main>
   );
