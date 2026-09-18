@@ -46,7 +46,9 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
             <Route className="size-3.5" />
             Programs
           </Badge>
-          <h2 className="text-h2 md:text-h1">Structured Running Courses</h2>
+          <h2 className="text-h2 md:text-h1">
+            Structured Running <span className="text-yrc-accent">Courses</span>
+          </h2>
           <p className="text-body-small text-muted-foreground md:text-body">
             Structured training programs designed to help runners train with
             purpose, build consistency and move toward their goals with a

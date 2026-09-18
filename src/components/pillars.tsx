@@ -79,16 +79,16 @@ const Pillars = ({ className }: PillarsProps) => {
                   {pillar.first ? (
                     <span className="h-20 shrink-0"></span>
                   ) : (
-                    <span className="absolute -top-8 mx-auto h-8 w-[3px] shrink-0 bg-primary opacity-70"></span>
+                    <span className="absolute -top-8 mx-auto h-8 w-[3px] shrink-0 bg-yrc-accent opacity-70"></span>
                   )}
                   {!pillar.first && !pillar.last && (
                     <>
-                      <span className="absolute -bottom-8 mx-auto h-8 w-[3px] shrink-0 bg-primary opacity-70"></span>
-                      <span className="h-20 w-[3px] shrink-0 bg-primary opacity-70"></span>
+                      <span className="absolute -bottom-8 mx-auto h-8 w-[3px] shrink-0 bg-yrc-accent opacity-70"></span>
+                      <span className="h-20 w-[3px] shrink-0 bg-yrc-accent opacity-70"></span>
                     </>
                   )}
                   {pillar.last && (
-                    <span className="h-20 w-[3px] shrink-0 bg-primary opacity-70"></span>
+                    <span className="h-20 w-[3px] shrink-0 bg-yrc-accent opacity-70"></span>
                   )}
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-full border bg-muted/50 text-body-small font-semibold">
                     {pillar.number}
@@ -96,7 +96,7 @@ const Pillars = ({ className }: PillarsProps) => {
                   {pillar.last ? (
                     <span className="h-20 shrink-0"></span>
                   ) : (
-                    <span className="h-20 w-[3px] shrink-0 bg-primary opacity-70"></span>
+                    <span className="h-20 w-[3px] shrink-0 bg-yrc-accent opacity-70"></span>
                   )}
                 </div>
                 <div className="flex flex-col justify-center gap-5 px-0 min-[960px]:gap-6 min-[960px]:px-4 min-[960px]:py-4">

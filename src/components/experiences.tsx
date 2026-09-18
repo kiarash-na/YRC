@@ -60,7 +60,7 @@ const Experiences = ({ className }: ExperiencesProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Yas Rise Experiences
           </p>
           <h2 className="text-h3 md:text-h1">Three ways to move with us</h2>

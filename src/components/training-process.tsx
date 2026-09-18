@@ -46,7 +46,7 @@ const TrainingProcess = ({ className }: TrainingProcessProps) => {
               How It Works
             </Badge>
             <h2 className="text-h2 text-balance md:text-h1">
-              Training Process
+              Training <span className="text-yrc-accent">Process</span>
             </h2>
             <p className="max-w-md text-body-small text-pretty text-muted-foreground md:text-body">
               How the YRC training experience works — a simple path from

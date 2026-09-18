@@ -82,7 +82,9 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
             <Mountain className="size-3.5" />
             Camps & Trips
           </Badge>
-          <h2 className="text-center text-h2 md:text-h1">Training Camps</h2>
+          <h2 className="text-center text-h2 md:text-h1">
+            <span className="text-yrc-accent">Training</span> Camps
+          </h2>
           <p className="text-center text-body-small text-muted-foreground md:text-body">
             Specialized camps and trips designed around training, preparation,
             motivation and meaningful time together.

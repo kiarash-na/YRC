@@ -108,7 +108,7 @@ const Hero = (props: Props) => {
             {badge && (
               <a
                 href={badge.url ?? "#"}
-                className="my-6 text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase hover:underline"
+                className="my-6 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase hover:underline"
               >
                 {badge.text}
               </a>
@@ -119,7 +119,7 @@ const Hero = (props: Props) => {
               {subheading && (
                 <>
                   <br />
-                  <span className="text-muted-foreground">{subheading}</span>
+                  <span className="text-yrc-accent">{subheading}</span>
                 </>
               )}
             </h1>

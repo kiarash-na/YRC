@@ -66,7 +66,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
               Beyond Munich
             </Badge>
             <h2 className="text-h2 text-balance md:text-h1">
-              International Events
+              <span className="text-yrc-accent">International</span> Events
             </h2>
             <p className="max-w-md text-body-small text-pretty text-muted-foreground md:text-body">
               Selected road, trail and endurance events that bring the YRC

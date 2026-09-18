@@ -36,7 +36,7 @@ const Story = ({ className }: StoryProps) => {
           </div>
 
           <div className="flex flex-col gap-7">
-            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
               Our story
             </p>
             <h2 className="text-h3 md:text-h1">More than the finish line</h2>

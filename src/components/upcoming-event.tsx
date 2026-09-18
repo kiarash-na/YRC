@@ -16,7 +16,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Upcoming Event
           </p>
           <h2 className="text-h3 md:text-h1">Next on the calendar</h2>
@@ -50,7 +50,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
 
               <h3 className="text-h2 md:text-h1">{event.title}</h3>
 
-              <p className="text-body-small font-semibold tracking-[0.15em] uppercase">
+              <p className="text-body-small font-semibold tracking-[0.15em] text-yrc-accent uppercase">
                 {event.location} · {event.distance} · {event.level}
               </p>
 
