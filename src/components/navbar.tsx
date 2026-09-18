@@ -41,13 +41,14 @@ const Navbar = ({ className }: NavbarProps) => {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <section className={cn("", className)}>
-      <div className="container relative flex items-center justify-between py-6">
+    <section className={cn("bg-background", className)}>
+      <div className="container flex items-center justify-between py-6">
         <div className="z-50">
           <Link
             href="/"
             aria-label="Yas Rise Community — Home"
             className="flex items-center gap-2"
+            onClick={() => setIsOpen(false)}
           >
             <Image
               src="/YRC/Brand/Logo/logo-black.png"
@@ -60,32 +61,13 @@ const Navbar = ({ className }: NavbarProps) => {
           </Link>
         </div>
 
-        <nav
-          aria-label="Primary"
-          className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex"
-        >
-          {menuItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              className={cn(
-                "text-body-small font-medium tracking-wider uppercase transition-colors hover:text-foreground",
-                isActive(item.href)
-                  ? "text-foreground"
-                  : "text-muted-foreground",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
         <div className="z-50 flex items-center gap-6">
           <JoinYrcButton className="tracking-wider uppercase" />
           <button
             onClick={toggleMenu}
-            className="text-lg tracking-wider text-foreground transition-colors hover:text-muted-foreground md:hidden"
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            className="text-body-small font-medium tracking-wider text-foreground uppercase transition-colors hover:text-muted-foreground"
           >
             <AnimatePresence mode="wait">
               <motion.span
@@ -95,7 +77,7 @@ const Navbar = ({ className }: NavbarProps) => {
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.2, ease: "easeInOut" }}
               >
-                {isOpen ? "CLOSE" : "MENU"}
+                {isOpen ? "Close" : "Menu"}
               </motion.span>
             </AnimatePresence>
           </button>
@@ -111,7 +93,10 @@ const Navbar = ({ className }: NavbarProps) => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 overflow-hidden bg-background"
           >
-            <div className="flex h-full flex-col items-center justify-center px-6">
+            <nav
+              aria-label="Primary"
+              className="flex h-full flex-col items-center justify-center px-6"
+            >
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -179,7 +164,7 @@ const Navbar = ({ className }: NavbarProps) => {
                   </motion.a>
                 ))}
               </motion.div>
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
