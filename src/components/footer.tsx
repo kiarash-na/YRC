@@ -25,7 +25,7 @@ interface FooterProps {
 }
 
 const Footer = ({
-  heading = "RUN WITH US",
+  heading = "JOIN THE COMMUNITY",
   description = "Weekly runs, training sessions and outdoor adventures in Munich. All paces welcome — just show up.",
   ctaText = "JOIN YRC",
   navigation = [
