@@ -1,5 +1,4 @@
 import { Hero } from "@/components/hero";
-import { Pillars } from "@/components/pillars";
 import { UpcomingEvent } from "@/components/upcoming-event";
 import { About } from "@/components/about";
 import { Experiences } from "@/components/experiences";
@@ -14,7 +13,6 @@ export default function Home() {
     <main className="flex-1">
       <Hero />
       <UpcomingEvent event={upcomingEvent} />
-      <Pillars />
       <About />
       <Experiences />
       <Philosophy />
