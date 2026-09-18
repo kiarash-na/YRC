@@ -4,6 +4,9 @@ import { EventsHero } from "@/components/events-hero";
 import { UpcomingEvents } from "@/components/upcoming-events";
 import { InternationalEvents } from "@/components/international-events";
 import { TrainingCamps } from "@/components/training-camps";
+import { StructuredCourses } from "@/components/structured-courses";
+import { TrainingProcess } from "@/components/training-process";
+import { StrengthMobility } from "@/components/strength-mobility";
 import { upcomingEvents } from "@/data/events";
 
 export const metadata: Metadata = {
@@ -19,6 +22,9 @@ export default function EventsPage() {
       <UpcomingEvents events={upcomingEvents} />
       <InternationalEvents />
       <TrainingCamps />
+      <StructuredCourses />
+      <TrainingProcess />
+      <StrengthMobility />
     </main>
   );
 }
