@@ -4,6 +4,7 @@ import { cn } from "cn";
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
 
@@ -94,7 +95,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                 size="lg"
                 variant="ghost"
                 className="uppercase"
-                render={<a href="#join" />}
+                render={<a href={TALLY_POPUP_HASH} />}
                 nativeButton={false}
               >
                 Join the Community

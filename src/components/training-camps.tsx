@@ -3,6 +3,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface Camp {
   title: string;
@@ -26,7 +27,7 @@ const camps: Camp[] = [
       alt: "YRC runners in motion on a group run",
       updatedAt: "1789641881097",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
   {
     title: "Race Preparation",
@@ -37,7 +38,7 @@ const camps: Camp[] = [
       alt: "YRC runner during a marathon race day",
       updatedAt: "1789681285053",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
     wide: true,
   },
   {
@@ -49,7 +50,7 @@ const camps: Camp[] = [
       alt: "Runner outdoors during a YRC trip",
       updatedAt: "1789681295806",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
     wide: true,
   },
   {
@@ -61,7 +62,7 @@ const camps: Camp[] = [
       alt: "YRC community members connecting after a run",
       updatedAt: "1789641870615",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
 ];
 

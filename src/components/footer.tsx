@@ -1,7 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "cn";
 
-import { Button } from "@/components/ui/button";
+import { JoinYrcButton } from "@/components/join-yrc-button";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 interface NavItem {
   name: string;
   href: string;
@@ -16,7 +17,6 @@ interface FooterProps {
   heading?: string;
   description?: string;
   ctaText?: string;
-  ctaHref?: string;
   navigation?: NavItem[];
   social?: SocialItem[];
   legal?: NavItem[];
@@ -28,12 +28,13 @@ const Footer = ({
   heading = "RUN WITH US",
   description = "Weekly runs, training sessions and outdoor adventures in Munich. All paces welcome — just show up.",
   ctaText = "JOIN YRC",
-  ctaHref = "#join",
   navigation = [
-    { name: "Runs & Events", href: "#runs" },
-    { name: "Community", href: "#community" },
-    { name: "About", href: "#about" },
-    { name: "JOIN YRC", href: "#join" },
+    { name: "Home", href: "/" },
+    { name: "Events", href: "/events" },
+    { name: "Community", href: "/community" },
+    { name: "About", href: "/about" },
+    { name: "Blogs", href: "/blogs" },
+    { name: "JOIN YRC", href: TALLY_POPUP_HASH },
   ],
   social = [
     { name: "Instagram", href: "#" },
@@ -58,14 +59,7 @@ const Footer = ({
           {description}
         </p>
         <div>
-          <Button
-            size="lg"
-            className="mt-4"
-            render={<a href={ctaHref} />}
-            nativeButton={false}
-          >
-            {ctaText}
-          </Button>
+          <JoinYrcButton className="mt-4">{ctaText}</JoinYrcButton>
         </div>
       </div>
 

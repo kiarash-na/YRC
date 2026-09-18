@@ -1,11 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { Button } from "@/components/ui/button";
+import { JoinYrcButton } from "@/components/join-yrc-button";
 
 interface MenuItem {
   label: string;
@@ -13,9 +15,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: "Runs & Events", href: "#runs" },
-  { label: "Community", href: "#community" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/" },
+  { label: "Events", href: "/events" },
+  { label: "Community", href: "/community" },
+  { label: "About", href: "/about" },
+  { label: "Blogs", href: "/blogs" },
 ];
 
 const socialLinks = [
@@ -29,14 +33,22 @@ interface NavbarProps {
 
 const Navbar = ({ className }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <section className={cn("", className)}>
-      <div className="flex items-center justify-between px-6 py-6">
+      <div className="relative flex items-center justify-between px-6 py-6">
         <div className="z-50">
-          <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            aria-label="Yas Rise Community — Home"
+            className="flex items-center gap-2"
+          >
             <Image
               src="/YRC/Brand/Logo/logo-black.png"
               alt="YRC — Yas Rise Community"
@@ -45,21 +57,35 @@ const Navbar = ({ className }: NavbarProps) => {
               priority
               className="h-9 w-auto"
             />
-          </div>
+          </Link>
         </div>
 
+        <nav
+          aria-label="Primary"
+          className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex"
+        >
+          {menuItems.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn(
+                "text-body-small font-medium tracking-wider uppercase transition-colors hover:text-yrc-accent",
+                isActive(item.href)
+                  ? "text-yrc-accent"
+                  : "text-foreground",
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
         <div className="z-50 flex items-center gap-6">
-          <Button
-            size="lg"
-            className="uppercase tracking-wider"
-            render={<a href="#join" />}
-            nativeButton={false}
-          >
-            Join YRC
-          </Button>
+          <JoinYrcButton className="tracking-wider uppercase" />
           <button
             onClick={toggleMenu}
-            className="text-lg tracking-wider text-foreground transition-colors hover:text-muted-foreground"
+            className="text-lg tracking-wider text-foreground transition-colors hover:text-muted-foreground md:hidden"
           >
             <AnimatePresence mode="wait">
               <motion.span
@@ -100,13 +126,19 @@ const Navbar = ({ className }: NavbarProps) => {
                     transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
                     className="mb-5"
                   >
-                    <a
+                    <Link
                       href={item.href}
                       onClick={() => setIsOpen(false)}
+                      aria-current={isActive(item.href) ? "page" : undefined}
                       className="group relative inline-block"
                     >
                       <motion.span
-                        className="relative z-10 text-h2 font-bold text-foreground uppercase transition-transform duration-300 md:text-display"
+                        className={cn(
+                          "relative z-10 text-h2 font-bold uppercase transition-transform duration-300 md:text-display",
+                          isActive(item.href)
+                            ? "text-yrc-accent"
+                            : "text-foreground",
+                        )}
                         initial={{ opacity: 1, filter: "blur(0px)" }}
                         whileHover={{ opacity: 0.8, filter: "blur(6px)" }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -115,12 +147,12 @@ const Navbar = ({ className }: NavbarProps) => {
                       </motion.span>
 
                       <motion.div
-                        className="absolute bottom-0 left-0 h-1 bg-primary"
+                        className="absolute bottom-0 left-0 h-1 bg-yrc-accent"
                         initial={{ width: 0 }}
                         whileHover={{ width: "100%" }}
                         transition={{ duration: 0.3 }}
                       />
-                    </a>
+                    </Link>
                   </motion.div>
                 ))}
               </motion.div>

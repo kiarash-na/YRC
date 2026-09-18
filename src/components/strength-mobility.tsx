@@ -3,6 +3,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface TrainingElement {
   title: string;
@@ -25,7 +26,7 @@ const elements: TrainingElement[] = [
       alt: "YRC runners in motion on a group run",
       updatedAt: "1789641881097",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
   {
     title: "Mobility & Movement",
@@ -36,7 +37,7 @@ const elements: TrainingElement[] = [
       alt: "YRC runners training together in Munich",
       updatedAt: "1789641774014",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
   {
     title: "Balanced Training",
@@ -47,7 +48,7 @@ const elements: TrainingElement[] = [
       alt: "YRC group sharing a moment after training",
       updatedAt: "1789681291699",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
   {
     title: "Preparation",
@@ -58,7 +59,7 @@ const elements: TrainingElement[] = [
       alt: "YRC runner during a marathon race day",
       updatedAt: "1789681285053",
     },
-    href: "#join",
+    href: TALLY_POPUP_HASH,
   },
 ];
 

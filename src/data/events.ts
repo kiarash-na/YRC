@@ -34,7 +34,7 @@ export const upcomingEvent: YrcEvent = {
     updatedAt: "1789641881097",
   },
   cta: "VIEW EVENT",
-  href: "#runs",
+  href: "/events",
 };
 
 export const upcomingEvents: YrcEvent[] = [upcomingEvent];

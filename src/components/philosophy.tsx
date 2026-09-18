@@ -55,7 +55,7 @@ const Philosophy = ({ className }: PhilosophyProps) => {
             the journey.
           </p>
           <a
-            href="#about"
+            href="/about"
             className="inline-flex w-fit items-center gap-1 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
           >
             More about YRC <ArrowRight className="size-4" />

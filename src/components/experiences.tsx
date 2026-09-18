@@ -2,6 +2,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface Experience {
   number: string;
@@ -98,8 +99,8 @@ const Experiences = ({ className }: ExperiencesProps) => {
         <div className="mt-14 flex justify-center">
           <Button
             size="lg"
-            className="w-full sm:w-auto"
-            render={<a href="#join" />}
+            className="w-full bg-yrc-accent text-yrc-accent-foreground hover:bg-yrc-accent/80 sm:w-auto"
+            render={<a href={TALLY_POPUP_HASH} />}
             nativeButton={false}
           >
             START YOUR JOURNEY

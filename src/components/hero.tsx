@@ -4,6 +4,7 @@ import { cn } from "cn";
 
 import { buildSrc, Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
+import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
 
@@ -52,7 +53,7 @@ type Props = Partial<HeroProps>;
 const defaultProps: HeroProps = {
   badge: {
     text: "Yas Rise Community Munich",
-    url: "#community",
+    url: "/community",
   },
   heading: "RUN TOGETHER.",
   subheading: "GROW TOGETHER.",
@@ -61,11 +62,11 @@ const defaultProps: HeroProps = {
   buttons: {
     primary: {
       text: "JOIN THE COMMUNITY",
-      url: "#join",
+      url: TALLY_POPUP_HASH,
     },
     secondary: {
       text: "SEE UPCOMING RUNS",
-      url: "#runs",
+      url: "/events",
     },
   },
   imageProduct: {
@@ -131,7 +132,7 @@ const Hero = (props: Props) => {
               {buttons?.primary && (
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto"
+                  className="w-full bg-yrc-accent text-yrc-accent-foreground hover:bg-yrc-accent/80 sm:w-auto"
                   render={<a href={buttons.primary.url} />}
                   nativeButton={false}
                 >
