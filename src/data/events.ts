@@ -23,7 +23,7 @@ export const upcomingEvent: YrcEvent = {
   date: "Sunday · 27 September 2026",
   time: "08:00",
   title: "YRC Community Run",
-  location: "Munich",
+  location: "Location to be announced",
   distance: "5K / 10K",
   level: "All Levels",
   description:

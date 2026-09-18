@@ -34,7 +34,7 @@ const elements: TrainingElement[] = [
       "Mobility sessions that keep your movement quality high through demanding training weeks.",
     image: {
       src: "/YRC/Home page/Hero-left",
-      alt: "YRC runners training together in Munich",
+      alt: "YRC runners training together",
       updatedAt: "1789641774014",
     },
     href: TALLY_POPUP_HASH,

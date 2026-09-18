@@ -16,7 +16,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "YRC — Yas Rise Community",
   description:
-    "Yas Rise Community Munich — weekly runs, training, outdoor adventures and good people. Run together. Grow together.",
+    "Yas Rise Community — weekly runs, training, outdoor adventures and good people. Run together. Grow together.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

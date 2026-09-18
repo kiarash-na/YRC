@@ -52,13 +52,13 @@ type Props = Partial<HeroProps>;
 
 const defaultProps: HeroProps = {
   badge: {
-    text: "Yas Rise Community Munich",
+    text: "Yas Rise Community",
     url: "/community",
   },
   heading: "RUN TOGETHER.",
   subheading: "GROW TOGETHER.",
   description:
-    "Weekly runs · training · outdoor adventures · good people. YRC is a running community in Munich for every pace — show up, run together, grow together.",
+    "Weekly runs · training · outdoor adventures · good people. YRC is a running community for every pace — show up, run together, grow together.",
   buttons: {
     primary: {
       text: "JOIN THE COMMUNITY",
@@ -71,7 +71,7 @@ const defaultProps: HeroProps = {
   },
   imageProduct: {
     src: "/YRC/Home page/Hero-left",
-    alt: "YRC runners training together in Munich",
+    alt: "YRC runners training together",
     updatedAt: "1789641774014",
   },
   imagesPortrait: [

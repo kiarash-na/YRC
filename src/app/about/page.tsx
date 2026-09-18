@@ -5,7 +5,7 @@ import { JoinCta } from "@/components/join-cta";
 export const metadata: Metadata = {
   title: "About — YRC",
   description:
-    "About Yas Rise Community — a running community in Munich. Run together. Grow together.",
+    "About Yas Rise Community — a running community for every pace. Run together. Grow together.",
 };
 
 export default function AboutPage() {

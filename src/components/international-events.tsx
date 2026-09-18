@@ -63,7 +63,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
               variant="outline"
               className="h-6 px-3 text-caption font-bold tracking-[0.3em] uppercase"
             >
-              Beyond Munich
+              Beyond Borders
             </Badge>
             <h2 className="text-h2 text-balance md:text-h1">
               <span className="text-yrc-accent">International</span> Events

@@ -5,7 +5,7 @@ import { JoinCta } from "@/components/join-cta";
 export const metadata: Metadata = {
   title: "Community — YRC",
   description:
-    "Yas Rise Community Munich — the people behind the runs. Every pace welcome.",
+    "Yas Rise Community — the people behind the runs. Every pace welcome.",
 };
 
 export default function CommunityPage() {
