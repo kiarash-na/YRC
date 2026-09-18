@@ -11,7 +11,7 @@ const JoinCta = ({ className }: JoinCtaProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 text-center">
+        <div className="flex max-w-5xl flex-col gap-4 border-l-4 border-yrc-accent pl-8 lg:gap-6">
           <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             Yas Rise Community
           </p>
@@ -19,7 +19,7 @@ const JoinCta = ({ className }: JoinCtaProps) => {
           <p className="max-w-xl text-body text-muted-foreground">
             Find your people, choose your challenge and keep moving forward.
           </p>
-          <div className="mt-2 flex w-full flex-col justify-center gap-3 sm:flex-row">
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row">
             <JoinYrcButton className="w-full sm:w-auto">JOIN YRC</JoinYrcButton>
             <Button
               size="lg"
