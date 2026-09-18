@@ -4,6 +4,11 @@ export interface BlogPostImage {
   updatedAt: string;
 }
 
+export interface BlogSection {
+  heading: string;
+  paragraphs: string[];
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -13,6 +18,8 @@ export interface BlogPost {
   readTime: string;
   image: BlogPostImage;
   href: string;
+  author?: string;
+  sections?: BlogSection[];
 }
 
 const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
@@ -22,7 +29,7 @@ export const featuredStory: BlogPost = {
   title: "BUILD THE HABIT, NOT JUST THE PACE",
   summary:
     "How consistent running turns scattered workouts into a sustainable routine.",
-  category: "Training",
+  category: "Running",
   date: "September 2026",
   readTime: "6 min read",
   image: {
@@ -31,6 +38,51 @@ export const featuredStory: BlogPost = {
     updatedAt: "1789681140651",
   },
   href: "/blogs/build-the-habit-not-just-the-pace",
+  author: "YRC Editorial",
+  sections: [
+    {
+      heading: "Why consistency matters",
+      paragraphs: [
+        "Most running plans don't fail because they were too hard. They fail because they never became part of the week. A heroic long run followed by ten quiet days moves you less than three ordinary runs that actually happen, every week, without negotiation.",
+        "Consistency is what turns running from an event into a habit. When the run is simply what you do on Tuesday and Saturday morning, you stop spending energy deciding whether to go — and that energy goes into the miles instead.",
+      ],
+    },
+    {
+      heading: "Start with a realistic routine",
+      paragraphs: [
+        "The routine you keep beats the routine you admire. Look at your actual week — work, family, sleep — and find the slots where running fits without a fight. Two or three fixed days is enough to begin.",
+        "Anchor those runs to something that already exists: before breakfast, straight after work, with the group on Sunday. The fewer decisions between you and the door, the more often you'll get through it.",
+      ],
+    },
+    {
+      heading: "Build gradually",
+      paragraphs: [
+        "Once the routine holds, let it grow slowly. Add a little time, a little distance, or one extra day — not all three at once. The goal is a workload your body and your calendar can absorb without resentment.",
+        "Progress in running is quiet. Weeks that feel unremarkable are usually the ones doing the work, so resist the urge to rush them.",
+      ],
+    },
+    {
+      heading: "Combine running with strength and mobility",
+      paragraphs: [
+        "Running alone builds runners who run well until something hurts. A short strength session and a few minutes of mobility work each week keep the machine that does the running in good order.",
+        "It doesn't need to be elaborate. A handful of fundamental movements, done consistently — the same principle as the running itself — is enough to keep you durable through the season.",
+      ],
+    },
+    {
+      heading: "Let the race be a milestone, not the entire purpose",
+      paragraphs: [
+        "A race on the calendar is a useful thing: it gives the weeks a shape and a reason. But if the race is the only reason you run, the habit ends at the finish line.",
+        "Treat race day as a checkpoint in a longer story. The fitness, the friends and the routine you built on the way there are the real result — the medal is just the receipt.",
+      ],
+    },
+    {
+      heading: "Keep the journey sustainable",
+      paragraphs: [
+        "Sustainable running leaves room for life. Missed weeks, tired days and seasons where running takes a back seat are not failures — they're part of any routine that lasts years instead of months.",
+        "Build the habit gently enough that you can return to it after any break. That's what turns running from a phase into something you simply do, for as long as you want to keep doing it.",
+      ],
+    },
+  ],
 };
 
 export const secondaryStories: BlogPost[] = [
