@@ -20,7 +20,7 @@ const Faq = ({ items, className }: FaqProps) => {
           <div className="flex max-w-xl flex-col items-start gap-5">
             <Badge
               variant="outline"
-              className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase"
+              className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
             >
               <MessageCircleQuestionMark className="size-3.5" />
               FAQ

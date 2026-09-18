@@ -41,7 +41,7 @@ const TrainingProcess = ({ className }: TrainingProcessProps) => {
           <div className="flex flex-col items-start gap-6">
             <Badge
               variant="outline"
-              className="h-6 px-3 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase"
+              className="h-6 px-3 text-caption font-bold tracking-[0.3em] uppercase"
             >
               How It Works
             </Badge>

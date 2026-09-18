@@ -41,7 +41,7 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
         <div className="flex max-w-3xl flex-col gap-5">
           <Badge
             variant="outline"
-            className="flex h-6 w-fit items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase"
+            className="flex h-6 w-fit items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
           >
             <Route className="size-3.5" />
             Programs

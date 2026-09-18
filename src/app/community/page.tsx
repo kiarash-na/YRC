@@ -13,7 +13,7 @@ export default function CommunityPage() {
     <main className="flex-1">
       <section className="py-32">
         <div className="container flex flex-col items-center gap-7 text-center">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             Yas Rise Community
           </p>
           <h1 className="text-h1 md:text-display">COMMUNITY</h1>

@@ -59,7 +59,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
 
           <div className="relative z-10 grid gap-8 border-t border-border bg-background p-6 md:absolute md:inset-x-0 md:bottom-0 md:grid-cols-2 md:items-end md:gap-12 md:border-0 md:bg-transparent md:p-8 lg:p-10">
             <div className="flex flex-col gap-4">
-              <Badge variant="outline" className="w-fit text-yrc-accent">
+              <Badge variant="secondary" className="w-fit">
                 Community & Experiences
               </Badge>
               <h1 className="max-w-xl text-h2 text-balance md:text-h1">

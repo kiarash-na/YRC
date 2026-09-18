@@ -70,10 +70,10 @@ const Navbar = ({ className }: NavbarProps) => {
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "text-body-small font-medium tracking-wider uppercase transition-colors hover:text-yrc-accent",
+                "text-body-small font-medium tracking-wider uppercase transition-colors hover:text-foreground",
                 isActive(item.href)
-                  ? "text-yrc-accent"
-                  : "text-foreground",
+                  ? "text-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {item.label}
@@ -136,8 +136,8 @@ const Navbar = ({ className }: NavbarProps) => {
                         className={cn(
                           "relative z-10 text-h2 font-bold uppercase transition-transform duration-300 md:text-display",
                           isActive(item.href)
-                            ? "text-yrc-accent"
-                            : "text-foreground",
+                            ? "text-foreground"
+                            : "text-muted-foreground",
                         )}
                         initial={{ opacity: 1, filter: "blur(0px)" }}
                         whileHover={{ opacity: 0.8, filter: "blur(6px)" }}
