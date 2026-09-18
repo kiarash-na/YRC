@@ -18,26 +18,100 @@ export interface YrcEvent {
   href: string;
 }
 
-export const upcomingEvent: YrcEvent = {
-  category: "Community Run",
-  date: "Sunday · 27 September 2026",
-  time: "08:00",
-  title: "YRC Community Run",
-  location: "Location to be announced",
-  distance: "5K / 10K",
-  level: "All Levels",
-  description:
-    "Start the week together. A relaxed community run for every level, followed by time to connect.",
-  image: {
-    src: "/YRC/Pillars/Pillars-move",
-    alt: "YRC runners in motion on a group run",
-    updatedAt: "1789641881097",
+export const upcomingEvents: YrcEvent[] = [
+  {
+    category: "Community Run",
+    date: "Sunday · 4 October 2026",
+    time: "08:00",
+    title: "YRC Community Run",
+    location: "Location to be announced",
+    distance: "5K / 10K",
+    level: "All Levels",
+    description:
+      "Start the week together. A relaxed community run for every level, followed by time to connect.",
+    image: {
+      src: "/YRC/Pillars/Pillars-move",
+      alt: "YRC runners in motion on a group run",
+      updatedAt: "1789641881097",
+    },
+    cta: "VIEW EVENT",
+    href: "/events",
   },
-  cta: "VIEW EVENT",
-  href: "/events",
-};
+  {
+    category: "Trail Run",
+    date: "Saturday · 17 October 2026",
+    time: "07:30",
+    title: "YRC Trail Escape",
+    location: "Trailhead to be announced",
+    distance: "12K",
+    level: "Intermediate",
+    description:
+      "Off the road and into the landscape. A guided trail run through uneven terrain, built around effort, focus and the outdoors.",
+    image: {
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-roman-odintsov-5859136.jpg",
+      alt: "Open landscape on a YRC trail run",
+      updatedAt: "1789641870615",
+    },
+    cta: "VIEW EVENT",
+    href: "/events",
+  },
+  {
+    category: "Sunrise Run",
+    date: "Sunday · 1 November 2026",
+    time: "06:30",
+    title: "YRC Sunrise Miles",
+    location: "Meeting point to be announced",
+    distance: "8K",
+    level: "All Levels",
+    description:
+      "The city before it wakes. An early run that starts in the dark and finishes with the light — quiet streets, steady pace, shared silence.",
+    image: {
+      src: "/YRC/Home page/Hero-right",
+      alt: "Runner moving through early morning light",
+      updatedAt: "1789641779716",
+    },
+    cta: "VIEW EVENT",
+    href: "/events",
+  },
+  {
+    category: "Speed Session",
+    date: "Wednesday · 11 November 2026",
+    time: "19:00",
+    title: "YRC Interval Night",
+    location: "Track to be announced",
+    distance: "Interval Sets",
+    level: "Intermediate / Advanced",
+    description:
+      "Structured speed work under the lights. Repeats, recoveries and progression — a session designed to make you faster, together.",
+    image: {
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
+      alt: "YRC athletes pushing the pace during a speed session",
+      updatedAt: "1789681291699",
+    },
+    cta: "VIEW EVENT",
+    href: "/events",
+  },
+  {
+    category: "International Event",
+    date: "Sunday · 6 December 2026",
+    time: "08:30",
+    title: "YRC Race Meetup — Valencia",
+    location: "Valencia, Spain",
+    distance: "Marathon / 10K",
+    level: "All Levels",
+    description:
+      "YRC travels together. A community meetup around race day in Valencia — shared preparation, shared experience, one start line.",
+    image: {
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/3.jpg",
+      alt: "YRC runners together at an international race",
+      updatedAt: "1789641875693",
+    },
+    cta: "VIEW EVENT",
+    href: "/events",
+  },
+];
 
-export const upcomingEvents: YrcEvent[] = [upcomingEvent];
+export const upcomingEvent: YrcEvent = upcomingEvents[0];
 
 export interface CourseDetail {
   title: string;
