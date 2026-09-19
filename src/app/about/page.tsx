@@ -6,6 +6,7 @@ import { JoinCta } from "@/components/join-cta";
 import { LivedJourney } from "@/components/lived-journey";
 import { OurStory } from "@/components/our-story";
 import { OurValues } from "@/components/our-values";
+import { Team } from "@/components/team";
 import { WithoutBorders } from "@/components/without-borders";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function AboutPage() {
       <AboutPhilosophy />
       <OurValues />
       <WithoutBorders />
+      <Team />
       <JoinCta />
     </main>
   );
