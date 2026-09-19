@@ -111,7 +111,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                   alt={persona.image.alt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-contain grayscale"
+                  className="object-cover object-center grayscale"
                 />
               </div>
             </TabsContent>

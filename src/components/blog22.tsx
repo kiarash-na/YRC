@@ -39,7 +39,7 @@ const Blog22 = ({ className }: Blog22Props) => {
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   queryParameters={{ updatedAt: featuredStory.image.updatedAt }}
-                  className="object-contain grayscale transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-center grayscale transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="flex flex-col gap-4">
@@ -73,7 +73,7 @@ const Blog22 = ({ className }: Blog22Props) => {
                       fill
                       sizes="(min-width: 768px) 128px, 96px"
                       queryParameters={{ updatedAt: post.image.updatedAt }}
-                      className="object-contain grayscale transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover object-center grayscale transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="flex flex-col gap-3">

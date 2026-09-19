@@ -74,7 +74,7 @@ const OurStory = ({ className }: OurStoryProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: portrait.updatedAt }}
-              className="object-contain grayscale"
+              className="object-cover object-center grayscale"
             />
           </div>
         </div>

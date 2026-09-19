@@ -60,7 +60,7 @@ const About = ({ className }: AboutProps) => {
                 fill
                 sizes="(min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
-                className="object-contain grayscale"
+                className="object-cover object-center grayscale"
               />
             </div>
           ))}

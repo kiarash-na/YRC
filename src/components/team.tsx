@@ -90,7 +90,7 @@ const Team = ({ className }: TeamProps) => {
                   alt={coach.alt}
                   fill
                   sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-contain grayscale"
+                  className="object-cover object-center grayscale"
                 />
               </div>
               <div className="flex flex-wrap items-center gap-3">

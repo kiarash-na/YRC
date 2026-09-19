@@ -55,7 +55,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
             queryParameters={{ updatedAt: heroImage.updatedAt }}
-            className="object-contain"
+            className="object-cover object-center"
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,
               backgroundSize: "cover",

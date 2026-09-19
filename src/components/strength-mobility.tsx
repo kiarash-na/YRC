@@ -99,7 +99,7 @@ const StrengthMobility = ({ className }: StrengthMobilityProps) => {
                     fill
                     sizes="64px"
                     queryParameters={{ updatedAt: element.image.updatedAt }}
-                    className="object-contain"
+                    className="object-cover object-center"
                   />
                 </div>
                 <div className="flex min-w-0 flex-col gap-1">

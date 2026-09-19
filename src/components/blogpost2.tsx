@@ -68,7 +68,7 @@ const Blogpost2 = ({ post, related, className }: Blogpost2Props) => {
                   priority
                   sizes="(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 100vw"
                   queryParameters={{ updatedAt: post.image.updatedAt }}
-                  className="object-contain grayscale"
+                  className="object-cover object-center grayscale"
                   style={{
                     backgroundImage: `url(${lqip(post.image.src, post.image.updatedAt)})`,
                     backgroundSize: "cover",
@@ -133,7 +133,7 @@ const Blogpost2 = ({ post, related, className }: Blogpost2Props) => {
                         queryParameters={{
                           updatedAt: relatedPost.image.updatedAt,
                         }}
-                        className="object-contain grayscale transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover object-center grayscale transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
                     <div className="flex flex-col gap-3">

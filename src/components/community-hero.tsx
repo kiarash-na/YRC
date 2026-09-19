@@ -42,7 +42,7 @@ const CommunityHero = ({ className }: CommunityHeroProps) => {
             fill
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
-            className="object-contain grayscale"
+            className="object-cover object-center grayscale"
             queryParameters={{ updatedAt: heroImage.updatedAt }}
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,

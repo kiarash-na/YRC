@@ -63,7 +63,7 @@ const Blog52 = (props: Props) => {
               priority
               sizes="(min-width: 1024px) 1024px, 100vw"
               queryParameters={{ updatedAt: image.updatedAt }}
-              className="object-contain"
+              className="object-cover object-center"
               style={{
                 backgroundImage: `url(${lqip(image.src, image.updatedAt)})`,
                 backgroundSize: "cover",

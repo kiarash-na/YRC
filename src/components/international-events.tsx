@@ -112,7 +112,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   queryParameters={{ updatedAt: image.updatedAt }}
-                  className="object-contain"
+                  className="object-cover object-center"
                 />
               </div>
             ))}

@@ -119,7 +119,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
                         : "(min-width: 1024px) 33vw, 100vw"
                     }
                     queryParameters={{ updatedAt: camp.image.updatedAt }}
-                    className="object-contain transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
               </div>

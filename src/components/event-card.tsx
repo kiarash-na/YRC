@@ -28,7 +28,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           queryParameters={{ updatedAt: event.image.updatedAt }}
-          className="object-contain transition-transform duration-700 group-hover:scale-105"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
         />
       </a>
 

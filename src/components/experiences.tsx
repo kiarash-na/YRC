@@ -80,7 +80,7 @@ const Experiences = ({ className }: ExperiencesProps) => {
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   queryParameters={{ updatedAt: experience.image.updatedAt }}
-                  className="object-contain"
+                  className="object-cover object-center"
                 />
               </div>
               <div className="flex flex-col gap-3">
