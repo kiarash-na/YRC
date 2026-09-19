@@ -10,14 +10,13 @@ export const TALLY_FORM_URL = "https://tally.so/r/44Zrzb";
 
 /** Link-hash variant of the popup trigger, for plain <a href> CTAs. */
 export const TALLY_POPUP_HASH =
-  "#tally-open=44Zrzb&tally-width=500&tally-align-left=1&tally-overlay=1&tally-emoji-text=🏃‍➡️&tally-emoji-animation=none";
+  "#tally-open=44Zrzb&tally-layout=modal&tally-width=500&tally-overlay=1&tally-emoji-animation=wave";
 
 /** data-tally-* attributes for buttons/clickable elements. */
 export const tallyPopupAttributes = {
   "data-tally-open": "44Zrzb",
+  "data-tally-layout": "modal",
   "data-tally-width": "500",
-  "data-tally-align-left": "1",
   "data-tally-overlay": "1",
-  "data-tally-emoji-text": "🏃‍➡️",
-  "data-tally-emoji-animation": "none",
+  "data-tally-emoji-animation": "wave",
 } as const;
