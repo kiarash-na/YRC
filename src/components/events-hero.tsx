@@ -19,9 +19,9 @@ const lqip = (src: string, updatedAt: string) =>
     : "";
 
 const heroImage = {
-  src: "/YRC/24.png",
+  src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-roman-odintsov-5859136.jpg",
   alt: "YRC community sharing a moment together outdoors",
-  updatedAt: "1789773516640",
+  updatedAt: "1789681295806",
 };
 
 interface EventsHeroProps {

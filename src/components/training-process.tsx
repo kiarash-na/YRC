@@ -6,9 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const image = {
-  src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
+  src: "/YRC/24.png",
   alt: "YRC runner pushing through a training session",
-  updatedAt: "1789681303886",
+  updatedAt: "1789773516640",
 };
 
 const steps = [

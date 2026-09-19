@@ -21,9 +21,9 @@ const images: GalleryImage[] = [
     aspect: "aspect-4/3",
   },
   {
-    src: `${basePath}/M05.jpg`,
+    src: `${basePath}/M07.jpg`,
     alt: "YRC community member mid-run",
-    updatedAt: "1789681303886",
+    updatedAt: "1789681140651",
     className: "md:col-span-4 md:mt-16 md:rotate-[1.5deg]",
     aspect: "aspect-4/3 md:aspect-3/4",
   },
@@ -63,9 +63,9 @@ const images: GalleryImage[] = [
     aspect: "aspect-square",
   },
   {
-    src: `${basePath}/M07.jpg`,
+    src: `${basePath}/M05.jpg`,
     alt: "YRC runners celebrating at the finish",
-    updatedAt: "1789681140651",
+    updatedAt: "1789681303886",
     className: "hidden md:col-span-4 md:mt-8 md:block md:rotate-[2deg]",
     aspect: "aspect-4/3",
   },
