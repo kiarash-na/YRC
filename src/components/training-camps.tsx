@@ -2,7 +2,6 @@ import { ArrowRight, Mountain } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { StickerOverlay } from "@/components/sticker-overlay";
 import { Badge } from "@/components/ui/badge";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
@@ -13,10 +12,6 @@ interface Camp {
     src: string;
     alt: string;
     updatedAt: string;
-    sticker?: {
-      src: string;
-      updatedAt: string;
-    };
   };
   href: string;
   wide?: boolean;
@@ -66,10 +61,6 @@ const camps: Camp[] = [
       src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
       alt: "YRC community members connecting after a run",
       updatedAt: "1789681140651",
-      sticker: {
-        src: "/YRC/Stickers/7.png",
-        updatedAt: "1789773268672",
-      },
     },
     href: TALLY_POPUP_HASH,
   },
@@ -135,12 +126,6 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
                     queryParameters={{ updatedAt: camp.image.updatedAt }}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {camp.image.sticker && (
-                    <StickerOverlay
-                      src={camp.image.sticker.src}
-                      updatedAt={camp.image.sticker.updatedAt}
-                    />
-                  )}
                 </div>
               </div>
             </a>

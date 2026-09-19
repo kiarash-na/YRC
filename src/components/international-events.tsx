@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { StickerOverlay } from "@/components/sticker-overlay";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
@@ -12,10 +11,6 @@ interface CollageImage {
   alt: string;
   updatedAt: string;
   className: string;
-  sticker?: {
-    src: string;
-    updatedAt: string;
-  };
 }
 
 const items = [
@@ -37,10 +32,6 @@ const images: CollageImage[] = [
     alt: "YRC runners together on race day",
     updatedAt: "1789773522891",
     className: "col-span-2",
-    sticker: {
-      src: "/YRC/Stickers/10.png",
-      updatedAt: "1789773268674",
-    },
   },
   {
     src: "/YRC/31.png",
@@ -127,12 +118,6 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                   queryParameters={{ updatedAt: image.updatedAt }}
                   className="object-cover"
                 />
-                {image.sticker && (
-                  <StickerOverlay
-                    src={image.sticker.src}
-                    updatedAt={image.sticker.updatedAt}
-                  />
-                )}
               </div>
             ))}
           </div>

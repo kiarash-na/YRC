@@ -2,10 +2,6 @@ export interface YrcEventImage {
   src: string;
   alt: string;
   updatedAt: string;
-  sticker?: {
-    src: string;
-    updatedAt: string;
-  };
 }
 
 export interface YrcEvent {
@@ -55,10 +51,6 @@ export const upcomingEvents: YrcEvent[] = [
       src: "/YRC/45.png",
       alt: "Open landscape on a YRC trail run",
       updatedAt: "1789773517855",
-      sticker: {
-        src: "/YRC/Stickers/12.png",
-        updatedAt: "1789773268698",
-      },
     },
     cta: "VIEW EVENT",
     href: "/events",
@@ -77,10 +69,6 @@ export const upcomingEvents: YrcEvent[] = [
       src: "/YRC/41.png",
       alt: "Runner moving through early morning light",
       updatedAt: "1789773516271",
-      sticker: {
-        src: "/YRC/Stickers/11.png",
-        updatedAt: "1789773268699",
-      },
     },
     cta: "VIEW EVENT",
     href: "/events",

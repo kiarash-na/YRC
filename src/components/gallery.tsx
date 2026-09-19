@@ -1,7 +1,6 @@
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { StickerOverlay } from "@/components/sticker-overlay";
 
 interface GalleryImage {
   src: string;
@@ -92,7 +91,7 @@ const Gallery = ({ className }: GalleryProps) => {
         </div>
 
         <div className="mx-auto mt-14 grid max-w-6xl grid-cols-2 gap-4 md:mt-20 md:grid-cols-12 md:gap-6">
-          {images.map((image, index) => (
+          {images.map((image) => (
             <div
               key={image.src}
               className={cn(
@@ -109,12 +108,6 @@ const Gallery = ({ className }: GalleryProps) => {
                 queryParameters={{ updatedAt: image.updatedAt }}
                 className="object-cover"
               />
-              {index === 0 && (
-                <StickerOverlay
-                  src="/YRC/Stickers/1.png"
-                  updatedAt="1789773268550"
-                />
-              )}
             </div>
           ))}
         </div>

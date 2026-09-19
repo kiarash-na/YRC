@@ -2,10 +2,6 @@ export interface BlogPostImage {
   src: string;
   alt: string;
   updatedAt: string;
-  sticker?: {
-    src: string;
-    updatedAt: string;
-  };
 }
 
 export interface BlogSection {
@@ -40,10 +36,6 @@ export const featuredStory: BlogPost = {
     src: `${basePath}/M07.jpg`,
     alt: "YRC runners celebrating together at the finish",
     updatedAt: "1789681140651",
-    sticker: {
-      src: "/YRC/Stickers/3.png",
-      updatedAt: "1789773268529",
-    },
   },
   href: "/blogs/build-the-habit-not-just-the-pace",
   author: "YRC Editorial",
@@ -121,10 +113,6 @@ export const secondaryStories: BlogPost[] = [
       src: `${basePath}/M01.jpg`,
       alt: "Runners on the course during a YRC event",
       updatedAt: "1789681290358",
-      sticker: {
-        src: "/YRC/Stickers/19.png",
-        updatedAt: "1789773268521",
-      },
     },
     href: "/blogs/from-5k-to-your-first-half-marathon",
   },
