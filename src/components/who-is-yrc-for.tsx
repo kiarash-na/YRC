@@ -90,7 +90,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
               <TabsTrigger
                 key={persona.value}
                 value={persona.value}
-                className="flex-col items-start gap-2 rounded-xl border border-border p-5 text-left whitespace-normal transition-colors data-active:border-foreground data-active:bg-muted"
+                className="flex-col items-start gap-2 rounded-xl border border-border p-5 text-left whitespace-normal transition-colors after:hidden data-active:border-foreground data-active:bg-muted!"
               >
                 <span className="text-h4">{persona.title}</span>
                 <span className="text-body-small text-muted-foreground">
