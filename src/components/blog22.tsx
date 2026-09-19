@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 import { featuredStory, secondaryStories } from "@/data/blog";
 
 interface Blog22Props {
@@ -41,6 +42,12 @@ const Blog22 = ({ className }: Blog22Props) => {
                   queryParameters={{ updatedAt: featuredStory.image.updatedAt }}
                   className="object-cover grayscale transition-transform duration-700 group-hover:scale-105"
                 />
+                {featuredStory.image.sticker && (
+                  <StickerOverlay
+                    src={featuredStory.image.sticker.src}
+                    updatedAt={featuredStory.image.sticker.updatedAt}
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-4">
                 <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
@@ -75,6 +82,13 @@ const Blog22 = ({ className }: Blog22Props) => {
                       queryParameters={{ updatedAt: post.image.updatedAt }}
                       className="object-cover grayscale transition-transform duration-700 group-hover:scale-105"
                     />
+                    {post.image.sticker && (
+                      <StickerOverlay
+                        src={post.image.sticker.src}
+                        updatedAt={post.image.sticker.updatedAt}
+                        className="top-2 right-2 w-8 md:w-10"
+                      />
+                    )}
                   </div>
                   <div className="flex flex-col gap-3">
                     <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">

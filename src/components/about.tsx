@@ -1,11 +1,16 @@
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 
 interface AboutImage {
   src: string;
   alt: string;
   updatedAt: string;
+  sticker?: {
+    src: string;
+    updatedAt: string;
+  };
 }
 
 const images: AboutImage[] = [
@@ -13,11 +18,19 @@ const images: AboutImage[] = [
     src: "/YRC/29.png",
     alt: "YRC community members connecting after a run",
     updatedAt: "1789773525772",
+    sticker: {
+      src: "/YRC/Stickers/24.png",
+      updatedAt: "1789773268985",
+    },
   },
   {
     src: "/YRC/38.png",
     alt: "YRC runner pushing through a training session",
     updatedAt: "1789773525768",
+    sticker: {
+      src: "/YRC/Stickers/23.png",
+      updatedAt: "1789773268958",
+    },
   },
 ];
 
@@ -62,6 +75,12 @@ const About = ({ className }: AboutProps) => {
                 queryParameters={{ updatedAt: image.updatedAt }}
                 className="object-cover"
               />
+              {image.sticker && (
+                <StickerOverlay
+                  src={image.sticker.src}
+                  updatedAt={image.sticker.updatedAt}
+                />
+              )}
             </div>
           ))}
         </div>

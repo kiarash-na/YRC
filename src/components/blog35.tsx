@@ -6,7 +6,7 @@ import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { latestArticles, type BlogPost } from "@/data/blog";
+import { moreArticles, type BlogPost } from "@/data/blog";
 
 interface Blog35Props {
   label?: string;
@@ -23,7 +23,7 @@ const defaultProps: Required<
   heading: "Keep reading",
   description:
     "Practical training advice, race-day lessons and honest stories from the YRC community.",
-  posts: latestArticles,
+  posts: moreArticles,
 };
 
 type Props = Partial<Blog35Props>;

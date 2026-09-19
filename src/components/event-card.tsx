@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 import { Badge } from "@/components/ui/badge";
 import type { YrcEvent } from "@/data/events";
 
@@ -30,6 +31,12 @@ const EventCard = ({ event, className }: EventCardProps) => {
           queryParameters={{ updatedAt: event.image.updatedAt }}
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
+        {event.image.sticker && (
+          <StickerOverlay
+            src={event.image.sticker.src}
+            updatedAt={event.image.sticker.updatedAt}
+          />
+        )}
       </a>
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-7">

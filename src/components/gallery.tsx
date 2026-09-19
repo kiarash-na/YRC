@@ -1,6 +1,7 @@
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 
 interface GalleryImage {
   src: string;
@@ -109,14 +110,9 @@ const Gallery = ({ className }: GalleryProps) => {
                 className="object-cover"
               />
               {index === 0 && (
-                <Image
+                <StickerOverlay
                   src="/YRC/Stickers/1.png"
-                  alt=""
-                  aria-hidden
-                  width={160}
-                  height={160}
-                  queryParameters={{ updatedAt: "1789773268550" }}
-                  className="pointer-events-none absolute top-3 right-3 z-10 h-auto w-12 rotate-6 grayscale md:w-16"
+                  updatedAt="1789773268550"
                 />
               )}
             </div>

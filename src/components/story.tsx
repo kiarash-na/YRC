@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 
 const portrait = {
   src: "/YRC/14.png",
@@ -13,6 +14,10 @@ const landscape = {
   src: "/YRC/8.png",
   alt: "YRC community sharing a moment together outdoors",
   updatedAt: "1789773523621",
+  sticker: {
+    src: "/YRC/Stickers/9.png",
+    updatedAt: "1789773268705",
+  },
 };
 
 interface StoryProps {
@@ -66,6 +71,10 @@ const Story = ({ className }: StoryProps) => {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 queryParameters={{ updatedAt: landscape.updatedAt }}
                 className="object-cover"
+              />
+              <StickerOverlay
+                src={landscape.sticker.src}
+                updatedAt={landscape.sticker.updatedAt}
               />
             </div>
           </div>

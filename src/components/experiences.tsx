@@ -1,6 +1,7 @@
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { StickerOverlay } from "@/components/sticker-overlay";
 import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
@@ -12,6 +13,10 @@ interface Experience {
     src: string;
     alt: string;
     updatedAt: string;
+    sticker?: {
+      src: string;
+      updatedAt: string;
+    };
   };
 }
 
@@ -25,6 +30,10 @@ const experiences: Experience[] = [
       src: "/YRC/17.png",
       alt: "YRC runners in motion on a group run",
       updatedAt: "1789773525014",
+      sticker: {
+        src: "/YRC/Stickers/22.png",
+        updatedAt: "1789773268710",
+      },
     },
   },
   {
@@ -36,6 +45,10 @@ const experiences: Experience[] = [
       src: "/YRC/48.png",
       alt: "YRC community members connecting after a run",
       updatedAt: "1789773524236",
+      sticker: {
+        src: "/YRC/Stickers/15.png",
+        updatedAt: "1789773268925",
+      },
     },
   },
   {
@@ -47,6 +60,10 @@ const experiences: Experience[] = [
       src: "/YRC/22.png",
       alt: "YRC runner pushing through a training session",
       updatedAt: "1789773524301",
+      sticker: {
+        src: "/YRC/Stickers/18.png",
+        updatedAt: "1789773268699",
+      },
     },
   },
 ];
@@ -82,6 +99,12 @@ const Experiences = ({ className }: ExperiencesProps) => {
                   queryParameters={{ updatedAt: experience.image.updatedAt }}
                   className="object-cover"
                 />
+                {experience.image.sticker && (
+                  <StickerOverlay
+                    src={experience.image.sticker.src}
+                    updatedAt={experience.image.sticker.updatedAt}
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-3">
                 <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
