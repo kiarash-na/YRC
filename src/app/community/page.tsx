@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
 
+import { CommunityChallenges } from "@/components/community-challenges";
+import { CommunityGallery } from "@/components/community-gallery";
+import { CommunityHero } from "@/components/community-hero";
+import { CommunityPhilosophy } from "@/components/community-philosophy";
 import { JoinCta } from "@/components/join-cta";
+import { StravaClub } from "@/components/strava-club";
+import { WhoIsYrcFor } from "@/components/who-is-yrc-for";
+import { YrcPoints } from "@/components/yrc-points";
 
 export const metadata: Metadata = {
   title: "Community — YRC",
   description:
-    "Yas Rise Community — the people behind the runs. Every pace welcome.",
+    "Yas Rise Community — who it's for, what it believes, how to take part and where it's heading. Every pace welcome.",
 };
 
 export default function CommunityPage() {
   return (
     <main className="flex-1">
-      <section className="py-32">
-        <div className="container flex flex-col items-center gap-7 text-center">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
-            Yas Rise Community
-          </p>
-          <h1 className="text-h1 md:text-display">COMMUNITY</h1>
-          <p className="max-w-xl text-body text-muted-foreground">
-            The people behind the runs. This page is on its way — the community
-            is already out running.
-          </p>
-        </div>
-      </section>
+      <CommunityHero />
+      <CommunityPhilosophy />
+      <WhoIsYrcFor />
+      <YrcPoints />
+      <CommunityChallenges />
+      <CommunityGallery />
+      <StravaClub />
       <JoinCta />
     </main>
   );
