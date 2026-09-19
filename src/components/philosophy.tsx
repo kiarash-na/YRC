@@ -1,4 +1,4 @@
-import { ArrowRight, NotebookPen, Plane, Ticket } from "lucide-react";
+import { ArrowRight, NotebookPen, Plane, SportShoe } from "lucide-react";
 import { cn } from "cn";
 
 interface Belief {
@@ -9,7 +9,7 @@ interface Belief {
 
 const beliefs: Belief[] = [
   {
-    icon: Ticket,
+    icon: SportShoe,
     title: "Not just race registration",
     description:
       "A start number is the beginning, not the product. Every event we select is chosen for everything around it.",
