@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
@@ -57,12 +56,9 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <div className="flex flex-col items-start gap-6">
-            <Badge
-              variant="outline"
-              className="h-6 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-            >
+            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
               Beyond Borders
-            </Badge>
+            </p>
             <h2 className="text-h2 text-balance md:text-h1">
               <span className="text-yrc-accent">International</span> Events
             </h2>
@@ -106,7 +102,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
               <div
                 key={image.src}
                 className={cn(
-                  "relative overflow-hidden rounded-2xl border bg-muted",
+                  "relative overflow-hidden rounded-xl border bg-muted",
                   image.className,
                 )}
               >
@@ -116,7 +112,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   queryParameters={{ updatedAt: image.updatedAt }}
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             ))}

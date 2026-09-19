@@ -52,7 +52,7 @@ const Footer = ({
       )}
     >
       <div className="container space-y-3 text-center">
-        <h2 className="text-h3 tracking-tight md:text-h2 lg:text-h1">
+        <h2 className="text-h2 md:text-h1">
           {heading}
         </h2>
         <p className="mx-auto max-w-xl leading-snug text-balance text-muted-foreground">

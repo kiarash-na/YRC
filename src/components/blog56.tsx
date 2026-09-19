@@ -66,7 +66,7 @@ const Blog56 = (props: Props) => {
   return (
     <section className={cn("bg-background pb-32", className)}>
       <div className="container">
-        <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-2xl border border-border p-7 sm:p-12 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+        <div className="mx-auto flex max-w-5xl flex-col gap-8 rounded-xl border border-border p-7 sm:p-12 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
           <div className="flex max-w-xl flex-col gap-7">
             <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               {label}

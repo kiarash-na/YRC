@@ -40,6 +40,16 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  /*
+   * YRC sharp radius language.
+   *
+   * Conceptual scale: radius-sm / radius-md / radius-lg / radius-full.
+   * Every scale step intentionally resolves to the same 3px base radius
+   * (--radius) — cards, images and buttons stay sharp; circular elements
+   * use Tailwind's built-in `rounded-full`. `--radius-4xl` is the single
+   * intentional exception (pill-shaped badge chips from shadcn/ui).
+   * Do NOT introduce larger radii for variety.
+   */
   --radius-sm: var(--radius);
   --radius-md: var(--radius);
   --radius-lg: var(--radius);
@@ -64,6 +74,49 @@
  *   body         16px / 400 / lh 1.625 / 0        default copy
  *   body-small   14px / 400 / lh 1.50  / 0        dense UI, secondary copy
  *   caption      12px / 500 / lh 1.40  / +0.04em  captions, tags, labels
+ *
+ * Semantic usage (Phase 02B):
+ *
+ *   hero H1        text-h1 md:text-display        one per page, same role
+ *                                              everywhere (article titles on
+ *                                              blog posts stay text-h2
+ *                                              md:text-h1 — editorial role)
+ *                                              Hero anatomy (Phase 02D):
+ *                                              text stack (eyebrow / H1 /
+ *                                              description / optional CTA)
+ *                                              followed by a bordered media
+ *                                              block below (mt-14 md:mt-20,
+ *                                              aspect-3/2 md:aspect-21/9).
+ *                                              No overlay-on-image heroes.
+ *   section H2     text-h2 md:text-h1             default section heading
+ *   card H3        text-h4 md:text-h3             event/blog/coach/program
+ *                                              card titles
+ *   small editorial item
+ *                  text-h4 (fixed, no bump)       dense repeated items —
+ *                                              values, principles, beliefs,
+ *                                              chapters, markers, earn paths
+ *                                              (short label title + 1–2 line
+ *                                              body-small description)
+ *   statement row  text-h3 (fixed)                full-width editorial rows,
+ *                                              one concept per row
+ *                                              (structured courses)
+ *   eyebrow        text-caption font-bold uppercase tracking-[0.3em]
+ *                                              plain text only — never a
+ *                                              Badge (badges are for event
+ *                                              metadata & status chips)
+ *                                              Color rule (Phase 02F), aligned
+ *                                              with the image language:
+ *                                              text-yrc-accent = offer/action
+ *                                              sections (events, programs,
+ *                                              camps, challenges, join CTAs —
+ *                                              what people sign up for);
+ *                                              text-muted-foreground =
+ *                                              editorial sections (story,
+ *                                              philosophy, people, community
+ *                                              moments). Card meta lines
+ *                                              (dates, indexes) stay muted.
+ *   description    text-body (editorial pages) or text-body-small
+ *                  md:text-body (compact sections)
  */
 @theme {
   --text-display: 3.75rem;
@@ -91,10 +144,91 @@
 }
 
 /*
- * Global page gutter — every `container` is centered and gets consistent
- * side padding (px-4 / sm:px-6 / lg:px-8), so no block touches the
- * viewport edges. Replicates Tailwind's default breakpoint max-widths
- * (which a custom `container` utility replaces) and adds the gutter.
+ * Spacing vocabulary (Tailwind v4 derives every spacing utility from the
+ * base --spacing of 0.25rem, so the numeric scale IS the token system —
+ * no extra tokens are defined here):
+ *
+ *   section rhythm    py-32                    major page sections
+ *   block separation  mt-14 / md:mt-20         heading block → content
+ *   header stack      flex-col gap-7           eyebrow → heading →
+ *                                              description (EYEBROW /
+ *                                              HEADING / DESCRIPTION)
+ *   content stacks    gap-3 … gap-7            text stacks, card content
+ *   grid gaps         gap-4 … gap-16           media grids, split layouts
+ *
+ * Grid gap families (Phase 02B):
+ *
+ *   bordered cards    gap-4                    values, points, team,
+ *                                              camps, course details
+ *   event cards       gap-6                    upcoming-events card row
+ *   editorial cards   gap-10 md:gap-8          borderless image+text cards
+ *                                              (experiences, related posts)
+ *   text editorial    gap-8 … gap-10           philosophy/belief grids
+ *   split layouts     gap-10 lg:gap-16         two-column media + copy
+ *
+ * New sections should follow this rhythm instead of inventing arbitrary
+ * one-off values.
+ *
+ * Border system:
+ *
+ *   standard          1px border-border        cards, rows, inputs
+ *   strong divider    border-t-2 border-foreground
+ *                                              philosophical section
+ *                                              dividers (intentional — keep)
+ *   accent / active   border-yrc-accent        accent & active states only
+ *
+ * Prefer a standard border over ring-* when both would render the same
+ * visual treatment; rings are reserved for focus states.
+ *
+ * Shadow / elevation system — YRC is intentionally flat:
+ *
+ *   default           no shadow                  bordered surfaces, cards,
+ *                                              link rows (hover =
+ *                                              bg-muted/40, never elevation)
+ *   subtle            shadow-sm                  only where imagery genuinely
+ *                                              needs separation from the page
+ *                                              (rotated gallery collage tiles)
+ *   exceptional       shadow-md / shadow-lg      reserved, currently unused
+ *
+ * Image language (Phase 02E):
+ *
+ *   color             the offer — events, programs and action photography of
+ *                                              the sport itself: home hero,
+ *                                              upcoming event, event cards,
+ *                                              international events, camps,
+ *                                              courses, training sections,
+ *                                              experiences, events hero,
+ *                                              journal hero (blog52)
+ *   grayscale         the editorial layer — people, story and community
+ *                                              moments: About imagery, coach
+ *                                              portraits, Community imagery,
+ *                                              home About/Story sections,
+ *                                              both gallery collages, all
+ *                                              blog cards & article imagery
+ *
+ * Grayscale is always the plain `grayscale` utility (no arbitrary filter or
+ * opacity values); color imagery keeps natural color with no added filters.
+ * Default fit stays object-contain; the two intentional object-cover
+ * exceptions are community-challenges (dark decorative background) and
+ * ui/avatar (circular crop).
+ */
+
+/*
+ * Container system.
+ *
+ * Standard container — the `container` utility below is the single global
+ * page container: centered, Tailwind's default breakpoint max-widths
+ * (40/48/64/80/96rem) plus a consistent side gutter (px-4 / sm:px-6 /
+ * lg:px-8) so no block ever touches the viewport edges. Every section
+ * uses it.
+ *
+ * Narrow editorial content — constrained *inside* the standard container
+ * with Tailwind max-width utilities (max-w-2xl / max-w-4xl …) for
+ * long-form copy and editorial blocks.
+ *
+ * Wide content — also lives inside the standard container (full-width
+ * media grids, galleries). Full-bleed layouts are not part of the YRC
+ * layout language.
  */
 @utility container {
   width: 100%;
@@ -119,15 +253,30 @@
   }
 }
 
+/*
+ * Color tokens — single source of truth.
+ *
+ * YRC is monochrome (black / white / grayscale) with one sharp accent:
+ * YRC yellow #ffcc04 (--yrc-accent). No other brand colors exist; the
+ * chart/sidebar tokens below are shadcn infrastructure kept in grayscale
+ * and are not part of the YRC visual language.
+ */
 :root {
+  /* Base */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+
+  /* YRC brand accent — the only chromatic token */
   --yrc-accent: #ffcc04;
   --yrc-accent-foreground: oklch(0.205 0 0);
+
+  /* Surfaces */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
+
+  /* Semantic */
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -137,15 +286,21 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
+
+  /* Borders & forms */
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+
+  /* Radius — base for every --radius-* step (see @theme above) */
+  --radius: 3px;
+
+  /* shadcn infrastructure (grayscale, not YRC visual language) */
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 3px;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -156,15 +311,23 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Dark mode — same token structure as :root, monochrome + #ffcc04 accent. */
 .dark {
+  /* Base */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
+
+  /* YRC brand accent — the only chromatic token */
   --yrc-accent: #ffcc04;
   --yrc-accent-foreground: oklch(0.205 0 0);
+
+  /* Surfaces */
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
+
+  /* Semantic */
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
@@ -174,9 +337,13 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+
+  /* Borders & forms */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+
+  /* shadcn infrastructure (grayscale, not YRC visual language) */
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

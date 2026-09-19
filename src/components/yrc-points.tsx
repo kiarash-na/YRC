@@ -40,7 +40,10 @@ const YrcPoints = ({ className }: YrcPointsProps) => {
       <div className="container">
         <div className="rounded-xl border border-border bg-muted/40 p-8 md:p-14 lg:p-20">
           <div className="flex max-w-3xl flex-col gap-7">
-            <Badge variant="outline" className="h-6 px-3">
+            <Badge
+              variant="outline"
+              className="h-6 px-3 text-caption font-bold tracking-[0.2em] uppercase"
+            >
               IN THE WORKS
             </Badge>
             <h2 className="text-h2 md:text-h1">

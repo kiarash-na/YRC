@@ -2,22 +2,13 @@
 
 import { cn } from "cn";
 
-import { buildSrc, Image } from "@/components/imagekit";
-
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
-
-const lqip = (src: string) =>
-  urlEndpoint
-    ? buildSrc({
-        src,
-        urlEndpoint,
-        transformation: [{ quality: 10, blur: 90 }],
-      })
-    : "";
+import { Image } from "@/components/imagekit";
+import { lqip } from "@/lib/imagekit";
 
 const heroImage = {
   src: "/YRC/36.png",
   alt: "YRC community runners moving together as a pack",
+  updatedAt: "1789780993000",
 };
 
 interface CommunityHeroProps {
@@ -29,7 +20,7 @@ const CommunityHero = ({ className }: CommunityHeroProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-4xl flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             Yas Rise Community
           </p>
           <h1 className="text-h1 md:text-display">
@@ -51,9 +42,10 @@ const CommunityHero = ({ className }: CommunityHeroProps) => {
             fill
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
-            className="object-cover object-center grayscale"
+            className="object-contain grayscale"
+            queryParameters={{ updatedAt: heroImage.updatedAt }}
             style={{
-              backgroundImage: `url(${lqip(heroImage.src)})`,
+              backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

@@ -2,21 +2,10 @@
 
 import { cn } from "cn";
 
-import { buildSrc, Image } from "@/components/imagekit";
+import { Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
+import { lqip } from "@/lib/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
-
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
-
-const lqip = (src: string, updatedAt: string) =>
-  urlEndpoint
-    ? buildSrc({
-        src,
-        urlEndpoint,
-        transformation: [{ quality: 10, blur: 90 }],
-        queryParameters: { updatedAt },
-      })
-    : "";
 
 interface HeroImage {
   src: string;
@@ -114,7 +103,7 @@ const Hero = (props: Props) => {
               </a>
             )}
 
-            <h1 className="md:text-display">
+            <h1 className="text-h1 md:text-display">
               {heading}
               {subheading && (
                 <>
@@ -155,7 +144,7 @@ const Hero = (props: Props) => {
 
           <div className="relative grid gap-4 lg:grid-cols-2">
             {imageProduct && (
-              <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg border border-border bg-muted">
+              <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-border bg-muted">
                 <Image
                   src={imageProduct.src}
                   alt={imageProduct.alt}
@@ -163,7 +152,7 @@ const Hero = (props: Props) => {
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   queryParameters={{ updatedAt: imageProduct.updatedAt }}
-                  className="object-cover object-top-left transition-transform duration-300 hover:scale-105"
+                  className="object-contain transition-transform duration-300 hover:scale-105"
                   style={{
                     backgroundImage: `url(${lqip(imageProduct.src, imageProduct.updatedAt)})`,
                     backgroundSize: "cover",
@@ -176,7 +165,7 @@ const Hero = (props: Props) => {
               </div>
             )}
             {portrait && (
-              <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg bg-muted shadow-sm lg:mt-8">
+              <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-border bg-muted lg:mt-8">
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
@@ -184,7 +173,7 @@ const Hero = (props: Props) => {
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   queryParameters={{ updatedAt: portrait.updatedAt }}
-                  className="object-cover transition-transform duration-300 hover:scale-105"
+                  className="object-contain transition-transform duration-300 hover:scale-105"
                   style={{
                     backgroundImage: `url(${lqip(portrait.src, portrait.updatedAt)})`,
                     backgroundSize: "cover",

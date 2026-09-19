@@ -1,10 +1,9 @@
 "use client";
 
 import { Accordion } from "@base-ui/react/accordion";
-import { MessageCircleQuestionMark, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { cn } from "cn";
 
-import { Badge } from "@/components/ui/badge";
 import type { FaqItem } from "@/data/events";
 
 interface FaqProps {
@@ -17,14 +16,10 @@ const Faq = ({ items, className }: FaqProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          <div className="flex max-w-xl flex-col items-start gap-5">
-            <Badge
-              variant="outline"
-              className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-            >
-              <MessageCircleQuestionMark className="size-3.5" />
+          <div className="flex max-w-xl flex-col items-start gap-7">
+            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               FAQ
-            </Badge>
+            </p>
             <h2 className="text-h2 text-balance md:text-h1">
               Frequently Asked Questions
             </h2>

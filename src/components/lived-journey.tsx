@@ -28,10 +28,10 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-4xl flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             We lived the journey
           </p>
-          <h2 className="text-h2 md:text-h1 lg:text-display">
+          <h2 className="text-h2 md:text-h1">
             We didn&rsquo;t read about this life.
             <br />
             <span className="text-muted-foreground">
@@ -76,7 +76,7 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: images[0].updatedAt }}
-                className="object-cover grayscale"
+                className="object-contain grayscale"
               />
             </div>
             <div
@@ -91,7 +91,7 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: images[1].updatedAt }}
-                className="object-cover grayscale"
+                className="object-contain grayscale"
               />
             </div>
           </div>

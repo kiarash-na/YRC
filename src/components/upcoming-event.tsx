@@ -19,10 +19,10 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
           <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Upcoming Event
           </p>
-          <h2 className="text-h3 md:text-h1">Next on the calendar</h2>
+          <h2 className="text-h2 md:text-h1">Next on the calendar</h2>
         </div>
 
-        <Card className="group mx-auto mt-14 max-w-5xl gap-0 border-none bg-background p-0 shadow-none ring-1 ring-foreground/10">
+        <Card className="group mx-auto mt-14 max-w-5xl gap-0 bg-background p-0 md:mt-20">
           <CardContent className="grid gap-0 p-0 lg:grid-cols-2">
             <div className="relative aspect-4/3 w-full overflow-hidden rounded-t-xl bg-muted lg:aspect-auto lg:min-h-96 lg:rounded-t-none lg:rounded-l-xl">
               <Image
@@ -31,7 +31,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 queryParameters={{ updatedAt: event.image.updatedAt }}
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-contain transition-transform duration-700 group-hover:scale-105"
               />
             </div>
 
@@ -43,14 +43,14 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 >
                   {event.category}
                 </Badge>
-                <p className="text-caption font-medium tracking-[0.2em] text-muted-foreground uppercase">
+                <p className="text-caption font-medium tracking-[0.3em] text-muted-foreground uppercase">
                   {event.date} · {event.time}
                 </p>
               </div>
 
               <h3 className="text-h2 md:text-h1">{event.title}</h3>
 
-              <p className="text-body-small font-semibold tracking-[0.15em] text-yrc-accent uppercase">
+              <p className="text-body-small font-semibold uppercase">
                 {event.location} · {event.distance} · {event.level}
               </p>
 

@@ -56,7 +56,7 @@ const Blog35 = (props: Props) => {
 
               return (
                 <div key={post.slug}>
-                  <Card className="gap-0 border-0 bg-transparent p-0 py-0 shadow-none ring-0">
+                  <Card className="gap-0 border-0 bg-transparent p-0">
                     <div
                       className={cn(
                         "grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16",
@@ -76,7 +76,7 @@ const Blog35 = (props: Props) => {
                             queryParameters={{
                               updatedAt: post.image.updatedAt,
                             }}
-                            className="object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+                            className="object-contain grayscale transition-transform duration-700 group-hover:scale-105"
                           />
                         </div>
                       </Link>

@@ -31,15 +31,15 @@ const Story = ({ className }: StoryProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: portrait.updatedAt }}
-              className="object-cover"
+              className="object-contain grayscale"
             />
           </div>
 
           <div className="flex flex-col gap-7">
-            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               Our story
             </p>
-            <h2 className="text-h3 md:text-h1">More than the finish line</h2>
+            <h2 className="text-h2 md:text-h1">More than the finish line</h2>
             <div className="grid gap-5 sm:grid-cols-2">
               <p className="text-body-small text-muted-foreground md:text-body">
                 Yas Rise was built around a simple belief: the journey matters
@@ -65,7 +65,7 @@ const Story = ({ className }: StoryProps) => {
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 queryParameters={{ updatedAt: landscape.updatedAt }}
-                className="object-cover"
+                className="object-contain grayscale"
               />
             </div>
           </div>

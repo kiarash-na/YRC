@@ -67,7 +67,7 @@ const Team = ({ className }: TeamProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-3xl flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             The coaches
           </p>
           <h2 className="text-h2 md:text-h1">The people behind the pace.</h2>
@@ -90,11 +90,11 @@ const Team = ({ className }: TeamProps) => {
                   alt={coach.alt}
                   fill
                   sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-cover grayscale"
+                  className="object-contain grayscale"
                 />
               </div>
               <div className="flex flex-wrap items-center gap-3">
-                <h3 className="text-h3">{coach.name}</h3>
+                <h3 className="text-h4 md:text-h3">{coach.name}</h3>
                 {coach.online && (
                   <span className="rounded-sm border border-border px-2 py-0.5 text-caption font-bold tracking-[0.2em] text-yrc-accent uppercase">
                     Online

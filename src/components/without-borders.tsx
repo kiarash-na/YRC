@@ -39,12 +39,12 @@ const WithoutBorders = ({ className }: WithoutBordersProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: landscape.updatedAt }}
-              className="object-cover grayscale"
+              className="object-contain grayscale"
             />
           </div>
 
           <div className="flex flex-col gap-7">
-            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               Without borders
             </p>
             <h2 className="text-h2 md:text-h1">

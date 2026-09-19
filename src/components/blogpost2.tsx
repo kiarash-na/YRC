@@ -4,21 +4,10 @@ import { ArrowRight, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { cn } from "cn";
 
-import { buildSrc, Image } from "@/components/imagekit";
+import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
 import type { BlogPost } from "@/data/blog";
-
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
-
-const lqip = (src: string, updatedAt: string) =>
-  urlEndpoint
-    ? buildSrc({
-        src,
-        urlEndpoint,
-        transformation: [{ quality: 10, blur: 90 }],
-        queryParameters: { updatedAt },
-      })
-    : "";
+import { lqip } from "@/lib/imagekit";
 
 interface Blogpost2Props {
   post: BlogPost;
@@ -79,7 +68,7 @@ const Blogpost2 = ({ post, related, className }: Blogpost2Props) => {
                   priority
                   sizes="(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 100vw"
                   queryParameters={{ updatedAt: post.image.updatedAt }}
-                  className="object-cover grayscale"
+                  className="object-contain grayscale"
                   style={{
                     backgroundImage: `url(${lqip(post.image.src, post.image.updatedAt)})`,
                     backgroundSize: "cover",
@@ -144,7 +133,7 @@ const Blogpost2 = ({ post, related, className }: Blogpost2Props) => {
                         queryParameters={{
                           updatedAt: relatedPost.image.updatedAt,
                         }}
-                        className="object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+                        className="object-contain grayscale transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
                     <div className="flex flex-col gap-3">

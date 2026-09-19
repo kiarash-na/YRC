@@ -62,7 +62,7 @@ const OurValues = ({ className }: OurValuesProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-3xl flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             Our values
           </p>
           <h2 className="text-h2 md:text-h1">How we move</h2>

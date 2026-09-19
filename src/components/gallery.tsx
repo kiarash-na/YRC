@@ -83,7 +83,7 @@ const Gallery = ({ className }: GalleryProps) => {
           <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             Community Gallery
           </p>
-          <h2 className="text-h3 md:text-h1">Run. Explore. Rise.</h2>
+          <h2 className="text-h2 md:text-h1">Run. Explore. Rise.</h2>
           <p className="text-body-small text-muted-foreground md:text-body">
             A glimpse into the people, places and experiences that make Yas
             Rise what it is.
@@ -106,7 +106,7 @@ const Gallery = ({ className }: GalleryProps) => {
                 fill
                 sizes="(min-width: 768px) 33vw, 50vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
-                className="object-cover"
+                className="object-contain grayscale"
               />
             </div>
           ))}

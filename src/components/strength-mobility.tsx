@@ -1,8 +1,7 @@
-import { ArrowRight, Dumbbell } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { Badge } from "@/components/ui/badge";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface TrainingElement {
@@ -72,14 +71,10 @@ const StrengthMobility = ({ className }: StrengthMobilityProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
-          <div className="flex max-w-xl flex-col items-start gap-5">
-            <Badge
-              variant="outline"
-              className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-            >
-              <Dumbbell className="size-3.5" />
+          <div className="flex max-w-xl flex-col items-start gap-7">
+            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
               Beyond the Miles
-            </Badge>
+            </p>
             <h2 className="text-h2 text-balance md:text-h1">
               Functional Strength & Mobility
             </h2>
@@ -104,7 +99,7 @@ const StrengthMobility = ({ className }: StrengthMobilityProps) => {
                     fill
                     sizes="64px"
                     queryParameters={{ updatedAt: element.image.updatedAt }}
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
                 <div className="flex min-w-0 flex-col gap-1">

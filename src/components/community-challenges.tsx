@@ -117,8 +117,8 @@ const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
                   <p className="text-body-small lg:text-body">
                     {challenge.description}
                   </p>
-                  <div className="mt-2.5 h-0 overflow-hidden transition-all duration-300 ease-out group-hover:h-12">
-                    <p className="text-body-small text-white/70 italic opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+                  <div className="mt-2.5 overflow-hidden transition-all duration-300 ease-out lg:h-0 lg:group-hover:h-12">
+                    <p className="text-body-small text-white/70 italic transition-opacity duration-300 ease-out lg:opacity-0 lg:group-hover:opacity-100">
                       {challenge.example}
                     </p>
                   </div>

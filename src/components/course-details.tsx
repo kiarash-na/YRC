@@ -1,7 +1,5 @@
-import { ClipboardList } from "lucide-react";
 import { cn } from "cn";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -20,14 +18,10 @@ const CourseDetails = ({ details, className }: CourseDetailsProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="flex max-w-3xl flex-col gap-5">
-          <Badge
-            variant="outline"
-            className="flex h-6 w-fit items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-          >
-            <ClipboardList className="size-3.5" />
+        <div className="flex max-w-3xl flex-col gap-7">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Programs
-          </Badge>
+          </p>
           <h2 className="text-h2 md:text-h1">Course Details</h2>
           <p className="text-body-small text-muted-foreground md:text-body">
             Structured training with a clear path. YRC running programs are
@@ -37,14 +31,14 @@ const CourseDetails = ({ details, className }: CourseDetailsProps) => {
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-3">
           {details.map((detail) => (
             <Card key={detail.title} className="gap-0">
               <CardHeader>
-                <CardDescription className="text-caption font-medium tracking-[0.2em] uppercase">
+                <CardDescription className="text-caption font-medium tracking-[0.3em] uppercase">
                   {detail.title}
                 </CardDescription>
-                <CardTitle className="text-h3 text-balance">
+                <CardTitle className="text-h4 text-balance md:text-h3">
                   {detail.value}
                 </CardTitle>
               </CardHeader>

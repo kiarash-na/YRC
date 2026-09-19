@@ -63,14 +63,14 @@ const Experiences = ({ className }: ExperiencesProps) => {
           <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Yas Rise Experiences
           </p>
-          <h2 className="text-h3 md:text-h1">Three ways to move with us</h2>
+          <h2 className="text-h2 md:text-h1">Three ways to move with us</h2>
           <p className="text-body-small text-muted-foreground md:text-body">
             Events, trips and community — each one built to carry you further
             than you would go alone.
           </p>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-5xl gap-10 md:grid-cols-3 md:gap-8">
+        <div className="mx-auto mt-14 grid max-w-5xl gap-10 md:mt-20 md:grid-cols-3 md:gap-8">
           {experiences.map((experience) => (
             <div key={experience.number} className="flex flex-col gap-5">
               <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted">
@@ -80,7 +80,7 @@ const Experiences = ({ className }: ExperiencesProps) => {
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   queryParameters={{ updatedAt: experience.image.updatedAt }}
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="flex flex-col gap-3">

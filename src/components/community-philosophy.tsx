@@ -33,7 +33,7 @@ const CommunityPhilosophy = ({ className }: CommunityPhilosophyProps) => {
       <div className="container">
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
           <div className="flex flex-col gap-7">
-            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               Community philosophy
             </p>
             <h2 className="text-h2 md:text-h1">

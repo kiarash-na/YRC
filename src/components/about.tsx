@@ -34,7 +34,7 @@ const About = ({ className }: AboutProps) => {
             Who we are
           </p>
           <div className="flex flex-col gap-5 md:col-span-4 md:col-start-4">
-            <h2 className="text-h3 md:text-h1">Yas Rise Community</h2>
+            <h2 className="text-h2 md:text-h1">Yas Rise Community</h2>
             <p className="text-body font-medium md:text-h4">
               Personal growth through a shared journey.
             </p>
@@ -60,7 +60,7 @@ const About = ({ className }: AboutProps) => {
                 fill
                 sizes="(min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
-                className="object-cover"
+                className="object-contain grayscale"
               />
             </div>
           ))}

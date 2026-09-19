@@ -12,8 +12,8 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
   return (
     <section id="upcoming-events" className={cn("py-32", className)}>
       <div className="container">
-        <div className="mb-9 flex max-w-3xl flex-col gap-5 lg:mb-14">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+        <div className="flex max-w-3xl flex-col gap-7">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Calendar
           </p>
           <h2 className="text-h2 md:text-h1">Upcoming Events</h2>
@@ -22,7 +22,7 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="mt-14 flex flex-wrap justify-center gap-6 md:mt-20">
           {events.map((event) => (
             <EventCard
               key={event.title}

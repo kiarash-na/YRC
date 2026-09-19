@@ -36,7 +36,7 @@ const OurStory = ({ className }: OurStoryProps) => {
       <div className="container">
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col gap-7">
-            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               Our story
             </p>
             <h2 className="text-h2 md:text-h1">
@@ -74,7 +74,7 @@ const OurStory = ({ className }: OurStoryProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: portrait.updatedAt }}
-              className="object-cover grayscale"
+              className="object-contain grayscale"
             />
           </div>
         </div>

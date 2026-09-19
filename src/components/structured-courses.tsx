@@ -1,7 +1,4 @@
-import { Route } from "lucide-react";
 import { cn } from "cn";
-
-import { Badge } from "@/components/ui/badge";
 
 interface CoursePrinciple {
   index: string;
@@ -38,14 +35,10 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
   return (
     <section id="courses" className={cn("py-32", className)}>
       <div className="container">
-        <div className="flex max-w-3xl flex-col gap-5">
-          <Badge
-            variant="outline"
-            className="flex h-6 w-fit items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-          >
-            <Route className="size-3.5" />
+        <div className="flex max-w-3xl flex-col gap-7">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Programs
-          </Badge>
+          </p>
           <h2 className="text-h2 md:text-h1">
             Structured Running <span className="text-yrc-accent">Courses</span>
           </h2>
@@ -56,14 +49,14 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
           </p>
         </div>
 
-        <div className="mt-14 border-t border-border">
+        <div className="mt-14 border-t border-border md:mt-20">
           {principles.map((principle) => (
             <div
               key={principle.index}
               className="grid gap-3 border-b border-border py-8 md:grid-cols-2 md:items-baseline md:gap-16 md:py-10"
             >
               <div className="flex items-baseline gap-5">
-                <span className="font-mono text-sm text-muted-foreground">
+                <span className="text-body-small font-medium text-muted-foreground">
                   {principle.index}
                 </span>
                 <h3 className="text-h3">{principle.title}</h3>

@@ -2,19 +2,8 @@
 
 import { cn } from "cn";
 
-import { buildSrc, Image } from "@/components/imagekit";
-
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ?? "";
-
-const lqip = (src: string, updatedAt: string) =>
-  urlEndpoint
-    ? buildSrc({
-        src,
-        urlEndpoint,
-        transformation: [{ quality: 10, blur: 90 }],
-        queryParameters: { updatedAt },
-      })
-    : "";
+import { Image } from "@/components/imagekit";
+import { lqip } from "@/lib/imagekit";
 
 interface Blog52Image {
   src: string;
@@ -55,18 +44,18 @@ const Blog52 = (props: Props) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="mx-auto flex max-w-5xl flex-col gap-12">
+        <div className="mx-auto flex max-w-5xl flex-col">
           <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
             <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               {label}
             </p>
             <h1 className="text-h1 md:text-display">{heading}</h1>
-            <p className="text-body-small text-muted-foreground md:text-body">
+            <p className="mx-auto max-w-2xl text-body text-muted-foreground">
               {description}
             </p>
           </div>
 
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted md:aspect-21/9">
+          <div className="relative mt-14 aspect-3/2 w-full overflow-hidden rounded-xl border border-border bg-muted md:mt-20 md:aspect-21/9">
             <Image
               src={image.src}
               alt={image.alt}
@@ -74,7 +63,7 @@ const Blog52 = (props: Props) => {
               priority
               sizes="(min-width: 1024px) 1024px, 100vw"
               queryParameters={{ updatedAt: image.updatedAt }}
-              className="object-cover object-center"
+              className="object-contain"
               style={{
                 backgroundImage: `url(${lqip(image.src, image.updatedAt)})`,
                 backgroundSize: "cover",

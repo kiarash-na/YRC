@@ -1,8 +1,7 @@
-import { ArrowRight, Mountain } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { Badge } from "@/components/ui/badge";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface Camp {
@@ -74,14 +73,10 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-5">
-          <Badge
-            variant="outline"
-            className="flex h-6 items-center gap-1.5 px-3 text-caption font-bold tracking-[0.3em] uppercase"
-          >
-            <Mountain className="size-3.5" />
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-7">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Camps & Trips
-          </Badge>
+          </p>
           <h2 className="text-center text-h2 md:text-h1">
             <span className="text-yrc-accent">Training</span> Camps
           </h2>
@@ -91,7 +86,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
           </p>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-6xl gap-5 lg:grid-cols-3">
+        <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:mt-20 lg:grid-cols-3">
           {camps.map((camp) => (
             <a
               key={camp.title}
@@ -103,7 +98,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
             >
               <div className="flex items-start justify-between gap-4 p-6">
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-h4">{camp.title}</h3>
+                  <h3 className="text-h4 md:text-h3">{camp.title}</h3>
                   <p className="max-w-xl text-body-small text-muted-foreground">
                     {camp.description}
                   </p>
@@ -124,7 +119,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
                         : "(min-width: 1024px) 33vw, 100vw"
                     }
                     queryParameters={{ updatedAt: camp.image.updatedAt }}
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-contain transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
               </div>

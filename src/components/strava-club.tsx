@@ -4,7 +4,6 @@ import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { GridPattern } from "@/components/ui/grid-pattern";
 import { YRC_STRAVA_CLUB_URL } from "@/lib/strava";
 
 const clubHighlights = [
@@ -45,34 +44,24 @@ const StravaClub = ({ className }: StravaClubProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="flex flex-col items-center">
+        <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
           <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Strava Club
           </p>
-          <h2 className="mt-4 text-h3 text-foreground md:text-center md:text-h1">
+          <h2 className="text-h2 md:text-h1">
             Find us on <span className="text-yrc-accent">Strava</span>
           </h2>
-          <p className="mt-4 max-w-2xl text-body text-muted-foreground md:text-center">
+          <p className="text-body text-muted-foreground">
             The runs don&apos;t end when everyone goes home. Follow the YRC
             club on Strava to keep up with the pack between meetups — routes,
             streaks, kudos and all.
           </p>
+        </div>
 
-          <div className="mx-auto mt-10 flex w-full max-w-2xl flex-col items-center md:mt-14">
-            <Card className="relative flex w-full flex-col items-start gap-6 overflow-hidden rounded-xl border border-border p-8 shadow-lg md:flex-row lg:items-center">
-              <div className="pointer-events-none absolute right-0 bottom-0 z-0 h-2/3 w-2/3">
-                <GridPattern
-                  className="h-full w-full"
-                  style={{
-                    maskImage:
-                      "radial-gradient(circle at 100% 100%, black 60%, transparent 100%)",
-                    WebkitMaskImage:
-                      "radial-gradient(circle at 100% 100%, black 60%, transparent 100%)",
-                    opacity: 0.4,
-                  }}
-                />
-              </div>
-              <div className="z-10 flex shrink-0 flex-col items-start">
+        <div className="flex flex-col items-center">
+          <div className="mx-auto mt-14 flex w-full max-w-2xl flex-col items-center md:mt-20">
+            <Card className="flex w-full flex-col items-start gap-6 p-8 md:flex-row lg:items-center">
+              <div className="flex shrink-0 flex-col items-start">
                 <a
                   href={YRC_STRAVA_CLUB_URL}
                   target="_blank"
@@ -93,7 +82,7 @@ const StravaClub = ({ className }: StravaClubProps) => {
                   strava.com/clubs
                 </a>
               </div>
-              <div className="z-10 flex flex-1 flex-col items-start">
+              <div className="flex flex-1 flex-col items-start">
                 <p className="mb-4 text-body-small text-muted-foreground">
                   Join the club to follow along, share your own miles and see
                   how the community is moving — every pace, every week.
@@ -137,7 +126,7 @@ const StravaClub = ({ className }: StravaClubProps) => {
                 href={YRC_STRAVA_CLUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1.5 rounded-xl border border-border bg-background p-4 text-center transition-all hover:shadow-md"
+                className="flex flex-col items-center gap-1.5 rounded-xl border border-border bg-background p-4 text-center transition-colors hover:bg-muted/40"
               >
                 <span className="text-body-small font-medium text-foreground">
                   {action.name}

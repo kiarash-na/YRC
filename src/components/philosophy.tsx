@@ -1,8 +1,6 @@
 import { ArrowRight, NotebookPen, Plane, Ticket } from "lucide-react";
 import { cn } from "cn";
 
-import { Badge } from "@/components/ui/badge";
-
 interface Belief {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -39,13 +37,10 @@ const Philosophy = ({ className }: PhilosophyProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-4xl flex-col gap-7">
-          <Badge
-            variant="outline"
-            className="h-6 px-3 text-caption font-bold tracking-[0.2em] uppercase"
-          >
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             What we don&rsquo;t sell
-          </Badge>
-          <h2 className="text-h2 md:text-h1 lg:text-display">
+          </p>
+          <h2 className="text-h2 md:text-h1">
             We build the experience — from the first step to the starting
             line.
           </h2>

@@ -28,7 +28,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           queryParameters={{ updatedAt: event.image.updatedAt }}
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-contain transition-transform duration-700 group-hover:scale-105"
         />
       </a>
 
@@ -40,14 +40,14 @@ const EventCard = ({ event, className }: EventCardProps) => {
           >
             {event.category}
           </Badge>
-          <p className="text-caption font-medium tracking-[0.2em] text-muted-foreground uppercase">
+          <p className="text-caption font-medium tracking-[0.3em] text-muted-foreground uppercase">
             {event.date} · {event.time}
           </p>
         </div>
 
         <h3 className="text-h4 md:text-h3">{event.title}</h3>
 
-        <p className="text-body-small font-semibold tracking-[0.15em] uppercase">
+        <p className="text-body-small font-semibold uppercase">
           {event.location} · {event.distance} · {event.level}
         </p>
 

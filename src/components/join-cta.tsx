@@ -12,7 +12,7 @@ const JoinCta = ({ className }: JoinCtaProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-5xl flex-col gap-4 border-l-4 border-yrc-accent pl-8 lg:gap-6">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Yas Rise Community
           </p>
           <h2 className="text-h1 md:text-display">RUN WITH US.</h2>
