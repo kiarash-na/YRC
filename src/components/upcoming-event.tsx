@@ -31,6 +31,9 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 queryParameters={{ updatedAt: event.image.updatedAt }}
+                transformation={[
+                  { aspectRatio: "4-3", crop: "force", focus: "auto" },
+                ]}
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
             </div>

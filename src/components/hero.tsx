@@ -152,6 +152,9 @@ const Hero = (props: Props) => {
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   queryParameters={{ updatedAt: imageProduct.updatedAt }}
+                  transformation={[
+                    { aspectRatio: "3-4", crop: "force", focus: "auto" },
+                  ]}
                   className="object-cover object-center transition-transform duration-300 hover:scale-105"
                   style={{
                     backgroundImage: `url(${lqip(imageProduct.src, imageProduct.updatedAt)})`,
@@ -173,6 +176,9 @@ const Hero = (props: Props) => {
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   queryParameters={{ updatedAt: portrait.updatedAt }}
+                  transformation={[
+                    { aspectRatio: "3-4", crop: "force", focus: "auto" },
+                  ]}
                   className="object-cover object-center transition-transform duration-300 hover:scale-105"
                   style={{
                     backgroundImage: `url(${lqip(portrait.src, portrait.updatedAt)})`,

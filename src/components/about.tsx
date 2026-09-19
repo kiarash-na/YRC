@@ -60,6 +60,9 @@ const About = ({ className }: AboutProps) => {
                 fill
                 sizes="(min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
+                transformation={[
+                  { aspectRatio: "3-2", crop: "force", focus: "auto" },
+                ]}
                 className="object-cover object-center grayscale"
               />
             </div>

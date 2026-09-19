@@ -31,6 +31,9 @@ const Story = ({ className }: StoryProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: portrait.updatedAt }}
+              transformation={[
+                { aspectRatio: "3-4", crop: "force", focus: "auto" },
+              ]}
               className="object-cover object-center grayscale"
             />
           </div>
@@ -65,6 +68,9 @@ const Story = ({ className }: StoryProps) => {
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 queryParameters={{ updatedAt: landscape.updatedAt }}
+                transformation={[
+                  { aspectRatio: "3-2", crop: "force", focus: "auto" },
+                ]}
                 className="object-cover object-center grayscale"
               />
             </div>

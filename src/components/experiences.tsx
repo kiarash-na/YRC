@@ -80,6 +80,9 @@ const Experiences = ({ className }: ExperiencesProps) => {
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   queryParameters={{ updatedAt: experience.image.updatedAt }}
+                  transformation={[
+                    { aspectRatio: "4-3", crop: "force", focus: "auto" },
+                  ]}
                   className="object-cover object-center"
                 />
               </div>
