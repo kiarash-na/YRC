@@ -1,4 +1,4 @@
-import { ArrowRight, NotebookPen, Plane, SportShoe } from "lucide-react";
+import { ArrowRight, Footprints, NotebookPen, SportShoe } from "lucide-react";
 import { cn } from "cn";
 
 interface Belief {
@@ -15,7 +15,7 @@ const beliefs: Belief[] = [
       "A start number is the beginning, not the product. Every event we select is chosen for everything around it.",
   },
   {
-    icon: Plane,
+    icon: Footprints,
     title: "Not just trips",
     description:
       "Travel is the setting. Preparation, shared purpose and meaningful time together are the point.",
