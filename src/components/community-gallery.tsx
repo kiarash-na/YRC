@@ -8,62 +8,65 @@ interface GalleryImage {
   updatedAt: string;
   className: string;
   aspect: string;
+  /** Cap source resolution for >25MP originals (ImageKit ELIMIT). */
+  width?: number;
 }
 
 const images: GalleryImage[] = [
   {
-    src: "/YRC/8.png",
-    alt: "YRC runners warming up before a group run",
-    updatedAt: "1789773523944",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.JPG",
+    alt: "YRC runners on the course at Istanbul Marathon 2025",
+    updatedAt: "1789681147875",
     className: "md:col-span-5 md:rotate-[-1.5deg]",
     aspect: "aspect-4/3",
   },
   {
-    src: "/YRC/11.png",
-    alt: "Two community members mid-conversation on an easy run",
-    updatedAt: "1789773520930",
+    src: "/YRC/Home/Untitled%20design%20(6).png",
+    alt: "Yas Rise community artwork",
+    updatedAt: "1789993235481",
     className: "md:col-span-4 md:mt-16 md:rotate-[1.5deg]",
     aspect: "aspect-4/3 md:aspect-3/4",
   },
   {
-    src: "/YRC/17.png",
-    alt: "Early morning miles with the YRC pack",
-    updatedAt: "1789773525014",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/09.jpg",
+    alt: "A YRC runner mid-race at Istanbul Marathon",
+    updatedAt: "1789681141241",
     className: "hidden md:col-span-3 md:mt-32 md:block md:rotate-[-1deg]",
     aspect: "aspect-3/4",
   },
   {
-    src: "/YRC/22.png",
-    alt: "The group catching its breath after intervals",
-    updatedAt: "1789773524301",
+    src: "/YRC/Home/SRK09793.jpg",
+    alt: "The YRC pack together on a group run",
+    updatedAt: "1789992741992",
     className: "md:col-span-4 md:col-start-2 md:-mt-10 md:rotate-[2deg]",
     aspect: "aspect-4/3",
+    width: 1600,
   },
   {
-    src: "/YRC/26.png",
-    alt: "Runners pushing through the final stretch together",
-    updatedAt: "1789773525964",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.JPG",
+    alt: "YRC runners pushing through Istanbul Marathon 2025",
+    updatedAt: "1789681152474",
     className: "md:col-span-4 md:-mt-6 md:rotate-[-2deg]",
     aspect: "aspect-4/3",
   },
   {
-    src: "/YRC/31.png",
-    alt: "A quiet moment on a YRC weekend long run",
-    updatedAt: "1789773521365",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-ciro-palomba-1275986148-31517243.jpg",
+    alt: "Runners sharing miles through the city",
+    updatedAt: "1789681305377",
     className: "hidden md:col-span-4 md:col-start-2 md:block md:rotate-[1deg]",
     aspect: "aspect-3/2",
   },
   {
-    src: "/YRC/38.png",
-    alt: "New faces joining the pack for the first time",
-    updatedAt: "1789773525768",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840316.jpg",
+    alt: "A runner alone with the road on a long run",
+    updatedAt: "1789681346908",
     className: "hidden md:col-span-3 md:-mt-16 md:block md:rotate-[-1.5deg]",
     aspect: "aspect-square",
   },
   {
-    src: "/YRC/43.png",
-    alt: "The community celebrating after a shared finish",
-    updatedAt: "1789773522891",
+    src: "/YRC/Community/photo_5877443723178741687_w.jpg",
+    alt: "The YRC community gathered after a run",
+    updatedAt: "1790017039009",
     className: "hidden md:col-span-4 md:mt-8 md:block md:rotate-[2deg]",
     aspect: "aspect-4/3",
   },
@@ -107,6 +110,7 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
                 fill
                 sizes="(min-width: 768px) 33vw, 50vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
+                transformation={image.width ? [{ width: image.width }] : undefined}
                 className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
