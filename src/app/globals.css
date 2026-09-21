@@ -1,26 +1,388 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-yrc-accent: var(--yrc-accent);
+  --color-yrc-accent-foreground: var(--yrc-accent-foreground);
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /*
+   * YRC sharp radius language.
+   *
+   * Conceptual scale: radius-sm / radius-md / radius-lg / radius-full.
+   * Every scale step intentionally resolves to the same 3px base radius
+   * (--radius) — cards, images and buttons stay sharp; circular elements
+   * use Tailwind's built-in `rounded-full`. `--radius-4xl` is the single
+   * intentional exception (pill-shaped badge chips from shadcn/ui).
+   * Do NOT introduce larger radii for variety.
+   */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Semantic type scale — Poppins only (weights 400/500/600/700 loaded).
+ * Each token carries its line-height (and letter-spacing where sensible),
+ * so utilities like `text-display` or `text-body-small` apply the full
+ * style. Weights come from Tailwind's font-normal/medium/semibold/bold
+ * (400/500/600/700) and are set per use case in the base layer below.
+ *
+ *   display      60px / 700 / lh 1.05  / -0.03em  hero & display headings
+ *   h1           48px / 600 / lh 1.10  / -0.02em  page titles
+ *   h2           36px / 600 / lh 1.15  / -0.015em section headings
+ *   h3           24px / 600 / lh 1.25  / -0.01em  sub-sections, cards
+ *   h4           20px / 600 / lh 1.30  / -0.005em small headings, labels
+ *   body         16px / 400 / lh 1.625 / 0        default copy
+ *   body-small   14px / 400 / lh 1.50  / 0        dense UI, secondary copy
+ *   caption      12px / 500 / lh 1.40  / +0.04em  captions, tags, labels
+ *
+ * Semantic usage (Phase 02B):
+ *
+ *   hero H1        text-h1 md:text-display        one per page, same role
+ *                                              everywhere (article titles on
+ *                                              blog posts stay text-h2
+ *                                              md:text-h1 — editorial role)
+ *                                              Hero anatomy (Phase 02D):
+ *                                              text stack (eyebrow / H1 /
+ *                                              description / optional CTA)
+ *                                              followed by a bordered media
+ *                                              block below (mt-14 md:mt-20,
+ *                                              aspect-3/2 md:aspect-21/9).
+ *                                              No overlay-on-image heroes.
+ *   section H2     text-h2 md:text-h1             default section heading
+ *   card H3        text-h4 md:text-h3             event/blog/coach/program
+ *                                              card titles
+ *   small editorial item
+ *                  text-h4 (fixed, no bump)       dense repeated items —
+ *                                              values, principles, beliefs,
+ *                                              chapters, markers, earn paths
+ *                                              (short label title + 1–2 line
+ *                                              body-small description)
+ *   statement row  text-h3 (fixed)                full-width editorial rows,
+ *                                              one concept per row
+ *                                              (structured courses)
+ *   eyebrow        text-caption font-bold uppercase tracking-[0.3em]
+ *                                              plain text only — never a
+ *                                              Badge (badges are for event
+ *                                              metadata & status chips)
+ *                                              Color rule (Phase 02F), aligned
+ *                                              with the image language:
+ *                                              text-yrc-accent = offer/action
+ *                                              sections (events, programs,
+ *                                              camps, challenges, join CTAs —
+ *                                              what people sign up for);
+ *                                              text-muted-foreground =
+ *                                              editorial sections (story,
+ *                                              philosophy, people, community
+ *                                              moments). Card meta lines
+ *                                              (dates, indexes) stay muted.
+ *   description    text-body (editorial pages) or text-body-small
+ *                  md:text-body (compact sections)
+ */
+@theme {
+  --text-display: 3.75rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: 3rem;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.3;
+  --text-h4--letter-spacing: -0.005em;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625;
+  --text-body-small: 0.875rem;
+  --text-body-small--line-height: 1.5;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.04em;
+}
+
+/*
+ * Spacing vocabulary (Tailwind v4 derives every spacing utility from the
+ * base --spacing of 0.25rem, so the numeric scale IS the token system —
+ * no extra tokens are defined here):
+ *
+ *   section rhythm    py-32                    major page sections
+ *   block separation  mt-14 / md:mt-20         heading block → content
+ *   header stack      flex-col gap-7           eyebrow → heading →
+ *                                              description (EYEBROW /
+ *                                              HEADING / DESCRIPTION)
+ *   content stacks    gap-3 … gap-7            text stacks, card content
+ *   grid gaps         gap-4 … gap-16           media grids, split layouts
+ *
+ * Grid gap families (Phase 02B):
+ *
+ *   bordered cards    gap-4                    values, points, team,
+ *                                              camps, course details
+ *   event cards       gap-6                    upcoming-events card row
+ *   editorial cards   gap-10 md:gap-8          borderless image+text cards
+ *                                              (experiences, related posts)
+ *   text editorial    gap-8 … gap-10           philosophy/belief grids
+ *   split layouts     gap-10 lg:gap-16         two-column media + copy
+ *
+ * New sections should follow this rhythm instead of inventing arbitrary
+ * one-off values.
+ *
+ * Border system:
+ *
+ *   standard          1px border-border        cards, rows, inputs
+ *   strong divider    border-t-2 border-foreground
+ *                                              philosophical section
+ *                                              dividers (intentional — keep)
+ *   accent / active   border-yrc-accent        accent & active states only
+ *
+ * Prefer a standard border over ring-* when both would render the same
+ * visual treatment; rings are reserved for focus states.
+ *
+ * Shadow / elevation system — YRC is intentionally flat:
+ *
+ *   default           no shadow                  bordered surfaces, cards,
+ *                                              link rows (hover =
+ *                                              bg-muted/40, never elevation)
+ *   subtle            shadow-sm                  only where imagery genuinely
+ *                                              needs separation from the page
+ *                                              (rotated gallery collage tiles)
+ *   exceptional       shadow-md / shadow-lg      reserved, currently unused
+ *
+ * Image language (Phase 02E):
+ *
+ *   color             the offer — events, programs and action photography of
+ *                                              the sport itself: home hero,
+ *                                              upcoming event, event cards,
+ *                                              international events, camps,
+ *                                              courses, training sections,
+ *                                              experiences, events hero,
+ *                                              journal hero (blog52)
+ *   grayscale         the editorial layer — people, story and community
+ *                                              moments: About imagery, coach
+ *                                              portraits, Community imagery,
+ *                                              home About/Story sections,
+ *                                              both gallery collages, all
+ *                                              blog cards & article imagery
+ *
+ * Grayscale is always the plain `grayscale` utility (no arbitrary filter or
+ * opacity values); color imagery keeps natural color with no added filters.
+ * Default fit stays object-contain; the two intentional object-cover
+ * exceptions are community-challenges (dark decorative background) and
+ * ui/avatar (circular crop).
+ */
+
+/*
+ * Container system.
+ *
+ * Standard container — the `container` utility below is the single global
+ * page container: centered, Tailwind's default breakpoint max-widths
+ * (40/48/64/80/96rem) plus a consistent side gutter (px-4 / sm:px-6 /
+ * lg:px-8) so no block ever touches the viewport edges. Every section
+ * uses it.
+ *
+ * Narrow editorial content — constrained *inside* the standard container
+ * with Tailwind max-width utilities (max-w-2xl / max-w-4xl …) for
+ * long-form copy and editorial blocks.
+ *
+ * Wide content — also lives inside the standard container (full-width
+ * media grids, galleries). Full-bleed layouts are not part of the YRC
+ * layout language.
+ */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    max-width: 40rem;
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 48rem) {
+    max-width: 48rem;
+  }
+  @media (width >= 64rem) {
+    max-width: 64rem;
+    padding-inline: 2rem;
+  }
+  @media (width >= 80rem) {
+    max-width: 80rem;
+  }
+  @media (width >= 96rem) {
+    max-width: 96rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Color tokens — single source of truth.
+ *
+ * YRC is monochrome (black / white / grayscale) with one sharp accent:
+ * YRC yellow #ffcc04 (--yrc-accent). No other brand colors exist; the
+ * chart/sidebar tokens below are shadcn infrastructure kept in grayscale
+ * and are not part of the YRC visual language.
+ */
+:root {
+  /* Base */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  /* YRC brand accent — the only chromatic token */
+  --yrc-accent: #ffcc04;
+  --yrc-accent-foreground: oklch(0.205 0 0);
+
+  /* Surfaces */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Semantic */
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* Borders & forms */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* Radius — base for every --radius-* step (see @theme above) */
+  --radius: 3px;
+
+  /* shadcn infrastructure (grayscale, not YRC visual language) */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Dark mode — same token structure as :root, monochrome + #ffcc04 accent. */
+.dark {
+  /* Base */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+
+  /* YRC brand accent — the only chromatic token */
+  --yrc-accent: #ffcc04;
+  --yrc-accent-foreground: oklch(0.205 0 0);
+
+  /* Surfaces */
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* Semantic */
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+
+  /* Borders & forms */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  /* shadcn infrastructure (grayscale, not YRC visual language) */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground text-body font-normal;
+  }
+  h1 {
+    @apply text-h1 font-semibold;
+  }
+  h2 {
+    @apply text-h2 font-semibold;
+  }
+  h3 {
+    @apply text-h3 font-semibold;
+  }
+  h4 {
+    @apply text-h4 font-semibold;
+  }
+  caption,
+  figcaption {
+    @apply text-caption font-medium;
+  }
 }
