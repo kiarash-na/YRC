@@ -5,10 +5,9 @@ import { cn } from "cn";
 import { Image } from "@/components/imagekit";
 import { lqip } from "@/lib/imagekit";
 
-const heroImage = {
-  src: "/YRC/36.png",
-  alt: "YRC community runners moving together as a pack",
-  updatedAt: "1789780993000",
+const heroImage: { src: string; alt: string; updatedAt?: string } = {
+  src: "/YRC/Community/photo_5877443723178741686_w.jpg",
+  alt: "YRC community group run — runners of every pace moving together as one pack",
 };
 
 interface CommunityHeroProps {
@@ -43,7 +42,9 @@ const CommunityHero = ({ className }: CommunityHeroProps) => {
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
             className="object-cover object-center grayscale"
-            queryParameters={{ updatedAt: heroImage.updatedAt }}
+            queryParameters={
+              heroImage.updatedAt ? { updatedAt: heroImage.updatedAt } : undefined
+            }
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,
               backgroundSize: "cover",

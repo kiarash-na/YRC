@@ -17,6 +17,8 @@ interface Persona {
   image: {
     src: string;
     alt: string;
+    updatedAt?: string;
+    width?: number;
   };
 }
 
@@ -27,8 +29,9 @@ const personas: Persona[] = [
     summary:
       "Never run a kilometer in your life? Perfect. Most of us started exactly there — with shoes that felt wrong and a pace that felt embarrassing. It wasn't. Nobody's watching your watch here.",
     image: {
-      src: "/YRC/5.png",
-      alt: "New runner finding their feet with the YRC community",
+      src: "/YRC/Community/pexels-emrah-yazicioglu-275583761-12918252.jpg",
+      alt: "First-time runner lacing up for their first kilometers with YRC",
+      width: 1600,
     },
   },
   {
@@ -37,8 +40,9 @@ const personas: Persona[] = [
     summary:
       "Injury, kids, a job that ate your evenings, a few quiet years — whatever pressed pause, the community is the easiest way to press play again. Comeback seasons are our favorite seasons.",
     image: {
-      src: "/YRC/14.png",
-      alt: "Runner returning to training after time away",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840329.jpg",
+      alt: "Runner back on the roads, returning to training and racing",
+      updatedAt: "1789681314310",
     },
   },
   {
@@ -47,8 +51,8 @@ const personas: Persona[] = [
     summary:
       "You already run — you just run alone, and the solo miles are starting to feel long. Bring your routine to the pack: same you, same runs, better company and a reason to keep the streak alive.",
     image: {
-      src: "/YRC/24.png",
-      alt: "Regular runner sharing miles with the group",
+      src: "/YRC/Community/photo_5877443723178741687_w.jpg",
+      alt: "Regular runner sharing the miles with the YRC pack",
     },
   },
   {
@@ -57,8 +61,9 @@ const personas: Persona[] = [
     summary:
       "A first marathon, a faster 10K, a start line abroad — you have a goal with a date on it. Good. You'll find training partners here who take goals seriously without taking themselves too seriously.",
     image: {
-      src: "/YRC/33.png",
-      alt: "Runner chasing a goal on a YRC training run",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840316.jpg",
+      alt: "Runner chasing a race-day goal at a marathon",
+      updatedAt: "1789681346908",
     },
   },
 ];
@@ -113,6 +118,16 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                     alt={persona.image.alt}
                     fill
                     sizes="100vw"
+                    queryParameters={
+                      persona.image.updatedAt
+                        ? { updatedAt: persona.image.updatedAt }
+                        : undefined
+                    }
+                    transformation={
+                      persona.image.width
+                        ? [{ width: persona.image.width }]
+                        : undefined
+                    }
                     className="object-cover object-center grayscale"
                   />
                 </div>
@@ -163,6 +178,16 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                   alt={persona.image.alt}
                   fill
                   sizes="(min-width: 1024px) 66vw, 100vw"
+                  queryParameters={
+                    persona.image.updatedAt
+                      ? { updatedAt: persona.image.updatedAt }
+                      : undefined
+                  }
+                  transformation={
+                    persona.image.width
+                      ? [{ width: persona.image.width }]
+                      : undefined
+                  }
                   className="object-cover object-center grayscale"
                 />
               </div>
