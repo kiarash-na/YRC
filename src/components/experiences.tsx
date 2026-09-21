@@ -11,7 +11,7 @@ interface Experience {
   image: {
     src: string;
     alt: string;
-    updatedAt: string;
+    updatedAt?: string;
   };
 }
 
@@ -22,9 +22,9 @@ const experiences: Experience[] = [
     description:
       "Selected road, trail and endurance events chosen with attention to quality, experience and the needs of athletes.",
     image: {
-      src: "/YRC/17.png",
+      src: "/YRC/Home/pexels-runffwpu-18409430.jpg",
       alt: "YRC runners in motion on a group run",
-      updatedAt: "1789773525014",
+      updatedAt: "1789992716323",
     },
   },
   {
@@ -33,9 +33,8 @@ const experiences: Experience[] = [
     description:
       "Specialized camps and trips built around sporting experiences, preparation, motivation and meaningful time together.",
     image: {
-      src: "/YRC/48.png",
+      src: "/YRC/Home/pexels-emrah-yazicioglu-275583761-12918252.jpg",
       alt: "YRC community members connecting after a run",
-      updatedAt: "1789773524236",
     },
   },
   {
@@ -44,9 +43,9 @@ const experiences: Experience[] = [
     description:
       "A community built around sustainable training, shared goals, continuous growth and people moving forward together.",
     image: {
-      src: "/YRC/22.png",
+      src: "/YRC/Home/Untitled%20design%20(6).png",
       alt: "YRC runner pushing through a training session",
-      updatedAt: "1789773524301",
+      updatedAt: "1789993235481",
     },
   },
 ];
@@ -79,7 +78,11 @@ const Experiences = ({ className }: ExperiencesProps) => {
                   alt={experience.image.alt}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
-                  queryParameters={{ updatedAt: experience.image.updatedAt }}
+                  queryParameters={
+                    experience.image.updatedAt
+                      ? { updatedAt: experience.image.updatedAt }
+                      : undefined
+                  }
                   transformation={[
                     { aspectRatio: "4-3", crop: "force", focus: "auto" },
                   ]}

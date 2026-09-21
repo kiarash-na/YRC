@@ -16,12 +16,12 @@ export const IMAGEKIT_URL_ENDPOINT =
  * `updatedAt` is passed as a query parameter so placeholders bust the CDN
  * cache in step with the full-size image whenever an asset is re-uploaded.
  */
-export const lqip = (src: string, updatedAt: string) =>
+export const lqip = (src: string, updatedAt?: string) =>
   IMAGEKIT_URL_ENDPOINT
     ? buildSrc({
         src,
         urlEndpoint: IMAGEKIT_URL_ENDPOINT,
         transformation: [{ quality: 10, blur: 90 }],
-        queryParameters: { updatedAt },
+        queryParameters: updatedAt ? { updatedAt } : undefined,
       })
     : "";

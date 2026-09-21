@@ -4,15 +4,15 @@ import { cn } from "cn";
 import { Image } from "@/components/imagekit";
 
 const portrait = {
-  src: "/YRC/14.png",
+  src: "/YRC/41.png",
   alt: "YRC runner during a marathon race day",
-  updatedAt: "1789773523944",
+  updatedAt: "1789773516271",
 };
 
 const landscape = {
-  src: "/YRC/8.png",
+  src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/03.jpg",
   alt: "YRC community sharing a moment together outdoors",
-  updatedAt: "1789773523621",
+  updatedAt: "1789681140856",
 };
 
 interface StoryProps {

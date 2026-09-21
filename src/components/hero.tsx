@@ -10,7 +10,7 @@ import { TALLY_POPUP_HASH } from "@/lib/tally";
 interface HeroImage {
   src: string;
   alt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 interface HeroButton {
   text: string;
@@ -59,15 +59,14 @@ const defaultProps: HeroProps = {
     },
   },
   imageProduct: {
-    src: "/YRC/26.png",
+    src: "/YRC/Home/pexels-farizarrazy-39074079.jpg",
     alt: "YRC runners training together",
-    updatedAt: "1789773525964",
   },
   imagesPortrait: [
     {
-      src: "/YRC/33.png",
+      src: "/YRC/Home/Untitled%20design%20(5).png",
       alt: "YRC community member out on a run",
-      updatedAt: "1789773525796",
+      updatedAt: "1789991758872",
     },
   ],
 };
@@ -151,13 +150,12 @@ const Hero = (props: Props) => {
                   fill
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  queryParameters={{ updatedAt: imageProduct.updatedAt }}
                   transformation={[
                     { aspectRatio: "3-4", crop: "force", focus: "auto" },
                   ]}
                   className="object-cover object-center transition-transform duration-300 hover:scale-105"
                   style={{
-                    backgroundImage: `url(${lqip(imageProduct.src, imageProduct.updatedAt)})`,
+                    backgroundImage: `url(${lqip(imageProduct.src)})`,
                     backgroundSize: "cover",
                     backgroundPosition: "top left",
                   }}
@@ -175,7 +173,11 @@ const Hero = (props: Props) => {
                   fill
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  queryParameters={{ updatedAt: portrait.updatedAt }}
+                  queryParameters={
+                    portrait.updatedAt
+                      ? { updatedAt: portrait.updatedAt }
+                      : undefined
+                  }
                   transformation={[
                     { aspectRatio: "3-4", crop: "force", focus: "auto" },
                   ]}

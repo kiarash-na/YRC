@@ -10,14 +10,14 @@ interface AboutImage {
 
 const images: AboutImage[] = [
   {
-    src: "/YRC/29.png",
+    src: "/YRC/Home/SRK09740%20(1).jpg",
     alt: "YRC community members connecting after a run",
-    updatedAt: "1789773525772",
+    updatedAt: "1789992733219",
   },
   {
-    src: "/YRC/38.png",
+    src: "/YRC/Home/SRK09793.jpg",
     alt: "YRC runner pushing through a training session",
-    updatedAt: "1789773525768",
+    updatedAt: "1789992741992",
   },
 ];
 

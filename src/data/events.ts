@@ -30,9 +30,9 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "Start the week together. A relaxed community run for every level, followed by time to connect.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
-      alt: "YRC runners in motion on a group run",
-      updatedAt: "1789681293386",
+      src: "/YRC/Stickers/18.png",
+      alt: "YRC sticker artwork",
+      updatedAt: "1789773268699",
     },
     cta: "VIEW EVENT",
     href: "/events",
