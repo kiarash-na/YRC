@@ -3,9 +3,9 @@ import { cn } from "cn";
 import { Image } from "@/components/imagekit";
 
 const landscape = {
-  src: "/YRC/5.png",
-  alt: "YRC community member mid-run during an international event",
-  updatedAt: "1789773523121",
+  src: "/YRC/Home/SRK09740%20(1).jpg",
+  alt: "YRC community running together on a group run",
+  updatedAt: "1789992733219",
 };
 
 const markers = [

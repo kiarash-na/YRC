@@ -6,9 +6,9 @@ import { Image } from "@/components/imagekit";
 import { lqip } from "@/lib/imagekit";
 
 const heroImage = {
-  src: "/YRC/45.png",
-  alt: "Open landscape on a YRC trail run",
-  updatedAt: "1789773517855",
+  src: "/YRC/Community/SRK09740%20(1).jpg",
+  alt: "YRC community running together on a group run",
+  updatedAt: "1790005645712",
 };
 
 interface AboutHeroProps {
