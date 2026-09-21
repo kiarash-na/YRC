@@ -20,65 +20,28 @@ export interface YrcEvent {
   href: string;
 }
 
-export const upcomingEvents: YrcEvent[] = [
-  {
-    category: "Community Run",
-    date: "Sunday · 4 October 2026",
-    time: "08:00",
-    title: "YRC Community Run",
-    location: "Location to be announced",
-    distance: "5K / 10K",
-    level: "All Levels",
-    description:
-      "Start the week together. A relaxed community run for every level, followed by time to connect.",
-    image: {
-      src: "/YRC/Stickers/18.png",
-      alt: "YRC sticker artwork",
-      updatedAt: "1789773268699",
-    },
-    cta: "VIEW EVENT",
-    href: "/events",
+// Home page "next on the calendar" highlight. The /events page upcoming
+// section and all event detail pages are driven by MDX content in
+// content/events/ via src/lib/content.ts — this static entry stays only
+// because the home page (src/app/page.tsx) still renders it.
+export const upcomingEvent: YrcEvent = {
+  category: "Community Run",
+  date: "Sunday · 4 October 2026",
+  time: "08:00",
+  title: "YRC Community Run",
+  location: "Location to be announced",
+  distance: "5K / 10K",
+  level: "All Levels",
+  description:
+    "Start the week together. A relaxed community run for every level, followed by time to connect.",
+  image: {
+    src: "/YRC/Stickers/18.png",
+    alt: "YRC sticker artwork",
+    updatedAt: "1789773268699",
   },
-  {
-    category: "Trail Run",
-    date: "Saturday · 17 October 2026",
-    time: "07:30",
-    title: "YRC Trail Escape",
-    location: "Trailhead to be announced",
-    distance: "12K",
-    level: "Intermediate",
-    description:
-      "Off the road and into the landscape. A guided trail run through uneven terrain, built around effort, focus and the outdoors.",
-    image: {
-      src: "/YRC/Events/pexels-emrah-yazicioglu-275583761-12918258.jpg",
-      alt: "Trail runner moving through natural terrain",
-      updatedAt: "1789773517855",
-      width: 1600,
-    },
-    cta: "VIEW EVENT",
-    href: "/events",
-  },
-  {
-    category: "Sunrise Run",
-    date: "Sunday · 1 November 2026",
-    time: "06:30",
-    title: "YRC Sunrise Miles",
-    location: "Meeting point to be announced",
-    distance: "8K",
-    level: "All Levels",
-    description:
-      "The city before it wakes. An early run that starts in the dark and finishes with the light — quiet streets, steady pace, shared silence.",
-    image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/08.jpg",
-      alt: "Runner on the road during a race event",
-      updatedAt: "1789773516271",
-    },
-    cta: "VIEW EVENT",
-    href: "/events",
-  },
-];
-
-export const upcomingEvent: YrcEvent = upcomingEvents[0];
+  cta: "VIEW EVENT",
+  href: "/events",
+};
 
 export interface CourseDetail {
   title: string;

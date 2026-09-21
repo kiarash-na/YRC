@@ -33,7 +33,7 @@ const Footer = ({
     { name: "Events", href: "/events" },
     { name: "Community", href: "/community" },
     { name: "About", href: "/about" },
-    { name: "Blogs", href: "/blogs" },
+    { name: "Blog", href: "/blog" },
     { name: "JOIN YRC", href: TALLY_POPUP_HASH },
   ],
   social = [

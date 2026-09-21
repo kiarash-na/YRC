@@ -9,7 +9,8 @@ import { TrainingProcess } from "@/components/training-process";
 import { StrengthMobility } from "@/components/strength-mobility";
 import { CourseDetails } from "@/components/course-details";
 import { Faq } from "@/components/faq";
-import { upcomingEvents, courseDetails, faqs } from "@/data/events";
+import { courseDetails, faqs } from "@/data/events";
+import { getUpcomingEvents, toEventSummary } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Events — YRC",
@@ -18,10 +19,12 @@ export const metadata: Metadata = {
 };
 
 export default function EventsPage() {
+  const upcoming = getUpcomingEvents().slice(0, 3).map(toEventSummary);
+
   return (
     <main className="flex-1">
       <EventsHero />
-      <UpcomingEvents events={upcomingEvents} />
+      <UpcomingEvents events={upcoming} />
       <InternationalEvents />
       <TrainingCamps />
       <StructuredCourses />

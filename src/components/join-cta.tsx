@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "cn";
 
 import { JoinYrcButton } from "@/components/join-yrc-button";
@@ -25,7 +26,7 @@ const JoinCta = ({ className }: JoinCtaProps) => {
               size="lg"
               variant="outline"
               className="w-full sm:w-auto"
-              render={<a href="/events" />}
+              render={<Link href="/events" />}
               nativeButton={false}
             >
               EXPLORE EVENTS
