@@ -29,7 +29,7 @@ const PostCard = ({ post, className }: PostCardProps) => {
           alt={post.title}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-center grayscale transition-transform duration-700 group-hover:scale-105"
+          className="object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 hover:filter-none group-hover:filter-none active:filter-none"
         />
       </Link>
 

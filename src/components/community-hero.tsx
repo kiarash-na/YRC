@@ -41,7 +41,7 @@ const CommunityHero = ({ className }: CommunityHeroProps) => {
             fill
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
-            className="object-cover object-center grayscale"
+            className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             queryParameters={
               heroImage.updatedAt ? { updatedAt: heroImage.updatedAt } : undefined
             }

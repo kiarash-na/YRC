@@ -34,7 +34,7 @@ const Story = ({ className }: StoryProps) => {
               transformation={[
                 { aspectRatio: "3-4", crop: "force", focus: "auto" },
               ]}
-              className="object-cover object-center grayscale"
+              className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             />
           </div>
 
@@ -71,7 +71,7 @@ const Story = ({ className }: StoryProps) => {
                 transformation={[
                   { aspectRatio: "3-2", crop: "force", focus: "auto" },
                 ]}
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
           </div>

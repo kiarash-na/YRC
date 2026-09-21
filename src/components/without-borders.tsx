@@ -39,7 +39,7 @@ const WithoutBorders = ({ className }: WithoutBordersProps) => {
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               queryParameters={{ updatedAt: landscape.updatedAt }}
-              className="object-cover object-center grayscale"
+              className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             />
           </div>
 

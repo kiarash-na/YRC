@@ -70,7 +70,7 @@ const About = ({ className }: AboutProps) => {
                     ...(image.width ? { width: image.width } : {}),
                   },
                 ]}
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
           ))}

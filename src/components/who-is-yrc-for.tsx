@@ -128,7 +128,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                         ? [{ width: persona.image.width }]
                         : undefined
                     }
-                    className="object-cover object-center grayscale"
+                    className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
                   />
                 </div>
               </AccordionContent>
@@ -188,7 +188,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                       ? [{ width: persona.image.width }]
                       : undefined
                   }
-                  className="object-cover object-center grayscale"
+                  className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
                 />
               </div>
             </TabsContent>

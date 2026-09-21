@@ -107,7 +107,7 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
                 fill
                 sizes="(min-width: 768px) 33vw, 50vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
           ))}

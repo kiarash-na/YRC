@@ -46,7 +46,7 @@ const AboutHero = ({ className }: AboutHeroProps) => {
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
             queryParameters={{ updatedAt: heroImage.updatedAt }}
-            className="object-cover object-center grayscale"
+            className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,
               backgroundSize: "cover",

@@ -99,7 +99,7 @@ const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
                 alt={challenge.image.alt}
                 fill
                 sizes="(min-width: 1280px) 1280px, 100vw"
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none group-hover:filter-none active:filter-none"
               />
               <div className="absolute inset-0 z-0 bg-black/80 backdrop-blur-xs transition-all duration-300 ease-out group-hover:bg-black/55 group-hover:backdrop-blur-none" />
               <div className="relative z-10 flex flex-col gap-7 text-white/80 transition-colors duration-300 ease-out group-hover:text-white lg:flex-row">

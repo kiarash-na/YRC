@@ -76,7 +76,7 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: images[0].updatedAt }}
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
             <div
@@ -91,7 +91,7 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: images[1].updatedAt }}
-                className="object-cover object-center grayscale"
+                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
           </div>
