@@ -6,6 +6,7 @@ interface AboutImage {
   src: string;
   alt: string;
   updatedAt: string;
+  width?: number;
 }
 
 const images: AboutImage[] = [
@@ -18,6 +19,7 @@ const images: AboutImage[] = [
     src: "/YRC/Home/SRK09793.jpg",
     alt: "YRC runner pushing through a training session",
     updatedAt: "1789992741992",
+    width: 1600,
   },
 ];
 
@@ -61,7 +63,12 @@ const About = ({ className }: AboutProps) => {
                 sizes="(min-width: 640px) 50vw, 100vw"
                 queryParameters={{ updatedAt: image.updatedAt }}
                 transformation={[
-                  { aspectRatio: "3-2", crop: "force", focus: "auto" },
+                  {
+                    aspectRatio: "3-2",
+                    crop: "force",
+                    focus: "auto",
+                    ...(image.width ? { width: image.width } : {}),
+                  },
                 ]}
                 className="object-cover object-center grayscale"
               />

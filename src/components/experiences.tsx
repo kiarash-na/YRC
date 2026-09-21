@@ -12,6 +12,7 @@ interface Experience {
     src: string;
     alt: string;
     updatedAt?: string;
+    width?: number;
   };
 }
 
@@ -35,6 +36,8 @@ const experiences: Experience[] = [
     image: {
       src: "/YRC/Home/pexels-emrah-yazicioglu-275583761-12918252.jpg",
       alt: "YRC community members connecting after a run",
+      updatedAt: "1789993034690",
+      width: 1600,
     },
   },
   {
@@ -84,7 +87,14 @@ const Experiences = ({ className }: ExperiencesProps) => {
                       : undefined
                   }
                   transformation={[
-                    { aspectRatio: "4-3", crop: "force", focus: "auto" },
+                    {
+                      aspectRatio: "4-3",
+                      crop: "force",
+                      focus: "auto",
+                      ...(experience.image.width
+                        ? { width: experience.image.width }
+                        : {}),
+                    },
                   ]}
                   className="object-cover object-center"
                 />
