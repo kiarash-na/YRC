@@ -10,6 +10,8 @@ interface CollageImage {
   alt: string;
   updatedAt: string;
   className: string;
+  // Bounds oversized ImageKit originals (>25MP ELIMIT) — see 6a79ba2.
+  width?: number;
 }
 
 const items = [
@@ -21,10 +23,11 @@ const items = [
 
 const images: CollageImage[] = [
   {
-    src: "/YRC/50.png",
-    alt: "YRC community members together during a run",
-    updatedAt: "1789773523340",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-matreding-33995260.jpg",
+    alt: "Runners racing through the city during the Istanbul Marathon",
+    updatedAt: "1789681338492",
     className: "row-span-2",
+    width: 1600,
   },
   {
     src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
@@ -112,6 +115,9 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   queryParameters={{ updatedAt: image.updatedAt }}
+                  transformation={
+                    image.width ? [{ width: image.width }] : undefined
+                  }
                   className="object-cover object-center"
                 />
               </div>
