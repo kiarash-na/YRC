@@ -21,27 +21,27 @@ const items = [
 
 const images: CollageImage[] = [
   {
-    src: "/YRC/5.png",
-    alt: "YRC community member mid-run during an international event",
-    updatedAt: "1789773523121",
+    src: "/YRC/50.png",
+    alt: "YRC community members together during a run",
+    updatedAt: "1789773523340",
     className: "row-span-2",
   },
   {
-    src: "/YRC/43.png",
-    alt: "YRC runners together on race day",
-    updatedAt: "1789773522891",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
+    alt: "Runner crossing the finish line at Istanbul Marathon 2025",
+    updatedAt: "1789681140651",
     className: "col-span-2",
   },
   {
-    src: "/YRC/31.png",
-    alt: "YRC group sharing a moment after training",
-    updatedAt: "1789773521365",
+    src: "/YRC/Stickers/12.png",
+    alt: "YRC sticker artwork",
+    updatedAt: "1789773268698",
     className: "",
   },
   {
-    src: "/YRC/11.png",
-    alt: "Runners on the course during a YRC event",
-    updatedAt: "1789773520930",
+    src: "/YRC/Stickers/20.png",
+    alt: "YRC sticker artwork",
+    updatedAt: "1789773268422",
     className: "",
   },
 ];
