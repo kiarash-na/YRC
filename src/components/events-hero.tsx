@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { lqip } from "@/lib/imagekit";
 
 const heroImage = {
-  src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-roman-odintsov-5859136.jpg",
+  src: "/YRC/Home/pexels-runffwpu-18408962.jpg",
   alt: "YRC community sharing a moment together outdoors",
   updatedAt: "1789681295806",
 };

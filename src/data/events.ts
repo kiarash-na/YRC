@@ -2,6 +2,8 @@ export interface YrcEventImage {
   src: string;
   alt: string;
   updatedAt: string;
+  // Bounds oversized ImageKit originals (>25MP ELIMIT) — see 6a79ba2.
+  width?: number;
 }
 
 export interface YrcEvent {
@@ -48,9 +50,10 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "Off the road and into the landscape. A guided trail run through uneven terrain, built around effort, focus and the outdoors.",
     image: {
-      src: "/YRC/45.png",
-      alt: "Open landscape on a YRC trail run",
+      src: "/YRC/Events/pexels-emrah-yazicioglu-275583761-12918258.jpg",
+      alt: "Trail runner moving through natural terrain",
       updatedAt: "1789773517855",
+      width: 1600,
     },
     cta: "VIEW EVENT",
     href: "/events",
@@ -66,8 +69,8 @@ export const upcomingEvents: YrcEvent[] = [
     description:
       "The city before it wakes. An early run that starts in the dark and finishes with the light — quiet streets, steady pace, shared silence.",
     image: {
-      src: "/YRC/41.png",
-      alt: "Runner moving through early morning light",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/08.jpg",
+      alt: "Runner on the road during a race event",
       updatedAt: "1789773516271",
     },
     cta: "VIEW EVENT",

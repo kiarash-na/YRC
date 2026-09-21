@@ -21,9 +21,9 @@ const elements: TrainingElement[] = [
     description:
       "Strength work built around the movements that running actually demands.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M01.jpg",
+      src: "/YRC/Stickers/6.png",
       alt: "YRC runners in motion on a group run",
-      updatedAt: "1789681290358",
+      updatedAt: "1789773268258",
     },
     href: TALLY_POPUP_HASH,
   },
@@ -32,9 +32,9 @@ const elements: TrainingElement[] = [
     description:
       "Mobility sessions that keep your movement quality high through demanding training weeks.",
     image: {
-      src: "/YRC/35.png",
+      src: "/YRC/Stickers/8.png",
       alt: "YRC runners training together",
-      updatedAt: "1789681285053",
+      updatedAt: "1789773267962",
     },
     href: TALLY_POPUP_HASH,
   },
@@ -43,9 +43,9 @@ const elements: TrainingElement[] = [
     description:
       "Strength and mobility woven into the training week — part of the program, not an afterthought.",
     image: {
-      src: "/YRC/36.png",
+      src: "/YRC/Stickers/12.png",
       alt: "YRC group sharing a moment after training",
-      updatedAt: "1789681295806",
+      updatedAt: "1789773268698",
     },
     href: TALLY_POPUP_HASH,
   },
@@ -54,9 +54,9 @@ const elements: TrainingElement[] = [
     description:
       "Arrive at sessions, races and camps feeling prepared for the challenges ahead.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/photo_5940647121873128959_x.jpg",
+      src: "/YRC/Stickers/7.png",
       alt: "YRC runner during a marathon race day",
-      updatedAt: "1789681280915",
+      updatedAt: "1789773268672",
     },
     href: TALLY_POPUP_HASH,
   },
