@@ -19,12 +19,12 @@ const menuItems: MenuItem[] = [
   { label: "Events", href: "/events" },
   { label: "Community", href: "/community" },
   { label: "About", href: "/about" },
-  { label: "Blogs", href: "/blogs" },
+  { label: "Journal", href: "/journal" },
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "#" },
-  { label: "Strava", href: "#" },
+  { label: "Instagram", href: "https://instagram.com/yrc_munich/" },
+  { label: "Strava", href: "https://www.strava.com/clubs/YRCMunich" },
 ];
 
 interface NavbarProps {

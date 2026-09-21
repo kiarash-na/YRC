@@ -33,12 +33,12 @@ const Footer = ({
     { name: "Events", href: "/events" },
     { name: "Community", href: "/community" },
     { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
+    { name: "Journal", href: "/journal" },
     { name: "JOIN YRC", href: TALLY_POPUP_HASH },
   ],
   social = [
-    { name: "Instagram", href: "#" },
-    { name: "Strava", href: "#" },
+    { name: "Instagram", href: "https://instagram.com/yrc_munich/" },
+    { name: "Strava", href: "https://www.strava.com/clubs/YRCMunich" },
   ],
   legal = [],
   brandName = "YASRISE",
@@ -79,6 +79,8 @@ const Footer = ({
             <li key={item.name}>
               <a
                 href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-0.5 font-medium transition-opacity hover:opacity-75"
               >
                 {item.name} <ArrowUpRight className="size-4" />

@@ -79,7 +79,7 @@ const StravaClub = ({ className }: StravaClubProps) => {
                   rel="noopener noreferrer"
                   className="mt-1 text-body-small text-muted-foreground underline hover:text-foreground"
                 >
-                  strava.com/clubs
+                  strava.com/clubs/YRCMunich
                 </a>
               </div>
               <div className="flex flex-1 flex-col items-start">

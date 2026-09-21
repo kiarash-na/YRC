@@ -40,7 +40,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
+export default async function JournalPostPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -71,10 +71,10 @@ export default async function BlogPostPage({
               <aside className="top-10 h-fit flex-shrink-0 lg:sticky lg:w-[300px] xl:w-[400px]">
                 <Link
                   className="mb-7 flex w-fit items-center gap-1 font-medium text-muted-foreground transition-colors hover:text-primary"
-                  href="/blog"
+                  href="/journal"
                 >
                   <ChevronLeft className="size-4" />
-                  Back to Blog
+                  Back to Journal
                 </Link>
                 <div className="mb-6 flex flex-wrap gap-2">
                   {post.tags.map((tag) => (

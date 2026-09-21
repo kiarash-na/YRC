@@ -12,12 +12,12 @@ import {
 } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Blog — YRC",
+  title: "Journal — YRC",
   description:
-    "Stories, training notes and race recaps from the Yas Rise Community.",
+    "Stories, training notes and race recaps from the Yas Rise Community journal.",
 };
 
-export default function BlogPage() {
+export default function JournalPage() {
   const latest = getAllPosts().map(toPostSummary);
   const tags = getAllTags();
 
@@ -36,7 +36,7 @@ export default function BlogPage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-6">
-              {latest.map((post) => (
+              {latest.slice(0, 9).map((post) => (
                 <PostCard
                   key={post.slug}
                   post={post}
@@ -62,7 +62,7 @@ export default function BlogPage() {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-6">
-                  {posts.map((post) => (
+                  {posts.slice(0, 3).map((post) => (
                     <PostCard
                       key={post.slug}
                       post={post}

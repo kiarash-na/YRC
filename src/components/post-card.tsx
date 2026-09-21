@@ -21,7 +21,7 @@ const PostCard = ({ post, className }: PostCardProps) => {
       )}
     >
       <Link
-        href={`/blog/${post.slug}`}
+        href={`/journal/${post.slug}`}
         className="relative block aspect-16/9 overflow-hidden bg-muted"
       >
         <Image
@@ -54,7 +54,7 @@ const PostCard = ({ post, className }: PostCardProps) => {
         <p className="text-body-small text-muted-foreground">{post.excerpt}</p>
 
         <Link
-          href={`/blog/${post.slug}`}
+          href={`/journal/${post.slug}`}
           className="mt-auto inline-flex w-fit items-center gap-1 pt-2 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
         >
           Read article <ArrowRight className="size-4" />
