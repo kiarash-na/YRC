@@ -1,6 +1,13 @@
+import { ChevronRight } from "lucide-react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Persona {
@@ -69,33 +76,78 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
             Who is YRC for?
           </p>
           <h2 className="text-h2 md:text-h1">
-            If you move, you{" "}
-            <span className="text-yrc-accent">belong</span>
+            If you move, you <span className="text-yrc-accent">belong</span>
           </h2>
           <p className="max-w-2xl text-body text-muted-foreground">
-            Every pace is welcome — that&apos;s not a slogan, it&apos;s the
-            door policy. Most people find themselves in one of these four.
+            Every pace is welcome — that&apos;s not a slogan, it&apos;s the door
+            policy. Most people find themselves in one of these four.
           </p>
         </div>
 
+        {/* Mobile: accordion */}
+        <Accordion
+          defaultValue={[personas[0].value]}
+          className="mt-14 overflow-hidden rounded-xl border border-border md:mt-20 lg:hidden"
+        >
+          {personas.map((persona, index) => (
+            <AccordionItem
+              key={persona.value}
+              value={persona.value}
+              className={cn(
+                "border-0 bg-muted/50 px-6 py-4 data-open:bg-background",
+                index !== personas.length - 1 && "border-b border-border",
+              )}
+            >
+              <AccordionTrigger className="items-start text-left hover:no-underline">
+                <div className="flex flex-col gap-2">
+                  <span className="text-h4">{persona.title}</span>
+                  <span className="text-body-small text-muted-foreground">
+                    {persona.summary}
+                  </span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="!h-auto pt-4 [&>div]:!h-auto">
+                <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-border bg-muted">
+                  <Image
+                    src={persona.image.src}
+                    alt={persona.image.alt}
+                    fill
+                    sizes="100vw"
+                    className="object-cover object-center grayscale"
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        {/* Desktop: tabs */}
         <Tabs
           defaultValue={personas[0].value}
-          className="mt-14 flex-col gap-10 md:mt-20 lg:flex-row lg:gap-14"
+          className="mt-14 hidden grid-cols-3 overflow-hidden rounded-xl border border-border md:mt-20 lg:grid"
         >
           <TabsList
             variant="line"
-            className="h-fit w-full flex-col items-stretch gap-2 p-0 lg:max-w-md"
+            className="!h-auto !w-full flex-col !gap-0 !rounded-none !border-r !border-border !bg-muted/50 !p-0"
           >
-            {personas.map((persona) => (
+            {personas.map((persona, index) => (
               <TabsTrigger
                 key={persona.value}
                 value={persona.value}
-                className="flex-col items-start gap-2 rounded-xl border border-border p-5 text-left whitespace-normal transition-colors after:hidden data-active:border-foreground data-active:bg-muted!"
+                className={cn(
+                  "group relative !h-auto !w-full !flex-col !items-start !justify-start gap-2.5 !rounded-none !border-0 !bg-muted/50 !px-6 !py-6 !whitespace-normal !text-foreground !shadow-none !ring-0 transition-colors duration-300 after:!hidden data-active:!border-0 data-active:!bg-background data-active:!shadow-none data-active:!ring-0 data-active:after:!hidden",
+                  index !== personas.length - 1 &&
+                    "!border-b !border-b-border data-active:!border-b data-active:!border-b-border",
+                )}
               >
-                <span className="text-h4">{persona.title}</span>
-                <span className="text-body-small text-muted-foreground">
+                <span className="absolute top-0 bottom-0 left-0 h-full w-[3px] bg-yrc-accent transition-opacity duration-300 group-data-[state=inactive]:opacity-0" />
+                <div className="flex w-full items-center justify-between gap-2">
+                  <span className="text-h4">{persona.title}</span>
+                  <ChevronRight className="h-auto w-4 shrink-0 text-muted-foreground" />
+                </div>
+                <p className="w-full text-left text-body-small text-muted-foreground">
                   {persona.summary}
-                </span>
+                </p>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -103,14 +155,14 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
             <TabsContent
               key={persona.value}
               value={persona.value}
-              className="w-full"
+              className="col-span-2 bg-background p-10 data-[state=inactive]:hidden"
             >
-              <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-border bg-muted">
+              <div className="relative aspect-video max-h-[450px] w-full overflow-hidden rounded-xl border border-border bg-muted">
                 <Image
                   src={persona.image.src}
                   alt={persona.image.alt}
                   fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 66vw, 100vw"
                   className="object-cover object-center grayscale"
                 />
               </div>
