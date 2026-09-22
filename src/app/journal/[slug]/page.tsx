@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 
 import { CoverImage } from "@/components/cover-image";
+import { Image, Video } from "@/components/imagekit";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { PostCard } from "@/components/post-card";
@@ -121,6 +122,44 @@ export default async function JournalPostPage({
                 <div className="flex flex-col">{content}</div>
               </article>
             </div>
+
+            {post.highlights && post.highlights.length > 0 && (
+              <div className="flex flex-col gap-12 border-t border-border pt-16">
+                <div className="flex max-w-xl flex-col gap-7">
+                  <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+                    Highlights
+                  </p>
+                  <h2 className="text-h2 md:text-h1">Moments from the run</h2>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {post.highlights.map((media) => (
+                    <div
+                      key={media.src}
+                      className="relative aspect-[4/5] w-full overflow-hidden rounded-xl border border-border bg-muted"
+                    >
+                      {media.type === "image" ? (
+                        <Image
+                          src={media.src}
+                          alt={`${post.title} highlight`}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
+                        />
+                      ) : (
+                        <Video
+                          src={media.src}
+                          queryParameters={{ tr: "orig-true" }}
+                          preload="none"
+                          controls
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {related.length > 0 && (
               <div className="flex flex-col gap-12 border-t border-border pt-16">

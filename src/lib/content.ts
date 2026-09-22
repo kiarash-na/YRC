@@ -9,6 +9,12 @@ export { EVENT_CATEGORIES, formatDate, type EventCategory } from "@/lib/content-
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
+export interface HighlightMedia {
+  /** ImageKit path, e.g. /YRC/... */
+  src: string;
+  type: "image" | "video";
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -19,6 +25,8 @@ export interface BlogPost {
   date: string;
   author: string;
   tags: string[];
+  /** Optional media gallery rendered after the article body */
+  highlights?: HighlightMedia[];
   /** Raw MDX body (without frontmatter) */
   content: string;
 }
@@ -77,6 +85,24 @@ function readCollection(collection: "blog" | "events") {
     });
 }
 
+const HIGHLIGHT_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
+const HIGHLIGHT_VIDEO_EXTENSIONS = [".mp4", ".mov", ".webm"];
+
+function parseHighlights(value: unknown, file: string): HighlightMedia[] | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (!Array.isArray(value) || value.some((entry) => typeof entry !== "string" || entry.trim() === "")) {
+    throw new Error(`Invalid "highlights" (string array) in ${file}`);
+  }
+  return value.map((src) => {
+    const extension = src.slice(src.lastIndexOf(".")).toLowerCase();
+    if (HIGHLIGHT_IMAGE_EXTENSIONS.includes(extension)) return { src, type: "image" as const };
+    if (HIGHLIGHT_VIDEO_EXTENSIONS.includes(extension)) return { src, type: "video" as const };
+    throw new Error(
+      `Invalid "highlights" entry "${src}" in ${file} — extension must be one of: ${[...HIGHLIGHT_IMAGE_EXTENSIONS, ...HIGHLIGHT_VIDEO_EXTENSIONS].join(", ")}`,
+    );
+  });
+}
+
 function parsePost(entry: ReturnType<typeof readCollection>[number]): BlogPost {
   const { slug, data, content, file } = entry;
   const tags = data.tags;
@@ -91,6 +117,7 @@ function parsePost(entry: ReturnType<typeof readCollection>[number]): BlogPost {
     date: toISODate(data.date, "date", file),
     author: requireString(data.author, "author", file),
     tags,
+    highlights: parseHighlights(data.highlights, file),
     content,
   };
 }
