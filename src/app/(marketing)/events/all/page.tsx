@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { EventsBrowser } from "@/components/events-browser";
 import { JoinCta } from "@/components/join-cta";
-import { getAllEvents, toEventSummary } from "@/lib/content";
+import { getAllEvents, toEventSummary } from "@/lib/events-db";
 
 export const metadata: Metadata = {
   title: "All Events — YRC",
@@ -10,8 +10,10 @@ export const metadata: Metadata = {
     "Every YRC event in one place — upcoming and past community runs, races, training camps and social experiences.",
 };
 
-export default function AllEventsPage() {
-  const events = getAllEvents().map(toEventSummary);
+export const dynamic = "force-dynamic";
+
+export default async function AllEventsPage() {
+  const events = (await getAllEvents()).map(toEventSummary);
 
   return (
     <main className="flex-1">

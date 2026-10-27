@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import Script from "next/script";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import ImageKitProviderWrapper from "@/components/imagekit-provider";
 import "./globals.css";
 
@@ -21,20 +18,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <Script
-          src="https://tally.so/widgets/embed.js"
-          strategy="afterInteractive"
-        />
-        <ImageKitProviderWrapper>
-          <Navbar />
-          {children}
-          <Footer />
-        </ImageKitProviderWrapper>
+        <ImageKitProviderWrapper>{children}</ImageKitProviderWrapper>
       </body>
     </html>
   );

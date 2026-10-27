@@ -10,7 +10,7 @@ import { StrengthMobility } from "@/components/strength-mobility";
 import { CourseDetails } from "@/components/course-details";
 import { Faq } from "@/components/faq";
 import { courseDetails, faqs } from "@/data/events";
-import { getUpcomingEvents, toEventSummary } from "@/lib/content";
+import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 
 export const metadata: Metadata = {
   title: "Events — YRC",
@@ -18,8 +18,10 @@ export const metadata: Metadata = {
     "Community runs, international races, training camps and experiences built around running and endurance sports.",
 };
 
-export default function EventsPage() {
-  const upcoming = getUpcomingEvents().slice(0, 3).map(toEventSummary);
+export const dynamic = "force-dynamic";
+
+export default async function EventsPage() {
+  const upcoming = (await getUpcomingEvents()).slice(0, 3).map(toEventSummary);
 
   return (
     <main className="flex-1">

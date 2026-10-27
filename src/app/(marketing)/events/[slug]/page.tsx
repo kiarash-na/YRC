@@ -9,13 +9,10 @@ import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate, getAllEvents, getEventBySlug } from "@/lib/content";
+import { formatDate } from "@/lib/content";
+import { getEventBySlug } from "@/lib/events-db";
 
-export function generateStaticParams() {
-  return getAllEvents().map((event) => ({ slug: event.slug }));
-}
-
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -23,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
 
   if (!event) {
     return { title: "Event not found — YRC" };
@@ -41,7 +38,7 @@ export default async function EventPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
 
   if (!event) {
     notFound();

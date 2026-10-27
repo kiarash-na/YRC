@@ -7,6 +7,26 @@
 export const EVENT_CATEGORIES = ["race", "training", "social", "camp"] as const;
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
+/** Event shape shared by the DB loader (events-db.ts) and UI components. */
+export interface EventItem {
+  slug: string;
+  title: string;
+  excerpt: string;
+  cover: string;
+  /** ISO date string (YYYY-MM-DD) */
+  date: string;
+  endDate?: string;
+  location: string;
+  city: string;
+  category: EventCategory;
+  registrationUrl?: string;
+  /** Raw MDX body */
+  content: string;
+}
+
+/** EventItem without the MDX body — safe to pass to client components. */
+export type EventSummary = Omit<EventItem, "content">;
+
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
   month: "long",

@@ -3,9 +3,19 @@ import path from "node:path";
 
 import matter from "gray-matter";
 
-import { EVENT_CATEGORIES, type EventCategory } from "@/lib/content-shared";
+/**
+ * Blog/journal content loader — reads MDX files from content/blog at build
+ * time. Events no longer live here; they come from Supabase via
+ * src/lib/events-db.ts.
+ */
 
-export { EVENT_CATEGORIES, formatDate, type EventCategory } from "@/lib/content-shared";
+export {
+  EVENT_CATEGORIES,
+  formatDate,
+  type EventCategory,
+  type EventItem,
+  type EventSummary,
+} from "@/lib/content-shared";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -31,23 +41,6 @@ export interface BlogPost {
   content: string;
 }
 
-export interface EventItem {
-  slug: string;
-  title: string;
-  excerpt: string;
-  cover: string;
-  /** ISO date string (YYYY-MM-DD) */
-  date: string;
-  endDate?: string;
-  location: string;
-  city: string;
-  category: EventCategory;
-  registrationUrl?: string;
-  content: string;
-}
-
-/** EventItem without the MDX body — safe to pass to client components. */
-export type EventSummary = Omit<EventItem, "content">;
 export type PostSummary = Omit<BlogPost, "content">;
 
 function toISODate(value: unknown, field: string, file: string): string {
@@ -65,12 +58,7 @@ function requireString(value: unknown, field: string, file: string): string {
   throw new Error(`Invalid or missing "${field}" in ${file}`);
 }
 
-function optionalString(value: unknown, field: string, file: string): string | undefined {
-  if (value === undefined || value === null || value === "") return undefined;
-  return requireString(value, field, file);
-}
-
-function readCollection(collection: "blog" | "events") {
+function readCollection(collection: "blog") {
   const dir = path.join(CONTENT_DIR, collection);
   if (!fs.existsSync(dir)) return [];
 
@@ -122,32 +110,8 @@ function parsePost(entry: ReturnType<typeof readCollection>[number]): BlogPost {
   };
 }
 
-function parseEvent(entry: ReturnType<typeof readCollection>[number]): EventItem {
-  const { slug, data, content, file } = entry;
-  if (!EVENT_CATEGORIES.includes(data.category)) {
-    throw new Error(
-      `Invalid or missing "category" in ${file} — must be one of: ${EVENT_CATEGORIES.join(", ")}`,
-    );
-  }
-  return {
-    slug,
-    title: requireString(data.title, "title", file),
-    excerpt: requireString(data.excerpt, "excerpt", file),
-    cover: requireString(data.cover, "cover", file),
-    date: toISODate(data.date, "date", file),
-    endDate: data.endDate ? toISODate(data.endDate, "endDate", file) : undefined,
-    location: requireString(data.location, "location", file),
-    city: requireString(data.city, "city", file),
-    category: data.category,
-    registrationUrl: optionalString(data.registrationUrl, "registrationUrl", file),
-    content,
-  };
-}
-
 const byDateDesc = <T extends { date: string }>(a: T, b: T) =>
   b.date.localeCompare(a.date);
-const byDateAsc = <T extends { date: string }>(a: T, b: T) =>
-  a.date.localeCompare(b.date);
 
 const stripContent = <T extends { content: string }>(item: T): Omit<T, "content"> => {
   const rest: Partial<T> = { ...item };
@@ -160,31 +124,8 @@ export function getAllPosts(): BlogPost[] {
   return readCollection("blog").map(parsePost).sort(byDateDesc);
 }
 
-/** All events, soonest first. */
-export function getAllEvents(): EventItem[] {
-  return readCollection("events").map(parseEvent).sort(byDateAsc);
-}
-
-/** Events whose (end) date is today or in the future, soonest first. */
-export function getUpcomingEvents(now: Date = new Date()): EventItem[] {
-  const today = now.toISOString().slice(0, 10);
-  return getAllEvents().filter((event) => (event.endDate ?? event.date) >= today);
-}
-
-/** Events that have already ended, most recent first. */
-export function getPastEvents(now: Date = new Date()): EventItem[] {
-  const today = now.toISOString().slice(0, 10);
-  return getAllEvents()
-    .filter((event) => (event.endDate ?? event.date) < today)
-    .sort(byDateDesc);
-}
-
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return getAllPosts().find((post) => post.slug === slug);
-}
-
-export function getEventBySlug(slug: string): EventItem | undefined {
-  return getAllEvents().find((event) => event.slug === slug);
 }
 
 /** Distinct tags across all posts, alphabetically. */
@@ -197,10 +138,6 @@ export function getAllTags(): string[] {
 /** Posts carrying a given tag, newest first. */
 export function getPostsByTag(tag: string): BlogPost[] {
   return getAllPosts().filter((post) => post.tags.includes(tag));
-}
-
-export function toEventSummary(event: EventItem): EventSummary {
-  return stripContent(event);
 }
 
 export function toPostSummary(post: BlogPost): PostSummary {
