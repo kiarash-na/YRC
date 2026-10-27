@@ -8,7 +8,7 @@ import { addAdminSeat, linkAdminSeat, removeAdminSeat } from "@/lib/actions/admi
 import { requireAdmin } from "@/lib/admin";
 
 export default async function AdminSeatsPage() {
-  const { admin, athleteId } = await requireAdmin();
+  const { admin, seat: mySeat } = await requireAdmin();
 
   const { data: seats } = await admin
     .from("admins")
@@ -20,8 +20,9 @@ export default async function AdminSeatsPage() {
       <h1 className="text-h2">Admins</h1>
       <p className="text-body-small text-muted-foreground">
         At most 3 admin seats (enforced by the database). A seat grants access
-        once its Strava athlete ID is linked — the athlete ID is visible on a
-        member&apos;s profile settings page after their first login.
+        immediately when its email matches the member&apos;s login email, and
+        also to the linked Strava athlete ID — the athlete ID is visible on a
+        member&apos;s profile settings page after their first Strava login.
       </p>
 
       <Card>
@@ -30,7 +31,7 @@ export default async function AdminSeatsPage() {
         </CardHeader>
         <CardContent className="flex flex-col divide-y divide-border">
           {(seats ?? []).map((seat) => {
-            const isMe = seat.strava_athlete_id === athleteId;
+            const isMe = seat.id === mySeat.id;
             const linked = seat.strava_athlete_id !== null;
             return (
               <div key={seat.id} className="flex flex-col gap-3 py-4">
@@ -38,13 +39,13 @@ export default async function AdminSeatsPage() {
                   <div className="min-w-0">
                     <p className="text-body-small truncate font-medium">{seat.email}</p>
                     <p className="text-caption text-muted-foreground">
-                      {linked ? `Strava athlete #${seat.strava_athlete_id}` : "Awaiting first Strava login"}
+                      {linked ? `Strava athlete #${seat.strava_athlete_id}` : "Access via matching login email"}
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     {isMe && <Badge>you</Badge>}
                     <Badge variant={linked ? "default" : "secondary"}>
-                      {linked ? "Active" : "Unlinked"}
+                      {linked ? "Strava linked" : "Email match"}
                     </Badge>
                     {!isMe && (
                       <form action={removeAdminSeat.bind(null, seat.id)}>
@@ -82,8 +83,8 @@ export default async function AdminSeatsPage() {
           <CardHeader>
             <CardTitle className="text-body font-semibold">Add seat</CardTitle>
             <CardDescription>
-              The email is just a label so you remember whose seat it is —
-              access comes from the linked Strava athlete ID.
+              The email both labels the seat and grants access to whoever logs
+              in with it — optionally link a Strava athlete ID too.
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -4,14 +4,19 @@ import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { YrcEvent } from "@/data/events";
+import { formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface UpcomingEventProps {
-  event: YrcEvent;
+  event: EventSummary;
   className?: string;
 }
 
+/** Home page "next on the calendar" highlight — fed from the events table. */
 const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
+  const dateLabel = event.endDate
+    ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
+    : formatDate(event.date);
+
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -26,11 +31,10 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
           <CardContent className="grid gap-0 p-0 lg:grid-cols-2">
             <div className="relative aspect-4/3 w-full overflow-hidden rounded-t-xl bg-muted lg:aspect-auto lg:min-h-96 lg:rounded-t-none lg:rounded-l-xl">
               <Image
-                src={event.image.src}
-                alt={event.image.alt}
+                src={event.cover}
+                alt={event.title}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                queryParameters={{ updatedAt: event.image.updatedAt }}
                 transformation={[
                   { aspectRatio: "4-3", crop: "force", focus: "auto" },
                 ]}
@@ -47,28 +51,28 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                   {event.category}
                 </Badge>
                 <p className="text-caption font-medium tracking-[0.3em] text-muted-foreground uppercase">
-                  {event.date} · {event.time}
+                  {dateLabel}
                 </p>
               </div>
 
               <h3 className="text-h2 md:text-h1">{event.title}</h3>
 
               <p className="text-body-small font-semibold uppercase">
-                {event.location} · {event.distance} · {event.level}
+                {event.location} · {event.city}
               </p>
 
               <p className="text-body text-muted-foreground">
-                {event.description}
+                {event.excerpt}
               </p>
 
               <div className="mt-auto pt-2">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto"
-                  render={<a href={event.href} />}
+                  render={<a href={`/events/${event.slug}`} />}
                   nativeButton={false}
                 >
-                  {event.cta}
+                  View event
                 </Button>
               </div>
             </div>

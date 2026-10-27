@@ -164,11 +164,10 @@ export async function linkAdminSeat(seatId: string, formData: FormData): Promise
 }
 
 export async function removeAdminSeat(seatId: string): Promise<void> {
-  const { admin, athleteId } = await requireAdmin();
+  const { admin, seat: mySeat } = await requireAdmin();
 
   // never let an admin remove the seat they are currently using
-  const { data: seat } = await admin.from("admins").select("*").eq("id", seatId).single();
-  if (!seat || seat.strava_athlete_id === athleteId) return;
+  if (seatId === mySeat.id) return;
 
   const { error } = await admin.from("admins").delete().eq("id", seatId);
   if (error) console.error("removeAdminSeat failed:", error.message);

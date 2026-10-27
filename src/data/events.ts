@@ -1,47 +1,6 @@
-export interface YrcEventImage {
-  src: string;
-  alt: string;
-  updatedAt: string;
-  // Bounds oversized ImageKit originals (>25MP ELIMIT) — see 6a79ba2.
-  width?: number;
-}
-
-export interface YrcEvent {
-  category: string;
-  date: string;
-  time: string;
-  title: string;
-  location: string;
-  distance: string;
-  level: string;
-  description: string;
-  image: YrcEventImage;
-  cta: string;
-  href: string;
-}
-
-// Home page "next on the calendar" highlight. The /events page upcoming
-// section and all event detail pages are driven by MDX content in
-// content/events/ via src/lib/content.ts — this static entry stays only
-// because the home page (src/app/page.tsx) still renders it.
-export const upcomingEvent: YrcEvent = {
-  category: "Community Run",
-  date: "Sunday · 4 October 2026",
-  time: "08:00",
-  title: "YRC Community Run",
-  location: "Location to be announced",
-  distance: "5K / 10K",
-  level: "All Levels",
-  description:
-    "Start the week together. A relaxed community run for every level, followed by time to connect.",
-  image: {
-    src: "/YRC/Stickers/18.png",
-    alt: "YRC sticker artwork",
-    updatedAt: "1789773268699",
-  },
-  cta: "VIEW EVENT",
-  href: "/events",
-};
+// Page copy for the /events marketing sections. Event data itself lives in
+// the Supabase `events` table (see src/lib/events-db.ts) — nothing
+// event-specific belongs in this file.
 
 export interface CourseDetail {
   title: string;
