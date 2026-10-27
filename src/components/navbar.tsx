@@ -7,7 +7,7 @@ import { useState } from "react";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
-import { JoinYrcButton } from "@/components/join-yrc-button";
+import { Button } from "@/components/ui/button";
 
 interface MenuItem {
   label: string;
@@ -62,7 +62,14 @@ const Navbar = ({ className }: NavbarProps) => {
         </div>
 
         <div className="z-50 flex items-center gap-6">
-          <JoinYrcButton className="tracking-wider uppercase" />
+          <Button
+            size="lg"
+            className="tracking-wider uppercase"
+            render={<Link href="/login" />}
+            nativeButton={false}
+          >
+            Join YRC
+          </Button>
           <button
             onClick={toggleMenu}
             aria-expanded={isOpen}
