@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
 
   // Before Supabase env vars are configured, let public pages through.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !supabaseAnonKey) {
     const path = request.nextUrl.pathname;
     const needsAuth = PROTECTED_PREFIXES.some(

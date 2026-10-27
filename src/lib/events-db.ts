@@ -39,7 +39,7 @@ function toEventItem(row: EventRow): EventItem {
 }
 
 async function fetchEvents(): Promise<EventItem[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     return []; // Supabase not configured yet (e.g. fresh preview env)
   }
   try {
@@ -81,7 +81,7 @@ export async function getPastEvents(now: Date = new Date()): Promise<EventItem[]
 }
 
 export async function getEventBySlug(slug: string): Promise<EventItem | undefined> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     return undefined;
   }
   try {

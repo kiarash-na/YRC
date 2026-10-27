@@ -37,7 +37,7 @@ export default async function LoginPage({
   const safeTarget = next && next.startsWith("/") && !next.startsWith("//") ? next : "/profile";
 
   // already signed in? go straight to the destination
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     const supabase = await createClient();
     const {
       data: { user },

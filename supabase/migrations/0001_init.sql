@@ -332,14 +332,17 @@ alter table public.score_entries enable row level security;
 -- inserts/deletes only via the service role (login flow on the server).
 create policy "profiles_select_own"
   on public.profiles for select
+  to authenticated
   using (auth.uid() = id);
 
 create policy "profiles_select_admin"
   on public.profiles for select
+  to authenticated
   using (public.is_admin());
 
 create policy "profiles_update_own"
   on public.profiles for update
+  to authenticated
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
@@ -350,6 +353,7 @@ create policy "profiles_update_own"
 -- service-role only (managed via the admin dashboard / SQL).
 create policy "admins_select_self"
   on public.admins for select
+  to authenticated
   using (
     strava_athlete_id is not null
     and strava_athlete_id = (
@@ -371,10 +375,12 @@ create policy "events_public_read"
 -- check_in_with_token().
 create policy "attendance_select_own"
   on public.event_attendance for select
+  to authenticated
   using (auth.uid() = profile_id);
 
 create policy "attendance_select_admin"
   on public.event_attendance for select
+  to authenticated
   using (public.is_admin());
 
 -- score_actions: readable by everyone (points config is not secret);
@@ -387,8 +393,10 @@ create policy "score_actions_read"
 -- check_in_with_token() / service role.
 create policy "score_entries_select_own"
   on public.score_entries for select
+  to authenticated
   using (auth.uid() = profile_id);
 
 create policy "score_entries_select_admin"
   on public.score_entries for select
+  to authenticated
   using (public.is_admin());
