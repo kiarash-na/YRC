@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Dev environment
 
-Push to `dev` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`) → live preview at https://yrc-dev.kiarash.online in ~1 min. `main` → Vercel production. ImageKit env var (`NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`) is configured in Dokploy, never commit it. Plain `Dockerfile` is ignored by Vercel; never create `Dockerfile.vercel`.
+Push to `Devp` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`) → live preview at https://yrc-dev.kiarash.online in ~1 min. `main` → Vercel production. ImageKit env var (`NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`) is configured in Dokploy, never commit it. Plain `Dockerfile` is ignored by Vercel; never create `Dockerfile.vercel`.
 
 ## Images (ImageKit)
 
@@ -36,3 +36,12 @@ Current environment:
 - Framework: Next.js
 - UI: shadcn/ui + Tailwind
 - External media: ImageKit
+
+## Members, scoring & auth (Supabase + Strava)
+
+- **Route groups**: `(marketing)` = public site (Navbar/Footer/Tally live in its layout); `(auth)` = login, `/profile`, `/checkin/[token]`; `(admin)` = `/admin/*`. Root layout keeps only html/body/font/ImageKit.
+- **Auth**: Strava OAuth only (scope `read`) — `/auth/strava` → `/auth/callback/strava` → `/auth/confirm`. Strava never returns an email, so Supabase auth users get a synthetic `strava-<athlete_id>@strava.yasrise.run` email. Session refresh + route gating happen in `src/proxy.ts` (Next 16 renamed middleware → proxy).
+- **Database**: Supabase, 8 tables (see `supabase/README.md`). Events live in the DB (MDX events retired; blog stays MDX). Check-ins go ONLY through the `check_in_with_token` RPC; points are an append-only ledger (`score_entries`) priced by the admin-editable `score_actions` table.
+- **Admins**: `admins` table (max 3, DB-trigger enforced), matched by `strava_athlete_id`, not email. Admin pages/actions use `requireAdmin()` from `src/lib/admin.ts`.
+- **Supabase clients**: `src/lib/supabase/{client,server,admin,public}.ts` — `admin.ts` is the service role (server-only, bypasses RLS); never import it from client components.
+- **Secrets**: never commit real env values or personal emails — this repo is public. `.env.example` lists every variable.
