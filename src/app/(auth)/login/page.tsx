@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { SiStrava } from "react-icons/si";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Login — YRC",
@@ -33,6 +35,16 @@ export default async function LoginPage({
 }) {
   const { next, error } = await searchParams;
   const safeTarget = next && next.startsWith("/") && !next.startsWith("//") ? next : "/profile";
+
+  // already signed in? go straight to the destination
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) redirect(safeTarget);
+  }
+
   const errorMessage = error ? (ERROR_MESSAGES[error] ?? "Something went wrong. Please try again.") : null;
 
   return (
