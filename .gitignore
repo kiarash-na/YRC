@@ -41,5 +41,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# pnpm project — prevent npm's lockfile from being committed by accident
+package-lock.json
+
 # local dev certs
 certificates/
