@@ -244,7 +244,6 @@ as $$
 declare
   v_user uuid := auth.uid();
   v_event public.events%rowtype;
-  v_token_id uuid;
   v_points integer;
   v_attendance_id uuid;
 begin
@@ -252,13 +251,13 @@ begin
     return json_build_object('status', 'not_authenticated');
   end if;
 
-  select t.id, e.* into v_token_id, v_event
+  select e.* into v_event
   from public.event_checkin_tokens t
   join public.events e on e.id = t.event_id
   where t.token = qr_token
     and t.is_active;
 
-  if v_token_id is null then
+  if v_event.id is null then
     return json_build_object('status', 'invalid_token');
   end if;
 
