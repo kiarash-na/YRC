@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EmailLoginForm } from "@/components/email-login-form";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -56,7 +57,7 @@ export default async function LoginPage({
           </Link>
           <CardTitle className="text-h3">Member login</CardTitle>
           <CardDescription>
-            One button, no passwords — we use your Strava account.
+            No passwords — sign in with Strava or a one-time email link.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -75,8 +76,16 @@ export default async function LoginPage({
             Continue with Strava
           </Button>
           <p className="text-center text-caption text-muted-foreground">
-            We only read your public Strava profile — never your activities.
+            Recommended — your runs, points and profile stay in sync.
           </p>
+
+          <div className="flex items-center gap-3" aria-hidden>
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-caption text-muted-foreground">OR</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <EmailLoginForm next={safeTarget} />
         </CardContent>
       </Card>
       <p className="mt-4 text-center text-caption text-muted-foreground">
