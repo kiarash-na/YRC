@@ -38,7 +38,22 @@ export async function sendLoginEmail(
   });
 
   if (error) {
-    console.error("sendLoginEmail failed:", error.message);
+    console.error("sendLoginEmail failed:", error.status, error.code, error.message);
+    if (error.code === "over_email_send_rate_limit") {
+      // Same code for two limits: the per-address cooldown ("…only request this
+      // after N seconds") and the project-wide hourly cap (Auth → Rate Limits).
+      const wait = error.message.match(/after (\d+) seconds/)?.[1];
+      return {
+        status: "error",
+        message: wait
+          ? `A login link was just sent. Check your inbox, or request another in ${wait}s.`
+          : "Too many login emails were sent recently. Try again later, or continue with Strava.",
+      };
+    }
+    if (error.code === "over_request_rate_limit") {
+      // Per-IP request limit.
+      return { status: "error", message: "Too many attempts. Wait a minute and try again." };
+    }
     return { status: "error", message: "Couldn't send the login email. Try again in a minute." };
   }
   return { status: "sent" };
