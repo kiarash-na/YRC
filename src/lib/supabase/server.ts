@@ -12,6 +12,11 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      cookieOptions: {
+        // All environments are HTTPS (localhost:3001, dev preview, prod) —
+        // never send the session token over plain HTTP.
+        secure: true,
+      },
       cookies: {
         getAll() {
           return cookieStore.getAll()

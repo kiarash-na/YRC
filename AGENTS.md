@@ -10,6 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Dev environment
 
+Local dev runs on **HTTPS at https://localhost:3001** (`pnpm dev:https`, self-signed cert in `certificates/`, gitignored — regenerate with openssl if missing). `NEXT_PUBLIC_SITE_URL` in `.env.local` must match that origin so magic-link redirects land correctly. Production is **https://yasrise.run**, deployed on **Vercel via GitHub** (`main` branch). `https://localhost:3001/auth/confirm` must be allow-listed in Supabase Auth redirect URLs for local email login to work.
+
 Push to `Devp` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`) → live preview at https://yrc-dev.kiarash.online in ~1 min. `main` → Vercel production. ImageKit env var (`NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`) is configured in Dokploy, never commit it. Plain `Dockerfile` is ignored by Vercel; never create `Dockerfile.vercel`.
 
 ## Images (ImageKit)
@@ -30,7 +32,8 @@ Push to `Devp` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`)
 YRC is the Yas Rise running/community website.
 
 Current environment:
-- Local workspace: /opt/data/workspace/yrc/
+- Local workspace: /home/parisadaliliyan/projects/yrc/
+- Local dev: https://localhost:3001 (HTTPS, self-signed)
 - Dev website: https://yrc-dev.kiarash.online/
 - Production website: https://yasrise.run/
 - Framework: Next.js

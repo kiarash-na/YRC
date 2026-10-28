@@ -27,6 +27,10 @@ export async function proxy(request: NextRequest) {
     supabaseUrl,
     supabaseAnonKey,
     {
+      cookieOptions: {
+        // HTTPS everywhere — see src/lib/supabase/server.ts.
+        secure: true,
+      },
       cookies: {
         getAll() {
           return request.cookies.getAll();
