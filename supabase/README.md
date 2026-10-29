@@ -81,6 +81,17 @@ One-time setup:
 3. Dashboard → Authentication → Hooks → **Send Email** → HTTPS:
    URL `https://<project-ref>.supabase.co/functions/v1/send-auth-email`,
    generate the secret and set it as `SEND_EMAIL_HOOK_SECRET` above.
+4. **Site URL must be the website, not the API domain.** Authentication → URL
+   Configuration → Site URL = `https://yasrise.run`. If it points at
+   `https://<project-ref>.supabase.co`, every email link dies at the API
+   gateway with `{"message":"No API key found in request"}`. The hook prefers
+   the request's `redirect_to` origin (app-controlled, allow-listed), so
+   app-sent emails survive this — but dashboard-triggered emails (e.g. "Send
+   recovery email") fall back to Site URL.
+
+The hook skips sending to synthetic `@strava.yasrise.run` addresses
+(`generateLink` fires it on every Strava login — without the skip, each login
+bounces at Resend and burns sender reputation).
 
 Emails link to `/auth/confirm?token_hash=…&type=…` — the same route that
 handles Strava handoff, so allow-list `<origin>/auth/confirm` in

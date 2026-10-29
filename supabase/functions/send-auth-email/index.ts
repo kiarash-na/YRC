@@ -65,10 +65,31 @@ Deno.serve(async (req) => {
   const { user, email_data } = payload;
   const type = email_data.email_action_type;
 
+  // generateLink() fires this hook on every Strava login, addressed to the
+  // synthetic strava-<id>@strava.yasrise.run mailbox — undeliverable by
+  // design. Skip Resend so we don't rack up bounces (sender reputation).
+  if (user.email.endsWith("@strava.yasrise.run")) {
+    return new Response(JSON.stringify({ ok: true, skipped: "synthetic" }), {
+      status: 200,
+      headers: JSON_HEADERS,
+    });
+  }
+
+  // Link origin: prefer the per-request redirect_to (set by the app from
+  // NEXT_PUBLIC_SITE_URL, allow-listed by gotrue) over the project Site URL —
+  // a Site URL pointing at the *.supabase.co API domain produces email links
+  // that die at the API gateway ("No API key found in request").
+  let origin = email_data.site_url.replace(/\/+$/, "");
+  try {
+    origin = new URL(email_data.redirect_to).origin;
+  } catch {
+    // no/invalid redirect_to (e.g. dashboard-triggered email) — keep site_url
+  }
+
   // /auth/confirm handles token_hash + type for every login path.
   const tokenHash = email_data.token_hash_new ?? email_data.token_hash;
   const actionUrl =
-    `${email_data.site_url}/auth/confirm` +
+    `${origin}/auth/confirm` +
     `?token_hash=${encodeURIComponent(tokenHash)}` +
     `&type=${encodeURIComponent(type)}` +
     `&next=${encodeURIComponent(email_data.redirect_to || "/profile")}`;
