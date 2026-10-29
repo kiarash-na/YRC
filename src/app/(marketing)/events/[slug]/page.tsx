@@ -10,9 +10,16 @@ import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/content";
-import { getEventBySlug } from "@/lib/events-db";
+import { getAllEvents, getEventBySlug } from "@/lib/events-db";
 
-export const dynamic = "force-dynamic";
+// ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.
+export const revalidate = 900;
+
+/** Prerender known events at build; new/duplicated slugs render on-demand (dynamicParams default). */
+export async function generateStaticParams() {
+  const events = await getAllEvents();
+  return events.map((event) => ({ slug: event.slug }));
+}
 
 export async function generateMetadata({
   params,

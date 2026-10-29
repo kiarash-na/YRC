@@ -12,12 +12,12 @@ export default async function AdminEventsPage() {
 
   const [{ data: events }, { data: attendance }] = await Promise.all([
     admin.from("events").select("id, slug, title, event_date, city, category, is_past, recurrence").order("event_date", { ascending: false }),
-    admin.from("event_attendance").select("event_id"),
+    admin.from("event_attendance_counts").select("event_id, attendee_count"),
   ]);
 
   const attendanceCounts = new Map<string, number>();
   for (const row of attendance ?? []) {
-    attendanceCounts.set(row.event_id, (attendanceCounts.get(row.event_id) ?? 0) + 1);
+    attendanceCounts.set(row.event_id, row.attendee_count);
   }
 
   return (

@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     "Every YRC event we've already run — community runs, races, training camps and social experiences from the archive.",
 };
 
-export const dynamic = "force-dynamic";
+// ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.
+export const revalidate = 900;
 
 export default async function PastEventsPage() {
   const events = (await getPastEvents()).map(toEventSummary);

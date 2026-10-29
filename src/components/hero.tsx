@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
@@ -132,7 +133,13 @@ const Hero = (props: Props) => {
                   size="lg"
                   variant="outline"
                   className="w-full sm:w-auto"
-                  render={<a href={buttons.secondary.url} />}
+                  render={
+                    buttons.secondary.url.startsWith("/") ? (
+                      <Link href={buttons.secondary.url} />
+                    ) : (
+                      <a href={buttons.secondary.url} />
+                    )
+                  }
                   nativeButton={false}
                 >
                   {buttons.secondary.text}

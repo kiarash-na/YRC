@@ -18,8 +18,10 @@ function str(formData: FormData, key: string, max = 500): string {
 }
 
 function revalidateEventPaths(slug?: string) {
+  revalidatePath("/");
   revalidatePath("/events");
   revalidatePath("/events/all");
+  revalidatePath("/events/past");
   if (slug) revalidatePath(`/events/${slug}`);
   revalidatePath("/admin/events");
 }

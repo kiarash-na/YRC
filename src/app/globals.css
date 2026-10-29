@@ -386,3 +386,33 @@
     @apply text-caption font-medium;
   }
 }
+/* Navbar overlay animations (replaces motion/react) */
+@keyframes yrc-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes yrc-fade-label {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.yrc-menu-item-in {
+  animation: yrc-fade-up 0.4s ease-out both;
+}
+
+.yrc-menu-label-in {
+  animation: yrc-fade-label 0.2s ease-in-out both;
+}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
@@ -69,7 +70,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 <Button
                   size="lg"
                   className="w-full sm:w-auto"
-                  render={<a href={`/events/${event.slug}`} />}
+                  render={<Link href={`/events/${event.slug}`} />}
                   nativeButton={false}
                 >
                   View event

@@ -8,7 +8,9 @@ import { Gallery } from "@/components/gallery";
 import { JoinCta } from "@/components/join-cta";
 import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 
-export const dynamic = "force-dynamic";
+// ISR: matches the 15-min event-lifecycle cron cadence; admin edits
+// revalidate on demand via revalidateEventPaths().
+export const revalidate = 900;
 
 export default async function Home() {
   const [nextEvent] = (await getUpcomingEvents()).map(toEventSummary);
