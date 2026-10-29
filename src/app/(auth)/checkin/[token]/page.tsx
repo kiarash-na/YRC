@@ -36,6 +36,7 @@ export default async function CheckInPage({
     event_date: string;
     location: string;
     city: string;
+    window_status?: "not_started" | "active" | "ended";
   } | null = null;
 
   if (UUID_RE.test(token)) {
@@ -58,8 +59,20 @@ export default async function CheckInPage({
                 {formatDate(event.event_date)} · {event.location} · {event.city}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <CheckInButton token={token} />
+            <CardContent className="flex flex-col gap-3">
+              {event.window_status === "not_started" && (
+                <p className="text-center text-caption text-muted-foreground">
+                  Check-in opens at midnight on the event day.
+                </p>
+              )}
+              {event.window_status === "ended" && (
+                <p className="text-center text-caption text-muted-foreground">
+                  This event has ended — check-in is closed.
+                </p>
+              )}
+              {(!event.window_status || event.window_status === "active") && (
+                <CheckInButton token={token} />
+              )}
             </CardContent>
           </>
         ) : (

@@ -11,7 +11,7 @@ export default async function AdminEventsPage() {
   const { admin } = await requireAdmin();
 
   const [{ data: events }, { data: attendance }] = await Promise.all([
-    admin.from("events").select("id, slug, title, event_date, city, category").order("event_date", { ascending: false }),
+    admin.from("events").select("id, slug, title, event_date, city, category, is_past, recurrence").order("event_date", { ascending: false }),
     admin.from("event_attendance").select("event_id"),
   ]);
 
@@ -59,6 +59,10 @@ export default async function AdminEventsPage() {
                       <span className="text-caption text-muted-foreground">
                         {attendanceCounts.get(event.id) ?? 0} checked in
                       </span>
+                      {event.recurrence === "weekly" && (
+                        <Badge variant="outline">Weekly</Badge>
+                      )}
+                      {event.is_past && <Badge variant="secondary">Past</Badge>}
                       <Badge variant="secondary" className="uppercase">
                         {event.category}
                       </Badge>

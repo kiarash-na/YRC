@@ -20,7 +20,11 @@ interface EventRow {
   category: string;
   registration_url: string | null;
   body: string;
+  is_past: boolean;
 }
+
+const EVENT_SELECT =
+  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body, is_past";
 
 function toEventItem(row: EventRow): EventItem {
   return {
@@ -34,6 +38,7 @@ function toEventItem(row: EventRow): EventItem {
     city: row.city,
     category: row.category as EventCategory,
     registrationUrl: row.registration_url ?? undefined,
+    isPast: row.is_past,
     content: row.body,
   };
 }
@@ -45,9 +50,7 @@ async function fetchEvents(): Promise<EventItem[]> {
   try {
     const { data, error } = await createPublicClient()
       .from("events")
-      .select(
-        "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body",
-      )
+      .select(EVENT_SELECT)
       .order("event_date", { ascending: true });
 
     if (error) {
@@ -69,14 +72,22 @@ export async function getAllEvents(): Promise<EventItem[]> {
 /** Events whose (end) date is today or in the future, soonest first. */
 export async function getUpcomingEvents(now: Date = new Date()): Promise<EventItem[]> {
   const today = now.toISOString().slice(0, 10);
-  return (await fetchEvents()).filter((event) => (event.endDate ?? event.date) >= today);
+  return (await fetchEvents()).filter((event) =>
+    event.isPast !== undefined
+      ? !event.isPast
+      : (event.endDate ?? event.date) >= today,
+  );
 }
 
-/** Events that have already ended, most recent first. */
+/** Events that have already ended (DB flag), most recent first. */
 export async function getPastEvents(now: Date = new Date()): Promise<EventItem[]> {
   const today = now.toISOString().slice(0, 10);
   return (await fetchEvents())
-    .filter((event) => (event.endDate ?? event.date) < today)
+    .filter((event) =>
+      event.isPast !== undefined
+        ? event.isPast
+        : (event.endDate ?? event.date) < today,
+    )
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -87,9 +98,7 @@ export async function getEventBySlug(slug: string): Promise<EventItem | undefine
   try {
     const { data, error } = await createPublicClient()
       .from("events")
-      .select(
-        "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body",
-      )
+      .select(EVENT_SELECT)
       .eq("slug", slug)
       .maybeSingle();
 
