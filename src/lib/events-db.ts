@@ -31,6 +31,14 @@ interface EventRow {
 const EVENT_SELECT_SUMMARY =
   "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past";
 const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body`;
+// pre-0003 schema fallback (migration pending): no is_past column
+const EVENT_SELECT_LEGACY =
+  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url";
+
+/** YYYY-MM-DD in the lifecycle timezone (Europe/Berlin). */
+function berlinToday(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Berlin" });
+}
 
 function toEventItem(row: EventRow): EventItem {
   return {
@@ -66,6 +74,29 @@ async function fetchEvents(isPast?: boolean): Promise<EventItem[]> {
     if (isPast !== undefined) query = query.eq("is_past", isPast);
 
     const { data, error } = await query;
+
+    if (error?.message.includes("is_past")) {
+      // Migration 0003 not applied yet: legacy select, derive the flag from
+      // dates (same Berlin-day rule) so the site keeps working meanwhile.
+      const legacy = await createPublicClient()
+        .from("events")
+        .select(EVENT_SELECT_LEGACY)
+        .order("event_date", { ascending: isPast ? false : true });
+      if (legacy.error) {
+        console.error("Failed to load events from Supabase:", legacy.error.message);
+        return [];
+      }
+      const today = berlinToday();
+      const rows = (legacy.data ?? []).map((row) => ({
+        ...(row as Omit<EventRow, "body" | "is_past">),
+        body: "",
+        is_past: ((row.end_date as string | null) ?? (row.event_date as string)) < today,
+      }));
+      return rows
+        .filter((row) => (isPast === undefined ? true : row.is_past === isPast))
+        .map(toEventItem);
+    }
+
     if (error) {
       console.error("Failed to load events from Supabase:", error.message);
       return [];
@@ -102,11 +133,29 @@ export const getEventBySlug = cache(
   async (slug: string): Promise<EventItem | undefined> => {
     if (!configured()) return undefined;
     try {
-      const { data, error } = await createPublicClient()
+      let { data, error } = await createPublicClient()
         .from("events")
         .select(EVENT_SELECT_FULL)
         .eq("slug", slug)
         .maybeSingle();
+
+      if (error?.message.includes("is_past")) {
+        // pre-0003 schema fallback — see fetchEvents
+        const legacy = await createPublicClient()
+          .from("events")
+          .select(`${EVENT_SELECT_LEGACY}, body`)
+          .eq("slug", slug)
+          .maybeSingle();
+        data = legacy.data
+          ? {
+              ...legacy.data,
+              is_past:
+                ((legacy.data.end_date as string | null) ??
+                  (legacy.data.event_date as string)) < berlinToday(),
+            }
+          : null;
+        error = legacy.error;
+      }
 
       if (error || !data) return undefined;
       return toEventItem(data as EventRow);
