@@ -1,6 +1,7 @@
 {
-  "tasks": {},
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment"
   }
 }

@@ -35,9 +35,14 @@ const hookSecret = (Deno.env.get("SEND_EMAIL_HOOK_SECRET") ?? "").replace(
   "",
 );
 
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
-    return new Response("method not allowed", { status: 405 });
+    return new Response(JSON.stringify({ error: "method not allowed" }), {
+      status: 405,
+      headers: JSON_HEADERS,
+    });
   }
 
   const rawBody = await req.text();
@@ -51,7 +56,10 @@ Deno.serve(async (req) => {
       "webhook-signature": req.headers.get("webhook-signature") ?? "",
     }) as HookPayload;
   } catch {
-    return new Response("bad signature", { status: 401 });
+    return new Response(JSON.stringify({ error: "bad signature" }), {
+      status: 401,
+      headers: JSON_HEADERS,
+    });
   }
 
   const { user, email_data } = payload;
@@ -84,7 +92,13 @@ Deno.serve(async (req) => {
 
   if (error) {
     console.error("resend failed:", error);
-    return new Response(JSON.stringify({ error }), { status: 502 });
+    return new Response(JSON.stringify({ error }), {
+      status: 502,
+      headers: JSON_HEADERS,
+    });
   }
-  return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: JSON_HEADERS,
+  });
 });
