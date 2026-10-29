@@ -64,7 +64,11 @@ export function CheckInButton({ token }: { token: string }) {
         <p className="text-center text-caption text-destructive">
           {result.status === "invalid_token"
             ? "This QR code is no longer active — ask the run leader."
-            : "Something went wrong. Please try again."}
+            : result.status === "not_started"
+              ? "Check-in opens at midnight on the event day."
+              : result.status === "event_ended"
+                ? "This event has ended — check-in is closed."
+                : "Something went wrong. Please try again."}
         </p>
       )}
       <Button size="lg" className="w-full" onClick={handleCheckIn} disabled={isPending}>

@@ -46,6 +46,20 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </Link>
+
+          <Link
+            href="/events/past"
+            className="group flex w-full flex-col items-center justify-center gap-5 rounded-xl border border-border bg-muted/50 p-8 text-center transition-colors hover:bg-muted sm:max-w-[calc(50%-0.75rem)] lg:max-w-[calc(33.333%-1rem)]"
+          >
+            <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+              Archive
+            </p>
+            <p className="text-h3 md:text-h2">Past events</p>
+            <span className="inline-flex items-center gap-2 font-medium underline underline-offset-4">
+              Where we&apos;ve been
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+          </Link>
         </div>
       </div>
     </section>

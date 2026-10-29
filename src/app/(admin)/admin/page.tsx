@@ -7,19 +7,17 @@ import { requireAdmin } from "@/lib/admin";
 export default async function AdminOverviewPage() {
   const { admin } = await requireAdmin();
 
-  const today = new Date().toISOString().slice(0, 10);
-
   const [
     { count: memberCount },
     { count: checkinCount },
-    { data: pointsRows },
+    { data: pointsRow },
     { count: upcomingCount },
     { data: recentCheckins },
   ] = await Promise.all([
     admin.from("profiles").select("id", { count: "exact", head: true }),
     admin.from("event_attendance").select("id", { count: "exact", head: true }),
-    admin.from("score_entries").select("points"),
-    admin.from("events").select("id", { count: "exact", head: true }).gte("event_date", today),
+    admin.from("community_score_total").select("total_points").single(),
+    admin.from("events").select("id", { count: "exact", head: true }).eq("is_past", false),
     admin
       .from("event_attendance")
       .select("checked_in_at, profiles(first_name, last_name), events(title)")
@@ -27,7 +25,7 @@ export default async function AdminOverviewPage() {
       .limit(10),
   ]);
 
-  const totalPoints = (pointsRows ?? []).reduce((sum, row) => sum + (row.points ?? 0), 0);
+  const totalPoints = pointsRow?.total_points ?? 0;
 
   const stats = [
     { label: "Members", value: memberCount ?? 0, icon: Users },

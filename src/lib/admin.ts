@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
 
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -16,8 +17,9 @@ export interface AdminSeat {
  * magic-link login with the seat's email is instantly admin) — same rule as
  * the is_admin() database function.
  * Returns a service-role client for the actual work (RLS-bypassing).
+ * Memoized per request: the admin layout and its page share one lookup.
  */
-export async function requireAdmin() {
+export const requireAdmin = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -50,4 +52,4 @@ export async function requireAdmin() {
   if (!seat) notFound();
 
   return { user, admin, seat };
-}
+});

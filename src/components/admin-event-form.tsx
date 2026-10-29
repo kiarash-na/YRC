@@ -15,6 +15,7 @@ interface EventFormProps {
     city: string;
     category: string;
     registration_url: string | null;
+    recurrence?: string | null;
     body: string;
   };
 }
@@ -89,6 +90,21 @@ export function AdminEventForm({ action, event }: EventFormProps) {
         <div className="flex flex-col gap-1.5">
           <label htmlFor="registration_url" className={labelClass}>Registration URL (optional)</label>
           <Input id="registration_url" name="registration_url" type="url" defaultValue={event?.registration_url ?? ""} />
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="recurrence" className={labelClass}>Recurrence</label>
+          <select
+            id="recurrence"
+            name="recurrence"
+            defaultValue={event?.recurrence ?? ""}
+            className={textareaClass}
+          >
+            <option value="">One-off</option>
+            <option value="weekly">Weekly — auto-creates next week&apos;s copy when this one ends</option>
+          </select>
         </div>
       </div>
 

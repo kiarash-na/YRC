@@ -7,6 +7,8 @@ export type CheckInResult = {
     | "checked_in"
     | "already_checked_in"
     | "invalid_token"
+    | "not_started"
+    | "event_ended"
     | "not_authenticated"
     | "no_profile"
     | "error";

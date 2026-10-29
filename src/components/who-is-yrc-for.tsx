@@ -117,7 +117,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
                     src={persona.image.src}
                     alt={persona.image.alt}
                     fill
-                    sizes="100vw"
+                    sizes="(min-width: 768px) 48rem, 100vw"
                     queryParameters={
                       persona.image.updatedAt
                         ? { updatedAt: persona.image.updatedAt }

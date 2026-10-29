@@ -18,8 +18,10 @@ function str(formData: FormData, key: string, max = 500): string {
 }
 
 function revalidateEventPaths(slug?: string) {
+  revalidatePath("/");
   revalidatePath("/events");
   revalidatePath("/events/all");
+  revalidatePath("/events/past");
   if (slug) revalidatePath(`/events/${slug}`);
   revalidatePath("/admin/events");
 }
@@ -30,6 +32,7 @@ function revalidateEventPaths(slug?: string) {
 
 function eventPayload(formData: FormData) {
   const endDate = str(formData, "end_date");
+  const recurrence = str(formData, "recurrence", 20);
   return {
     slug: str(formData, "slug", 200),
     title: str(formData, "title", 200),
@@ -41,6 +44,7 @@ function eventPayload(formData: FormData) {
     city: str(formData, "city", 100),
     category: str(formData, "category", 20),
     registration_url: str(formData, "registration_url", 500) || null,
+    recurrence: recurrence === "weekly" ? "weekly" : null,
     body: str(formData, "body", 100_000),
   };
 }
@@ -87,6 +91,52 @@ export async function deleteEvent(eventId: string): Promise<void> {
   }
   revalidateEventPaths(event?.slug);
   redirect("/admin/events");
+}
+
+/**
+ * Clone an event row (all content fields; NOT QR tokens or attendance).
+ * The copy gets a "-copy" slug suffix (numbered if taken) and one fresh QR
+ * check-in token, matching createEvent behaviour. Dates are copied as-is —
+ * the admin edits them afterwards.
+ */
+export async function duplicateEvent(eventId: string): Promise<void> {
+  const { admin } = await requireAdmin();
+  const { data: source, error: readError } = await admin
+    .from("events")
+    .select("*")
+    .eq("id", eventId)
+    .single();
+  if (readError || !source) {
+    console.error("duplicateEvent failed:", readError?.message ?? "event not found");
+    return;
+  }
+
+  // find a free slug: <slug>-copy, <slug>-copy-2, …
+  const baseSlug = `${source.slug}-copy`.slice(0, 190);
+  let slug = baseSlug;
+  for (let i = 2; ; i += 1) {
+    const { data: clash } = await admin.from("events").select("id").eq("slug", slug).maybeSingle();
+    if (!clash) break;
+    slug = `${baseSlug}-${i}`;
+  }
+
+  const rest: Record<string, unknown> = { ...source };
+  delete rest.id;
+  delete rest.created_at;
+  delete rest.updated_at;
+  const { data: created, error } = await admin
+    .from("events")
+    .insert({ ...rest, slug, title: `${source.title} (copy)`.slice(0, 200), is_past: false })
+    .select("id, slug")
+    .single();
+  if (error || !created) {
+    console.error("duplicateEvent failed:", error?.message);
+    return;
+  }
+
+  await admin.from("event_checkin_tokens").insert({ event_id: created.id });
+  revalidateEventPaths(created.slug);
+  redirect(`/admin/events/${created.id}`);
 }
 
 // --------------------------------------------------------------------------

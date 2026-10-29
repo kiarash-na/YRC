@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     "Community runs, international races, training camps and experiences built around running and endurance sports.",
 };
 
-export const dynamic = "force-dynamic";
+// ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.
+export const revalidate = 900;
 
 export default async function EventsPage() {
   const upcoming = (await getUpcomingEvents()).slice(0, 3).map(toEventSummary);

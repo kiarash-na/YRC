@@ -8,7 +8,7 @@ import { DeleteEventButton } from "@/components/delete-event-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createCheckinToken, setCheckinTokenActive, updateEvent } from "@/lib/actions/admin";
+import { createCheckinToken, duplicateEvent, setCheckinTokenActive, updateEvent } from "@/lib/actions/admin";
 import { formatDate } from "@/lib/content-shared";
 import { requireAdmin } from "@/lib/admin";
 
@@ -46,17 +46,15 @@ export default async function AdminEventDetailPage({
           <ChevronLeft className="size-4" />
           Back to events
         </Link>
-        <DeleteEventButton eventId={event.id} title={event.title} />
+        <div className="flex items-center gap-2">
+          <form action={duplicateEvent.bind(null, event.id)}>
+            <Button type="submit" variant="outline" size="sm">
+              Duplicate
+            </Button>
+          </form>
+          <DeleteEventButton eventId={event.id} title={event.title} />
+        </div>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-h3">{event.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AdminEventForm action={updateEvent.bind(null, event.id)} event={event} />
-        </CardContent>
-      </Card>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between">
@@ -77,7 +75,7 @@ export default async function AdminEventDetailPage({
                 className="flex flex-col items-center gap-3 rounded-xl border border-border p-4"
               >
                 {token.is_active ? (
-                  <CheckinQr token={token.token} />
+                  <CheckinQr token={token.token} slug={event.slug} />
                 ) : (
                   <p className="py-6 text-caption text-muted-foreground">This QR code is disabled.</p>
                 )}
@@ -94,6 +92,15 @@ export default async function AdminEventDetailPage({
               </div>
             ))
           )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-h3">{event.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AdminEventForm action={updateEvent.bind(null, event.id)} event={event} />
         </CardContent>
       </Card>
 

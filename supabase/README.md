@@ -59,3 +59,37 @@ Set the env vars (see `.env.example`) in:
 | `event_attendance` | who checked in where (one per member per event) |
 | `score_actions` | the admin-editable points menu |
 | `score_entries` | append-only points ledger; score = sum |
+
+## Branded auth emails (React Email + Resend)
+
+`supabase/functions/send-auth-email` renders every auth email (magic link,
+signup, recovery, email change, invite) from an on-brand React Email template
+and sends it through the Resend API — Supabase's built-in SMTP path is
+bypassed once the hook is enabled.
+
+One-time setup:
+
+1. Deploy: `supabase functions deploy send-auth-email` (or dashboard → Edge
+   Functions → create from this repo). The function must NOT enforce JWT
+   verification (`verify_jwt = false` — auth hook POSTs carry no user JWT;
+   they carry a Standard Webhooks signature instead).
+2. Secrets (dashboard → Edge Functions → secrets, or `supabase secrets set`):
+   - `RESEND_API_KEY` — resend.com API key; the sending domain
+     `mail.yasrise.run` must be verified in Resend.
+   - `SEND_EMAIL_HOOK_SECRET` — shown when creating the hook (next step),
+     stored as `v1,whsec_<base64>`.
+3. Dashboard → Authentication → Hooks → **Send Email** → HTTPS:
+   URL `https://<project-ref>.supabase.co/functions/v1/send-auth-email`,
+   generate the secret and set it as `SEND_EMAIL_HOOK_SECRET` above.
+
+Emails link to `/auth/confirm?token_hash=…&type=…` — the same route that
+handles Strava handoff, so allow-list `<origin>/auth/confirm` in
+Authentication → URL Configuration for every environment
+(`https://localhost:3001`, `https://yrc-dev.kiarash.online`, `https://yasrise.run`).
+
+## Event lifecycle cron
+
+`migrations/0003_event_lifecycle.sql` enables `pg_cron` and schedules
+`yrc-event-lifecycle` (every 15 min): flips `events.is_past` at Berlin
+midnight after the last event day and auto-duplicates `recurrence='weekly'`
+events 7 days out (with a fresh QR token). Manage under Database → Cron.

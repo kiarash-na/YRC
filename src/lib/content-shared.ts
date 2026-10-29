@@ -20,6 +20,8 @@ export interface EventItem {
   city: string;
   category: EventCategory;
   registrationUrl?: string;
+  /** DB flag, flipped by the event-lifecycle cron at Berlin midnight. */
+  isPast?: boolean;
   /** Raw MDX body */
   content: string;
 }

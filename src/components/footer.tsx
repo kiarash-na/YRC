@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import { cn } from "cn";
 
 import { JoinYrcButton } from "@/components/join-yrc-button";
@@ -67,12 +68,22 @@ const Footer = ({
         <ul className="flex flex-wrap items-center justify-center gap-6">
           {navigation.map((item) => (
             <li key={item.name}>
-              <a
-                href={item.href}
-                className="font-medium transition-opacity hover:opacity-75"
-              >
-                {item.name}
-              </a>
+              {/* internal routes get the client router; hashes/externals stay <a> */}
+              {item.href.startsWith("/") ? (
+                <Link
+                  href={item.href}
+                  className="font-medium transition-opacity hover:opacity-75"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <a
+                  href={item.href}
+                  className="font-medium transition-opacity hover:opacity-75"
+                >
+                  {item.name}
+                </a>
+              )}
             </li>
           ))}
           {social.map((item) => (

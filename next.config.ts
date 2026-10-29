@@ -4,14 +4,6 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   output: "standalone",
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "deifkwefumgah.cloudfront.net",
-      },
-    ],
-  },
 };
 
 export default nextConfig;

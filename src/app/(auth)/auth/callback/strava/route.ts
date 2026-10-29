@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/safe-next";
 
 interface StravaAthlete {
@@ -35,8 +36,10 @@ export async function GET(request: Request) {
   const cookieStore = await cookies();
   const savedState = cookieStore.get("strava_oauth_state")?.value;
   const next = safeNext(cookieStore.get("strava_oauth_next")?.value);
+  const linkUserId = cookieStore.get("strava_link_user")?.value;
   cookieStore.delete("strava_oauth_state");
   cookieStore.delete("strava_oauth_next");
+  cookieStore.delete("strava_link_user");
 
   if (!code || !state || !savedState || state !== savedState) {
     redirect("/login?error=oauth_state");
@@ -64,8 +67,64 @@ export async function GET(request: Request) {
   }
 
   const athlete = tokenData.athlete;
-  const email = `strava-${athlete.id}@strava.yasrise.run`; // synthetic: Strava has no email
   const admin = createAdminClient();
+
+  // --- Link mode: attach the athlete to the already signed-in account ----
+  if (linkUserId) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user || user.id !== linkUserId) {
+      redirect("/login?error=oauth_state");
+    }
+
+    // refuse if this Strava account belongs to a different member (no merging)
+    const { data: clash } = await admin
+      .from("profiles")
+      .select("id")
+      .eq("strava_athlete_id", athlete.id)
+      .neq("id", user.id)
+      .maybeSingle();
+    if (clash) {
+      redirect(`${next}${next.includes("?") ? "&" : "?"}error=strava_taken`);
+    }
+
+    const { data: current } = await admin
+      .from("profiles")
+      .select("first_name, last_name, avatar_url, city, country")
+      .eq("id", user.id)
+      .single();
+
+    const { error: linkProfileError } = await admin
+      .from("profiles")
+      .update({
+        strava_athlete_id: athlete.id,
+        // fill blanks from Strava; never overwrite what the member set
+        first_name: current?.first_name || athlete.firstname || "",
+        last_name: current?.last_name || athlete.lastname || "",
+        avatar_url: current?.avatar_url ?? athlete.profile ?? athlete.profile_medium ?? null,
+        city: current?.city ?? athlete.city ?? null,
+        country: current?.country ?? athlete.country ?? null,
+      })
+      .eq("id", user.id);
+
+    const { error: linkTokenError } = await admin.from("strava_tokens").upsert({
+      profile_id: user.id,
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_at: new Date(tokenData.expires_at * 1000).toISOString(),
+      scope: tokenData.scope ?? "read",
+    });
+
+    if (linkProfileError || linkTokenError) {
+      redirect(`${next}${next.includes("?") ? "&" : "?"}error=link_failed`);
+    }
+
+    redirect(`${next}${next.includes("?") ? "&" : "?"}linked=strava`);
+  }
+
+  const email = `strava-${athlete.id}@strava.yasrise.run`; // synthetic: Strava has no email
 
   // --- Find or create the Supabase auth user ---------------------------
   const { data: existingProfile } = await admin
