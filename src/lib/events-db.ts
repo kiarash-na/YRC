@@ -26,10 +26,11 @@ interface EventRow {
   registration_url: string | null;
   body: string;
   is_past: boolean;
+  recurrence: string | null;
 }
 
 const EVENT_SELECT_SUMMARY =
-  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past";
+  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence";
 const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body`;
 // pre-0003 schema fallback (migration pending): no is_past column
 const EVENT_SELECT_LEGACY =
@@ -53,6 +54,7 @@ function toEventItem(row: EventRow): EventItem {
     category: row.category as EventCategory,
     registrationUrl: row.registration_url ?? undefined,
     isPast: row.is_past,
+    recurrence: row.recurrence === "weekly" ? "weekly" : null,
     content: row.body ?? "",
   };
 }
@@ -152,6 +154,7 @@ export const getEventBySlug = cache(
               is_past:
                 ((legacy.data.end_date as string | null) ??
                   (legacy.data.event_date as string)) < berlinToday(),
+              recurrence: null, // pre-0003 schema has no recurrence column
             }
           : null;
         error = legacy.error;

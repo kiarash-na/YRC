@@ -22,6 +22,8 @@ export interface EventItem {
   registrationUrl?: string;
   /** DB flag, flipped by the event-lifecycle cron at Berlin midnight. */
   isPast?: boolean;
+  /** Weekly series self-perpetuate via the event-lifecycle cron; null = one-off. */
+  recurrence?: "weekly" | null;
   /** Raw MDX body */
   content: string;
 }
@@ -38,4 +40,13 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 /** "2026-10-17" → "17 October 2026" */
 export function formatDate(iso: string): string {
   return dateFormatter.format(new Date(`${iso}T00:00:00`));
+}
+
+const weekdayFormatter = new Intl.DateTimeFormat("en-GB", {
+  weekday: "long",
+});
+
+/** "2026-11-12" → "Thursday" */
+export function formatWeekday(iso: string): string {
+  return weekdayFormatter.format(new Date(`${iso}T00:00:00`));
 }
