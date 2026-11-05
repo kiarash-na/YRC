@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero";
+import { WeeklyStrip } from "@/components/weekly-strip";
 import { UpcomingEvent } from "@/components/upcoming-event";
 import { About } from "@/components/about";
 import { Experiences } from "@/components/experiences";
@@ -13,11 +14,17 @@ import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 export const revalidate = 900;
 
 export default async function Home() {
-  const [nextEvent] = (await getUpcomingEvents()).map(toEventSummary);
+  const upcoming = (await getUpcomingEvents()).map(toEventSummary);
+  // Weekly recurring series get their own strip under the hero, so the
+  // highlight card below always shows the soonest one-off event instead.
+  const weekly = upcoming.filter((event) => event.recurrence === "weekly");
+  const weeklySlugs = new Set(weekly.map((event) => event.slug));
+  const nextEvent = upcoming.find((event) => !weeklySlugs.has(event.slug));
 
   return (
     <main className="flex-1">
       <Hero />
+      {weekly.length > 0 ? <WeeklyStrip events={weekly} /> : null}
       {nextEvent ? <UpcomingEvent event={nextEvent} /> : null}
       <About />
       <Experiences />
