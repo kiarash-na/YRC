@@ -1,5 +1,6 @@
 import { Hero } from "@/components/hero";
 import { WeeklyStrip } from "@/components/weekly-strip";
+import { StridesStrip } from "@/components/strides-strip";
 import { UpcomingEvent } from "@/components/upcoming-event";
 import { About } from "@/components/about";
 import { Experiences } from "@/components/experiences";
@@ -25,6 +26,7 @@ export default async function Home() {
     <main className="flex-1">
       <Hero />
       {weekly.length > 0 ? <WeeklyStrip events={weekly} /> : null}
+      <StridesStrip />
       {nextEvent ? <UpcomingEvent event={nextEvent} /> : null}
       <About />
       <Experiences />

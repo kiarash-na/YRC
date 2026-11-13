@@ -15,6 +15,7 @@ interface ProfileSettingsFormProps {
     country: string | null;
     avatar_url: string | null;
     strava_athlete_id: number;
+    leaderboard_opt_out: boolean;
   };
 }
 
@@ -86,6 +87,26 @@ export function ProfileSettingsForm({ profile }: ProfileSettingsFormProps) {
           value={`Strava · athlete #${profile.strava_athlete_id}`}
           className="text-muted-foreground"
         />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label
+          htmlFor="leaderboard_visible"
+          className="flex cursor-pointer items-center gap-2.5 text-caption font-medium"
+        >
+          <input
+            type="checkbox"
+            id="leaderboard_visible"
+            name="leaderboard_visible"
+            defaultChecked={!profile.leaderboard_opt_out}
+            className="size-4 accent-yrc-accent"
+          />
+          Show me on the YRC Strides leaderboard
+        </label>
+        <p className="text-caption text-muted-foreground">
+          Uncheck to hide your name and points from the public board. Your
+          strides still count toward your own profile.
+        </p>
       </div>
 
       {status === "saved" && (

@@ -4,11 +4,36 @@
  * module may import node builtins — it is bundled for the browser.
  */
 
-export const EVENT_CATEGORIES = ["race", "training", "social", "camp"] as const;
+export const EVENT_CATEGORIES = [
+  "race",
+  "training",
+  "social",
+  "camp",
+  "community-run",
+  "long-run",
+  "drills",
+  "swim",
+  "trail",
+] as const;
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+
+/** Human-readable labels for the category slugs (badges, filter dropdowns). */
+export const EVENT_CATEGORY_LABELS: Record<EventCategory, string> = {
+  race: "Race",
+  training: "Training",
+  social: "Social",
+  camp: "Camp",
+  "community-run": "Community run",
+  "long-run": "Long run",
+  drills: "Drills",
+  swim: "Swim",
+  trail: "Trail run",
+};
 
 /** Event shape shared by the DB loader (events-db.ts) and UI components. */
 export interface EventItem {
+  /** DB primary key (uuid) — the RSVP flow writes against it. */
+  id: string;
   slug: string;
   title: string;
   excerpt: string;
@@ -24,6 +49,17 @@ export interface EventItem {
   isPast?: boolean;
   /** Weekly series self-perpetuate via the event-lifecycle cron; null = one-off. */
   recurrence?: "weekly" | null;
+  /** HH:MM, Berlin wall-clock. */
+  startTime?: string;
+  durationMinutes?: number;
+  meetingPoint?: string;
+  /** undefined = same as meetingPoint */
+  finishPoint?: string;
+  distanceKm?: number;
+  elevationGainM?: number;
+  routeNotes?: string;
+  whatToBring?: string;
+  coachTips?: string;
   /** Raw MDX body */
   content: string;
 }
@@ -87,4 +123,9 @@ const weekdayFormatter = new Intl.DateTimeFormat("en-GB", {
 /** "2026-11-12" → "Thursday" */
 export function formatWeekday(iso: string): string {
   return weekdayFormatter.format(new Date(`${iso}T00:00:00`));
+}
+
+/** "07:00:00" → "07:00" (Postgres time strings carry seconds). */
+export function formatTime(t: string): string {
+  return t.slice(0, 5);
 }

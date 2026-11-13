@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { ChevronLeft } from "lucide-react";
+import { CalendarPlus, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 
 import { CoverImage } from "@/components/cover-image";
+import { EventBrief } from "@/components/event-brief";
+import { EventRsvp } from "@/components/event-rsvp";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/content-shared";
+import { EVENT_CATEGORY_LABELS, formatDate } from "@/lib/content-shared";
 import { getAllEvents, getEventBySlug } from "@/lib/events-db";
 
 // ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.
@@ -78,7 +80,7 @@ export default async function EventPage({
                   variant="secondary"
                   className="text-caption mb-6 h-auto rounded-md px-2.5 py-1 font-bold tracking-[0.2em] uppercase"
                 >
-                  {event.category}
+                  {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
                 </Badge>
                 <h1 className="text-h2 mb-7 text-balance md:text-h1">
                   {event.title}
@@ -92,17 +94,41 @@ export default async function EventPage({
                     {event.location} · {event.city}
                   </p>
                 </div>
-                {event.registrationUrl && (
-                  <div className="pt-6">
-                    <Button
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      render={<a href={event.registrationUrl} />}
-                      nativeButton={false}
-                    >
-                      Register
-                    </Button>
-                  </div>
+                <div className="pt-6">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    render={
+                      <a
+                        href={`/events/${event.slug}/calendar.ics`}
+                        download
+                      />
+                    }
+                    nativeButton={false}
+                  >
+                    <CalendarPlus />
+                    Add to calendar
+                  </Button>
+                </div>
+                {!event.isPast && (
+                  <>
+                    {event.registrationUrl && (
+                      <div className="pt-6">
+                        <Button
+                          size="lg"
+                          className="w-full sm:w-auto"
+                          render={<a href={event.registrationUrl} />}
+                          nativeButton={false}
+                        >
+                          Register
+                        </Button>
+                      </div>
+                    )}
+                    <div className="pt-6">
+                      <EventRsvp eventId={event.id} eventSlug={event.slug} />
+                    </div>
+                  </>
                 )}
               </aside>
 
@@ -115,6 +141,8 @@ export default async function EventPage({
                     className="object-cover object-center"
                   />
                 </div>
+
+                <EventBrief event={event} />
 
                 <div className="flex flex-col">{content}</div>
               </article>

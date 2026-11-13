@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import type { EventCategory, EventItem, EventSummary } from "@/lib/content-shared";
+import { formatTime, type EventCategory, type EventItem, type EventSummary } from "@/lib/content-shared";
 import { createPublicClient } from "@/lib/supabase/public";
 
 /**
@@ -8,8 +8,9 @@ import { createPublicClient } from "@/lib/supabase/public";
  * truth; the old content/events/*.mdx files were migrated into the seed).
  * Returns the same shapes the MDX loader did, so UI components are unchanged.
  *
- * List queries use a slim SELECT (no MDX body) and filter is_past in
- * PostgREST; only getEventBySlug fetches the body.
+ * List queries use a slim SELECT (no MDX body, no brief fields) and filter
+ * is_past in PostgREST; only getEventBySlug fetches the body and the
+ * technical-brief columns.
  */
 
 interface EventRow {
@@ -27,22 +28,25 @@ interface EventRow {
   body: string;
   is_past: boolean;
   recurrence: string | null;
+  start_time: string | null;
+  duration_minutes: number | null;
+  meeting_point: string | null;
+  finish_point: string | null;
+  /** PostgREST may serialize numeric as a string. */
+  distance_km: number | string | null;
+  elevation_gain_m: number | null;
+  route_notes: string | null;
+  what_to_bring: string | null;
+  coach_tips: string | null;
 }
 
 const EVENT_SELECT_SUMMARY =
   "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence";
-const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body`;
-// pre-0003 schema fallback (migration pending): no is_past column
-const EVENT_SELECT_LEGACY =
-  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url";
-
-/** YYYY-MM-DD in the lifecycle timezone (Europe/Berlin). */
-function berlinToday(): string {
-  return new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Berlin" });
-}
+const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips`;
 
 function toEventItem(row: EventRow): EventItem {
   return {
+    id: row.id,
     slug: row.slug,
     title: row.title,
     excerpt: row.excerpt,
@@ -55,6 +59,15 @@ function toEventItem(row: EventRow): EventItem {
     registrationUrl: row.registration_url ?? undefined,
     isPast: row.is_past,
     recurrence: row.recurrence === "weekly" ? "weekly" : null,
+    startTime: row.start_time ? formatTime(row.start_time) : undefined,
+    durationMinutes: row.duration_minutes ?? undefined,
+    meetingPoint: row.meeting_point ?? undefined,
+    finishPoint: row.finish_point ?? undefined,
+    distanceKm: row.distance_km == null ? undefined : Number(row.distance_km),
+    elevationGainM: row.elevation_gain_m ?? undefined,
+    routeNotes: row.route_notes ?? undefined,
+    whatToBring: row.what_to_bring ?? undefined,
+    coachTips: row.coach_tips ?? undefined,
     content: row.body ?? "",
   };
 }
@@ -76,28 +89,6 @@ async function fetchEvents(isPast?: boolean): Promise<EventItem[]> {
     if (isPast !== undefined) query = query.eq("is_past", isPast);
 
     const { data, error } = await query;
-
-    if (error?.message.includes("is_past")) {
-      // Migration 0003 not applied yet: legacy select, derive the flag from
-      // dates (same Berlin-day rule) so the site keeps working meanwhile.
-      const legacy = await createPublicClient()
-        .from("events")
-        .select(EVENT_SELECT_LEGACY)
-        .order("event_date", { ascending: isPast ? false : true });
-      if (legacy.error) {
-        console.error("Failed to load events from Supabase:", legacy.error.message);
-        return [];
-      }
-      const today = berlinToday();
-      const rows = (legacy.data ?? []).map((row) => ({
-        ...(row as Omit<EventRow, "body" | "is_past">),
-        body: "",
-        is_past: ((row.end_date as string | null) ?? (row.event_date as string)) < today,
-      }));
-      return rows
-        .filter((row) => (isPast === undefined ? true : row.is_past === isPast))
-        .map(toEventItem);
-    }
 
     if (error) {
       console.error("Failed to load events from Supabase:", error.message);
@@ -135,30 +126,11 @@ export const getEventBySlug = cache(
   async (slug: string): Promise<EventItem | undefined> => {
     if (!configured()) return undefined;
     try {
-      let { data, error } = await createPublicClient()
+      const { data, error } = await createPublicClient()
         .from("events")
         .select(EVENT_SELECT_FULL)
         .eq("slug", slug)
         .maybeSingle();
-
-      if (error?.message.includes("is_past")) {
-        // pre-0003 schema fallback — see fetchEvents
-        const legacy = await createPublicClient()
-          .from("events")
-          .select(`${EVENT_SELECT_LEGACY}, body`)
-          .eq("slug", slug)
-          .maybeSingle();
-        data = legacy.data
-          ? {
-              ...legacy.data,
-              is_past:
-                ((legacy.data.end_date as string | null) ??
-                  (legacy.data.event_date as string)) < berlinToday(),
-              recurrence: null, // pre-0003 schema has no recurrence column
-            }
-          : null;
-        error = legacy.error;
-      }
 
       if (error || !data) return undefined;
       return toEventItem(data as EventRow);

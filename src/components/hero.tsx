@@ -3,15 +3,13 @@
 import Link from "next/link";
 import { cn } from "cn";
 
-import { Image } from "@/components/imagekit";
+import { Video } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
-import { lqip } from "@/lib/imagekit";
+import { videoPoster } from "@/lib/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
-interface HeroImage {
+interface HeroVideo {
   src: string;
-  alt: string;
-  updatedAt?: string;
 }
 interface HeroButton {
   text: string;
@@ -33,8 +31,7 @@ interface HeroProps {
   description: string;
   badge?: Badge;
   buttons?: Buttons;
-  imageProduct?: HeroImage;
-  imagesPortrait?: HeroImage[];
+  videoProduct?: HeroVideo;
   className?: string;
   subheading?: string;
 }
@@ -59,17 +56,9 @@ const defaultProps: HeroProps = {
       url: "/events",
     },
   },
-  imageProduct: {
-    src: "/YRC/Home/pexels-farizarrazy-39074079.jpg",
-    alt: "YRC runners training together",
+  videoProduct: {
+    src: "/YRC/13372516_1080_1920_30fps.mp4",
   },
-  imagesPortrait: [
-    {
-      src: "/YRC/Home/Untitled%20design%20(5).png",
-      alt: "YRC community member out on a run",
-      updatedAt: "1789991758872",
-    },
-  ],
 };
 
 const Hero = (props: Props) => {
@@ -79,15 +68,14 @@ const Hero = (props: Props) => {
     subheading,
     description,
     buttons,
-    imageProduct,
-    imagesPortrait,
+    videoProduct,
     className,
   } = {
     ...defaultProps,
     ...props,
   };
 
-  const portrait = imagesPortrait?.[0];
+  const poster = videoProduct ? videoPoster(videoProduct.src) : "";
 
   return (
     <section className={cn("relative overflow-hidden py-32", className)}>
@@ -148,54 +136,27 @@ const Hero = (props: Props) => {
             </div>
           </div>
 
-          <div className="relative grid gap-4 lg:grid-cols-2">
-            {imageProduct && (
-              <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-border bg-muted">
-                <Image
-                  src={imageProduct.src}
-                  alt={imageProduct.alt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  transformation={[
-                    { aspectRatio: "3-4", crop: "force", focus: "auto" },
-                  ]}
-                  className="object-cover object-center transition-transform duration-300 hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${lqip(imageProduct.src)})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "top left",
-                  }}
-                  onLoad={(e) => {
-                    e.currentTarget.style.backgroundImage = "none";
-                  }}
-                />
-              </div>
-            )}
-            {portrait && (
-              <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-border bg-muted lg:mt-8">
-                <Image
-                  src={portrait.src}
-                  alt={portrait.alt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  queryParameters={
-                    portrait.updatedAt
-                      ? { updatedAt: portrait.updatedAt }
-                      : undefined
-                  }
-                  transformation={[
-                    { aspectRatio: "3-4", crop: "force", focus: "auto" },
-                  ]}
-                  className="object-cover object-center transition-transform duration-300 hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${lqip(portrait.src, portrait.updatedAt)})`,
-                    backgroundSize: "cover",
-                  }}
-                  onLoad={(e) => {
-                    e.currentTarget.style.backgroundImage = "none";
-                  }}
+          <div className="relative">
+            {videoProduct && (
+              <div
+                className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-border bg-muted"
+                style={{
+                  backgroundImage: `url(${poster})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <Video
+                  src={videoProduct.src}
+                  poster={poster}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  controls={false}
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
             )}

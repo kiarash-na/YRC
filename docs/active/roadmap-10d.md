@@ -4,11 +4,12 @@ Plan file: ~/.claude/plans/pasted-content-id-7f3c-yrc-munich-ancient-hare.md (ap
 
 - [x] T1 migration 0007 (brief columns, 9 categories, cron carries brief) — applied+verified on prod
 - [x] 0008 (event_rsvps, newsletter_subscribers, leaderboard RPCs, opt-out, gamification seeds+backfill) — applied+verified on prod
-- [ ] T2 data plumbing (events-db FULL select, EventItem fields, admin form fieldset, category labels) — agent briefed
-- [ ] T3 event-brief panel + /events/[slug]/calendar.ics route (src/lib/ics.ts, VTIMEZONE Berlin)
-- [ ] T4 RSVP flow: src/lib/actions/rsvp.ts + event-rsvp.tsx + event page slot
-- [ ] T5 leaderboard UI: strides-leaderboard.tsx on /community (revalidate 300, replace yrc-points.tsx), strides-strip.tsx on homepage between WeeklyStrip and UpcomingEvent, settings toggle, award hooks (strava callback, updateProfile)
-- [ ] T6 newsletter action + wire blog56.tsx
-- [ ] T7 hero video (probe 4 provided clips, pick 9:16 ≤1080p; videoPoster() ik-thumbnail pattern; autoplay muted loop)
-- [ ] T8/T9 about structure + services definition (TODO(user) placeholders)
-- [ ] T10 backfill polish + seed.sql parity + full e2e + docs
+- [x] T2 data plumbing (events-db FULL select, EventItem fields, admin form fieldset, category labels)
+- [x] T3 event-brief panel + /events/[slug]/calendar.ics route (src/lib/ics.ts, VTIMEZONE Berlin, 29 ICS assertions)
+- [x] T4 RSVP flow: rsvp.ts + event-rsvp.tsx + event page slot (auto .ics download on success)
+- [x] T5 leaderboard: strides-leaderboard.tsx on /community (revalidate 300, yrc-points.tsx deleted), strides-strip.tsx on homepage, settings opt-out toggle, award hooks (strava callback, updateProfile)
+- [x] T6 newsletter action + blog56.tsx wired (honeypot, idempotent, +1 pt when email matches a profile)
+- [x] T7 hero video card (/YRC/13372516_1080_1920_30fps.mp4, ik-thumbnail poster, autoplay muted loop)
+- [x] T8/T9 about structure + services definition — TODO(user) placeholders await real copy
+- [x] T10 seed.sql parity + regression (build/lint green, curl smoke matrix passed, DB contract verified)
+- [ ] Pending USER: about/services/founder/shapers copy; hero clip final pick OK'd; optional 2nd video tile on /community

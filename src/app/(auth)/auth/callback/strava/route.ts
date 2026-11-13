@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { awardOneTimeAction } from "@/lib/points";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/safe-next";
@@ -121,6 +122,9 @@ export async function GET(request: Request) {
       redirect(`${next}${next.includes("?") ? "&" : "?"}error=link_failed`);
     }
 
+    // One-time strides for connecting Strava (never throws; never blocks).
+    await awardOneTimeAction(user.id, "strava_connect");
+
     redirect(`${next}${next.includes("?") ? "&" : "?"}linked=strava`);
   }
 
@@ -174,6 +178,9 @@ export async function GET(request: Request) {
   if (profileError || tokenError) {
     redirect("/login?error=profile");
   }
+
+  // One-time strides for connecting Strava (never throws; never blocks).
+  await awardOneTimeAction(userId, "strava_connect");
 
   // --- Establish the session in THIS browser ------------------------------
   // The minted token_hash is a bearer credential: bouncing it through a

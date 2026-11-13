@@ -4,7 +4,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
-import { formatDate, type EventSummary } from "@/lib/content-shared";
+import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface EventCardProps {
   event: EventSummary;
@@ -42,7 +42,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
             variant="outline"
             className="h-6 px-3 text-caption font-bold tracking-[0.2em] uppercase"
           >
-            {event.category}
+            {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
           </Badge>
           <p className="text-caption font-medium tracking-[0.3em] text-muted-foreground uppercase">
             {dateLabel}

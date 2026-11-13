@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "cn";
 import {
   EVENT_CATEGORIES,
+  EVENT_CATEGORY_LABELS,
   type EventCategory,
   type EventSummary,
 } from "@/lib/content-shared";
@@ -96,7 +97,7 @@ const EventsBrowser = ({ events }: EventsBrowserProps) => {
             <option value="all">All categories</option>
             {EVENT_CATEGORIES.map((c) => (
               <option key={c} value={c}>
-                {c}
+                {EVENT_CATEGORY_LABELS[c] ?? c}
               </option>
             ))}
           </select>

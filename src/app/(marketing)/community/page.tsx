@@ -6,8 +6,8 @@ import { CommunityHero } from "@/components/community-hero";
 import { CommunityPhilosophy } from "@/components/community-philosophy";
 import { JoinCta } from "@/components/join-cta";
 import { StravaClub } from "@/components/strava-club";
+import { StridesLeaderboard } from "@/components/strides-leaderboard";
 import { WhoIsYrcFor } from "@/components/who-is-yrc-for";
-import { YrcPoints } from "@/components/yrc-points";
 
 export const metadata: Metadata = {
   title: "Community — YRC",
@@ -15,13 +15,17 @@ export const metadata: Metadata = {
     "Yas Rise Community — who it's for, what it believes, how to take part and where it's heading. Every pace welcome.",
 };
 
+// ISR: the Strides board refreshes every 5 min (its data layer caches on the
+// same cadence, so the leaderboard + homepage strip share one Supabase read).
+export const revalidate = 300;
+
 export default function CommunityPage() {
   return (
     <main className="flex-1">
       <CommunityHero />
       <CommunityPhilosophy />
       <WhoIsYrcFor />
-      <YrcPoints />
+      <StridesLeaderboard />
       <CommunityChallenges />
       <CommunityGallery />
       <StravaClub />

@@ -72,6 +72,18 @@ const WithoutBorders = ({ className }: WithoutBordersProps) => {
                   </p>
                 </div>
               ))}
+              {/* TODO(user): replace the bracketed placeholders in this Tehran
+                  sister-community block with final copy before launch. */}
+              <div className="flex flex-col gap-1 py-4">
+                <h3 className="text-h4">
+                  Sister community in Tehran
+                </h3>
+                <p className="text-body-small text-muted-foreground">
+                  [TEHRAN SISTER COMMUNITY — one paragraph naming the sister
+                  community in Tehran and what the connection means to YRC.
+                  TODO(user)]
+                </p>
+              </div>
             </div>
           </div>
         </div>

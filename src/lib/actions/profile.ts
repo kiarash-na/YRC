@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { awardOneTimeAction } from "@/lib/points";
 import { createClient } from "@/lib/supabase/server";
 
 export type UpdateProfileResult = { status: "ok" } | { status: "error"; message: string };
@@ -18,17 +19,29 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
   } = await supabase.auth.getUser();
   if (!user) return { status: "error", message: "Not signed in." };
 
+  const firstName = clean(formData.get("first_name"));
+  const lastName = clean(formData.get("last_name"));
+  const city = clean(formData.get("city"));
+  const country = clean(formData.get("country"));
+
   const { error } = await supabase
     .from("profiles")
     .update({
-      first_name: clean(formData.get("first_name")),
-      last_name: clean(formData.get("last_name")),
-      city: clean(formData.get("city")) || null,
-      country: clean(formData.get("country")) || null,
+      first_name: firstName,
+      last_name: lastName,
+      city: city || null,
+      country: country || null,
+      // The checkbox only submits when checked; absence means opted out.
+      leaderboard_opt_out: formData.get("leaderboard_visible") !== "on",
     })
     .eq("id", user.id);
 
   if (error) return { status: "error", message: "Could not save. Please try again." };
+
+  // One-time strides for a fully filled-in profile (insert is idempotent).
+  if (firstName && lastName && city && country) {
+    await awardOneTimeAction(user.id, "profile_complete");
+  }
 
   revalidatePath("/profile");
   revalidatePath("/profile/settings");

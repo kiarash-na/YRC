@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EVENT_CATEGORIES } from "@/lib/content-shared";
+import { EVENT_CATEGORIES, EVENT_CATEGORY_LABELS } from "@/lib/content-shared";
 
 interface EventFormProps {
   action: (formData: FormData) => void;
@@ -16,6 +16,16 @@ interface EventFormProps {
     category: string;
     registration_url: string | null;
     recurrence?: string | null;
+    start_time?: string | null;
+    duration_minutes?: number | null;
+    meeting_point?: string | null;
+    finish_point?: string | null;
+    /** PostgREST may serialize numeric as a string. */
+    distance_km?: number | string | null;
+    elevation_gain_m?: number | null;
+    route_notes?: string | null;
+    what_to_bring?: string | null;
+    coach_tips?: string | null;
     body: string;
   };
 }
@@ -82,7 +92,7 @@ export function AdminEventForm({ action, event }: EventFormProps) {
           >
             {EVENT_CATEGORIES.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {EVENT_CATEGORY_LABELS[category]}
               </option>
             ))}
           </select>
@@ -107,6 +117,58 @@ export function AdminEventForm({ action, event }: EventFormProps) {
           </select>
         </div>
       </div>
+
+      <fieldset className="flex flex-col gap-4 rounded-xl border border-border p-4">
+        <legend className="px-1 text-caption font-medium">Technical brief (all optional)</legend>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="start_time" className={labelClass}>Start time</label>
+            <Input id="start_time" name="start_time" type="time" defaultValue={event?.start_time?.slice(0, 5) ?? ""} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="duration_minutes" className={labelClass}>Duration (minutes)</label>
+            <Input id="duration_minutes" name="duration_minutes" type="number" min={5} defaultValue={event?.duration_minutes ?? ""} />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="meeting_point" className={labelClass}>Meeting point</label>
+            <Input id="meeting_point" name="meeting_point" defaultValue={event?.meeting_point ?? ""} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="finish_point" className={labelClass}>Finish point</label>
+            <Input id="finish_point" name="finish_point" placeholder="Same as meeting point" defaultValue={event?.finish_point ?? ""} />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="distance_km" className={labelClass}>Distance (km)</label>
+            <Input id="distance_km" name="distance_km" type="number" step="0.1" min={0} defaultValue={event?.distance_km ?? ""} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="elevation_gain_m" className={labelClass}>Elevation gain (m)</label>
+            <Input id="elevation_gain_m" name="elevation_gain_m" type="number" min={0} defaultValue={event?.elevation_gain_m ?? ""} />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="route_notes" className={labelClass}>Route notes</label>
+          <textarea id="route_notes" name="route_notes" rows={2} defaultValue={event?.route_notes ?? ""} className={textareaClass} />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="what_to_bring" className={labelClass}>What to bring</label>
+          <textarea id="what_to_bring" name="what_to_bring" rows={2} defaultValue={event?.what_to_bring ?? ""} className={textareaClass} />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="coach_tips" className={labelClass}>Coach tips</label>
+          <textarea id="coach_tips" name="coach_tips" rows={2} defaultValue={event?.coach_tips ?? ""} className={textareaClass} />
+        </div>
+      </fieldset>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="body" className={labelClass}>Body (MDX)</label>

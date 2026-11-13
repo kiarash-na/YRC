@@ -31,7 +31,9 @@ export default async function ProfileSettingsPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("first_name, last_name, city, country, avatar_url, strava_athlete_id")
+    .select(
+      "first_name, last_name, city, country, avatar_url, strava_athlete_id, leaderboard_opt_out",
+    )
     .eq("id", user.id)
     .single();
 

@@ -25,3 +25,19 @@ export const lqip = (src: string, updatedAt?: string) =>
         queryParameters: updatedAt ? { updatedAt } : undefined,
       })
     : "";
+
+/**
+ * Poster frame for ImageKit-hosted videos.
+ *
+ * ImageKit serves a video thumbnail at `<video-path>/ik-thumbnail.jpg`;
+ * `tr=so-<seconds>` selects the frame at that start offset. Returns "" when
+ * the endpoint is not configured, mirroring `lqip`.
+ */
+export const videoPoster = (src: string, startOffsetSeconds = 5) =>
+  IMAGEKIT_URL_ENDPOINT
+    ? buildSrc({
+        src: `${src}/ik-thumbnail.jpg`,
+        urlEndpoint: IMAGEKIT_URL_ENDPOINT,
+        queryParameters: { tr: `so-${startOffsetSeconds}` },
+      })
+    : "";

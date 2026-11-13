@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatDate } from "@/lib/content-shared";
+import { EVENT_CATEGORY_LABELS, formatDate, type EventCategory } from "@/lib/content-shared";
 import { requireAdmin } from "@/lib/admin";
 
 export default async function AdminEventsPage() {
@@ -64,7 +64,7 @@ export default async function AdminEventsPage() {
                       )}
                       {event.is_past && <Badge variant="secondary">Past</Badge>}
                       <Badge variant="secondary" className="uppercase">
-                        {event.category}
+                        {EVENT_CATEGORY_LABELS[event.category as EventCategory] ?? event.category}
                       </Badge>
                     </div>
                   </Link>

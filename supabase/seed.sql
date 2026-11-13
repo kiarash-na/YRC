@@ -1,8 +1,7 @@
 -- ============================================================================
 -- YRC seed data
 --   - the points menu (score_actions)
---   - all events, generated from content/events/*.mdx
---     by scripts/generate-events-seed.mjs — do not edit by hand
+--   - all events — hand-maintained; brief columns added with migration 0007
 --   - one QR check-in token per event
 -- Safe to re-run: every insert is idempotent.
 --
@@ -19,7 +18,7 @@ values ('event_attendance', 10, 'Checking in at an event')
 on conflict (key) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'berlin-half-marathon-2026',
   'Berlin Half Marathon 2026',
@@ -30,6 +29,15 @@ values (
   'Start area at Karl-Marx-Allee',
   'Berlin',
   'race',
+  null,
+  null,
+  null,
+  null,
+  null,
+  21.1,
+  null,
+  'Flat city course',
+  null,
   null,
   $yrc$The Berlin Half Marathon kicked off our 2026 racing season, and eighteen YRC runners made the trip. Flat roads, big crowds, and a finish through the city centre made it the perfect early-season target.
 
@@ -50,7 +58,7 @@ Berlin is now a fixture on our spring calendar. If you missed this year's trip, 
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'bosphorus-speed-work',
   'Bosphorus Speed Work',
@@ -61,7 +69,16 @@ values (
   'Kuruçeşme waterfront, by the rowing club gate',
   'Istanbul',
   'training',
-  'https://yasrise.run/events/bosphorus-speed-work',
+  null,
+  '19:00',
+  null,
+  null,
+  null,
+  null,
+  null,
+  'Flat, measured stretch between Kuruçeşme and Bebek',
+  'Running shoes, a small water bottle, and a light layer for the cool-down',
+  null,
   $yrc$Our weekly speed session moves to the Bosphorus path for the autumn block. The flat, measured stretch between Kuruçeşme and Bebek is perfect for intervals, and the sea air keeps the hard efforts honest.
 
 ## What to expect
@@ -79,7 +96,7 @@ Register so the coaches know the group sizes in advance. If it is your first spe
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'cappadocia-altitude-training-camp',
   'Cappadocia Altitude Training Camp',
@@ -90,7 +107,16 @@ values (
   'Göreme, camp lodge next to the valley trails',
   'Nevşehir',
   'camp',
-  'https://yasrise.run/events/cappadocia-altitude-training-camp',
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  'Soft trail surfaces, marked routes through Göreme and the Red Valley (~1,200 m altitude)',
+  null,
+  null,
   $yrc$Once a year we trade the city for the valleys. The Cappadocia camp is four days of structured training at roughly 1,200 meters of altitude, with soft trail surfaces that are kind to tired winter legs.
 
 ## What to expect
@@ -110,7 +136,7 @@ The camp is capped at 16 runners. Register through the link above and we will co
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'dubai-10k-night-race',
   'Dubai 10K Night Race',
@@ -121,7 +147,16 @@ values (
   'Start at Dubai Harbour, main promenade',
   'Dubai',
   'race',
-  'https://yasrise.run/events/dubai-10k-night-race',
+  null,
+  '20:00',
+  null,
+  null,
+  null,
+  10,
+  null,
+  'Two flat loops on closed roads along the harbour, timing mats every kilometer',
+  null,
+  null,
   $yrc$January in Istanbul is cold, so we take the training somewhere warm. The Dubai 10K Night Race is flat, fast, and run entirely after sunset on closed roads along the harbour.
 
 ## What to expect
@@ -139,7 +174,7 @@ Sign up through the link above. Race entry, hotel, and airport transfers are boo
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'istanbul-marathon-2026',
   'Istanbul Marathon 2026',
@@ -150,7 +185,16 @@ values (
   'Start line at the Bosphorus Bridge, Asian side',
   'Istanbul',
   'race',
-  'https://yasrise.run/events/istanbul-marathon-2026',
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
   $yrc$The Istanbul Marathon is our flagship race of the year, and 2026 will be no different. Whether you are targeting the full 42K or the 15K, YRC runners travel, warm up, and cross the bridge together.
 
 ## What to expect
@@ -168,7 +212,7 @@ Race entry is purchased through the official marathon organizer. Register with Y
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'kadikoy-coffee-run',
   'Kadıköy Coffee Run',
@@ -179,6 +223,15 @@ values (
   'Kadıköy pier, in front of the ferry building',
   'Istanbul',
   'social',
+  null,
+  '09:00',
+  null,
+  null,
+  null,
+  5,
+  null,
+  'Mostly flat with one small hill; Moda back streets loop',
+  null,
   null,
   $yrc$The Coffee Run is exactly what it sounds like: a gentle 5K through Moda's back streets with a long table reserved at the end. It has quietly become the best way to meet the community if you are new.
 
@@ -199,7 +252,7 @@ Just turn up. If you want a message the evening before with the weather plan, le
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'munich-tuesday-community-run',
   'Munich Tuesday Community Run',
@@ -210,6 +263,15 @@ values (
   'Café Tante Chylla',
   'Munich',
   'social',
+  null,
+  '07:00',
+  null,
+  null,
+  null,
+  7.5,
+  null,
+  'Easy social loop (~7–8 km), drills included; meet 06:45 at the café',
+  null,
   null,
   $yrc$Tuesdays are getting an upgrade. Our new Munich community run is a weekly ritual: meet early, move together, and finish with coffee and good company at Café Tante Chylla. No pace pressure, no egos — just a great way to start the day. ☕️
 
@@ -233,7 +295,7 @@ This run happens **every Tuesday**, so if you can't make the first one, we'll se
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'summer-sunset-social-run',
   'Summer Sunset Social Run',
@@ -244,6 +306,15 @@ values (
   'Caddebostan sahil, in front of the amphitheatre',
   'Istanbul',
   'social',
+  null,
+  '19:30',
+  null,
+  null,
+  null,
+  6,
+  null,
+  'Flat promenade out-and-back',
+  null,
   null,
   $yrc$Mid-July heat means we run late and slow. The Sunset Social starts at 19:30, just as the coast cools down, and follows the Caddebostan promenade while the sky does its best work over the Marmara.
 
@@ -264,7 +335,7 @@ No registration needed, just show up. Regulars wear something light-coloured so 
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'tehran-spring-half-marathon',
   'Tehran Spring Half Marathon',
@@ -275,7 +346,16 @@ values (
   'Start area near Mellat Park',
   'Tehran',
   'race',
-  'https://yasrise.run/events/tehran-spring-half-marathon',
+  null,
+  null,
+  null,
+  null,
+  null,
+  21.1,
+  null,
+  null,
+  null,
+  null,
   $yrc$Our second international race trip of the season takes us to Tehran for a spring half marathon. The course rolls gently through the northern part of the city with views toward the Alborz mountains, and the timing lines up with mild Nowruz-season weather.
 
 ## What to expect
@@ -293,7 +373,7 @@ Register through the link above by the end of January. Passport validity of at l
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'track-thursdays-interval-session',
   'Track Thursdays Interval Session',
@@ -304,7 +384,16 @@ values (
   'Burhan Felek Athletics Stadium, Kadıköy',
   'Istanbul',
   'training',
-  'https://yasrise.run/events/track-thursdays-interval-session',
+  null,
+  '19:30',
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  'Regular trainers are fine — spikes not needed',
+  null,
   $yrc$Track Thursdays are where leg speed is built. One evening a month we book lanes at Burhan Felek and run a structured interval program under the stadium lights.
 
 ## What to expect
@@ -324,7 +413,7 @@ Entry is limited by our lane booking, so register early. The gate code and lane 
 on conflict (slug) do nothing;
 
 insert into public.events
-  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, body)
+  (slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, body)
 values (
   'yrc-community-run',
   'YRC Community Run',
@@ -335,7 +424,16 @@ values (
   'Meeting point announced to registered runners',
   'Istanbul',
   'social',
-  'https://yasrise.run/events/yrc-community-run',
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
   $yrc$Our community runs are the heartbeat of YRC — no bibs, no pressure, no one left behind. Show up, run together, stay for the conversation after.
 
 ## What to expect

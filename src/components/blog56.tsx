@@ -6,6 +6,7 @@ import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { subscribeToNewsletter } from "@/lib/actions/newsletter";
 
 interface Blog56Props {
   label?: string;
@@ -55,12 +56,21 @@ const Blog56 = (props: Props) => {
 
   const [email, setEmail] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [isPending, startTransition] = React.useTransition();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (email) {
-      setSubmitted(true);
-    }
+    const formData = new FormData(event.currentTarget);
+    setErrorMessage(null);
+    startTransition(async () => {
+      const result = await subscribeToNewsletter(formData);
+      if (result.status === "subscribed") {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(result.message);
+      }
+    });
   };
 
   return (
@@ -86,24 +96,45 @@ const Blog56 = (props: Props) => {
                 {successLabel}
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-3 sm:flex-row"
-              >
-                <Input
-                  type="email"
-                  required
-                  placeholder={emailPlaceholder}
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  aria-label="Email address"
-                  className="h-11 flex-1 text-body-small"
-                />
-                <Button type="submit" size="lg" className="h-11 px-6">
-                  {subscribeLabel}
-                  <ArrowRight className="size-4" />
-                </Button>
-              </form>
+              <>
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-3 sm:flex-row"
+                >
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder={emailPlaceholder}
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    aria-label="Email address"
+                    className="h-11 flex-1 text-body-small"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="h-11 px-6"
+                    disabled={isPending}
+                  >
+                    {isPending ? "Subscribing…" : subscribeLabel}
+                    <ArrowRight className="size-4" />
+                  </Button>
+                </form>
+                {errorMessage && (
+                  <p role="alert" className="mt-3 text-caption text-destructive">
+                    {errorMessage}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -33,6 +33,13 @@ function revalidateEventPaths(slug?: string) {
 function eventPayload(formData: FormData) {
   const endDate = str(formData, "end_date");
   const recurrence = str(formData, "recurrence", 20);
+  const startTime = str(formData, "start_time", 8);
+  const durationMinutes = Number.parseInt(str(formData, "duration_minutes", 10), 10);
+  const elevationGain = Number.parseInt(str(formData, "elevation_gain_m", 10), 10);
+  // Number("") is 0 — guard the empty input explicitly so it stays null
+  // (and 0 would violate the distance_km > 0 CHECK anyway).
+  const distanceRaw = str(formData, "distance_km", 10);
+  const distanceKm = distanceRaw === "" ? Number.NaN : Number(distanceRaw);
   return {
     slug: str(formData, "slug", 200),
     title: str(formData, "title", 200),
@@ -45,6 +52,15 @@ function eventPayload(formData: FormData) {
     category: str(formData, "category", 20),
     registration_url: str(formData, "registration_url", 500) || null,
     recurrence: recurrence === "weekly" ? "weekly" : null,
+    start_time: /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(startTime) ? startTime : null,
+    duration_minutes: Number.isNaN(durationMinutes) ? null : durationMinutes,
+    meeting_point: str(formData, "meeting_point", 200) || null,
+    finish_point: str(formData, "finish_point", 200) || null,
+    distance_km: Number.isNaN(distanceKm) ? null : distanceKm,
+    elevation_gain_m: Number.isNaN(elevationGain) ? null : elevationGain,
+    route_notes: str(formData, "route_notes", 500) || null,
+    what_to_bring: str(formData, "what_to_bring", 500) || null,
+    coach_tips: str(formData, "coach_tips", 500) || null,
     body: str(formData, "body", 100_000),
   };
 }
