@@ -175,7 +175,12 @@ export async function GET(request: Request) {
     redirect("/login?error=profile");
   }
 
-  // --- Mint a one-time session link and hand off to /auth/confirm ------
+  // --- Establish the session in THIS browser ------------------------------
+  // The minted token_hash is a bearer credential: bouncing it through a
+  // /auth/confirm URL would let anyone holding the URL log in as this member
+  // from any browser (login CSRF). Verifying the OTP right here in the route
+  // handler sets the session cookies on the browser that completed OAuth —
+  // the token never appears in a transferable URL (or logs/history).
   const { data: link, error: linkError } = await admin.auth.admin.generateLink({
     type: "magiclink",
     email,
@@ -184,7 +189,14 @@ export async function GET(request: Request) {
     redirect("/login?error=session");
   }
 
-  redirect(
-    `/auth/confirm?token_hash=${link.properties.hashed_token}&type=magiclink&next=${encodeURIComponent(next)}`,
-  );
+  const supabase = await createClient();
+  const { error: verifyError } = await supabase.auth.verifyOtp({
+    token_hash: link.properties.hashed_token,
+    type: "magiclink",
+  });
+  if (verifyError) {
+    redirect("/login?error=session");
+  }
+
+  redirect(next);
 }

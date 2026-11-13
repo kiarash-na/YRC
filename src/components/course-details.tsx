@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { CourseDetail } from "@/data/events";
+import type { CourseDetail } from "@/lib/content-shared";
 
 interface CourseDetailsProps {
   details: CourseDetail[];

@@ -4,8 +4,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/content-shared";
-import type { EventSummary } from "@/lib/content";
+import { formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface EventCardProps {
   event: EventSummary;

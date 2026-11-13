@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { EmailLoginForm } from "@/components/email-login-form";
+import { safeNext } from "@/lib/safe-next";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string; error?: string }>;
 }) {
   const { next, error } = await searchParams;
-  const safeTarget = next && next.startsWith("/") && !next.startsWith("//") ? next : "/profile";
+  const safeTarget = safeNext(next);
 
   // already signed in? go straight to the destination
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {

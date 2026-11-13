@@ -4,8 +4,7 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/content-shared";
-import type { PostSummary } from "@/lib/content";
+import { formatDate, type PostSummary } from "@/lib/content-shared";
 
 interface PostCardProps {
   post: PostSummary;

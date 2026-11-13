@@ -9,7 +9,8 @@ import { TrainingProcess } from "@/components/training-process";
 import { StrengthMobility } from "@/components/strength-mobility";
 import { CourseDetails } from "@/components/course-details";
 import { Faq } from "@/components/faq";
-import { courseDetails, faqs } from "@/data/events";
+import { getContentBlock } from "@/lib/content-blocks";
+import type { CourseDetail, FaqItem } from "@/lib/content-shared";
 import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 
 export const metadata: Metadata = {
@@ -23,6 +24,10 @@ export const revalidate = 900;
 
 export default async function EventsPage() {
   const upcoming = (await getUpcomingEvents()).slice(0, 3).map(toEventSummary);
+  const [courseDetails, faqs] = await Promise.all([
+    getContentBlock<CourseDetail>("events.course_details"),
+    getContentBlock<FaqItem>("events.faqs"),
+  ]);
 
   return (
     <main className="flex-1">

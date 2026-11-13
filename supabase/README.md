@@ -15,7 +15,13 @@ One-time setup, ~10 minutes, no CLI needed — everything runs in the Supabase S
 In **SQL Editor**, run in this order:
 
 1. `supabase/migrations/0001_init.sql` — tables, RLS, functions, triggers, view
-2. `supabase/seed.sql` — points menu + all events + one QR token per event
+2. `supabase/migrations/0002_email_login.sql` — email-match admin rule + magic-link support
+3. `supabase/migrations/0003_event_lifecycle.sql` — `is_past`/`recurrence`, lifecycle cron, check-in window
+4. `supabase/migrations/0004_admin_aggregates.sql` — aggregate views (security_invoker)
+5. `supabase/migrations/0005_protect_profile_strava_link.sql` — locks `strava_athlete_id` to the Strava auth flow (anti-privilege-escalation)
+6. `supabase/migrations/0006_content_db.sql` — `posts` + `content_blocks` tables (journal + page copy live in the DB)
+7. `supabase/seed.sql` — points menu + all events + one QR token per event
+8. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
 
 Then open **Database → Advisors → Security Advisor** — it should show no errors.
 
@@ -59,6 +65,8 @@ Set the env vars (see `.env.example`) in:
 | `event_attendance` | who checked in where (one per member per event) |
 | `score_actions` | the admin-editable points menu |
 | `score_entries` | append-only points ledger; score = sum |
+| `posts` | journal articles (MDX body; replaced content/blog/*.mdx) |
+| `content_blocks` | structured page copy blocks (faqs, course details) |
 
 ## Branded auth emails (React Email + Resend)
 

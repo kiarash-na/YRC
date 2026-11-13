@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cn } from "cn";
 
 import { EventCard } from "@/components/event-card";
-import type { EventSummary } from "@/lib/content";
+import type { EventSummary } from "@/lib/content-shared";
 
 interface UpcomingEventsProps {
   events: EventSummary[];

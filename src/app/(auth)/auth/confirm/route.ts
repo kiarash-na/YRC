@@ -6,9 +6,13 @@ import { createClient } from "@/lib/supabase/server";
 type EmailOtpType = "magiclink" | "signup" | "invite" | "recovery" | "email_change" | "email";
 
 /**
- * GET /auth/confirm — establishes the session for both login paths:
+ * GET /auth/confirm — establishes the session for email-originated links:
  *   ?code=…                         → PKCE exchange (magic-link emails)
- *   ?token_hash=…&type=magiclink    → OTP verify (Strava callback handoff)
+ *   ?token_hash=…&type=…            → OTP verify (emails; may be opened on
+ *                                     another device — possession of the
+ *                                     inbox is the auth factor)
+ * The Strava login handoff does NOT pass through here: the callback verifies
+ * the minted OTP server-side so no bearer token ever rides a URL.
  * Cookie writes are allowed here because this is a Route Handler.
  */
 export async function GET(request: Request) {

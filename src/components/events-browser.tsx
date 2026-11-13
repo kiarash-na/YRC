@@ -10,8 +10,8 @@ import { cn } from "cn";
 import {
   EVENT_CATEGORIES,
   type EventCategory,
+  type EventSummary,
 } from "@/lib/content-shared";
-import type { EventSummary } from "@/lib/content";
 
 type When = "all" | "upcoming" | "past";
 

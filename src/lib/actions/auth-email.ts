@@ -9,6 +9,20 @@ export type SendLoginEmailResult =
   | { status: "sent" }
   | { status: "error"; message: string };
 
+/** Last-resort origin when neither env nor a recognized host header exists. */
+const PROD_ORIGIN = "https://yasrise.run";
+
+/** Hosts the header-derived origin fallback may trust (must match the Supabase Auth redirect allow-list). */
+const ALLOWED_FALLBACK_HOSTS = new Set([
+  "yasrise.run",
+  "www.yasrise.run",
+  "yrc-dev.kiarash.online",
+  "localhost:3000",
+  "localhost:3001",
+  "127.0.0.1:3000",
+  "127.0.0.1:3001",
+]);
+
 /**
  * Send a magic-link login email (PKCE flow). The link lands on
  * /auth/confirm?code=… which exchanges it for a session.
@@ -23,10 +37,17 @@ export async function sendLoginEmail(
     return { status: "error", message: "Enter a valid email address." };
   }
 
+  // NEXT_PUBLIC_SITE_URL is the source of truth. The header-derived fallback
+  // exists only for local tooling and is allow-listed: raw Host /
+  // X-Forwarded-Host are attacker-controllable per request, and a poisoned
+  // origin here would put an attacker's domain into the login email's
+  // /auth/confirm link (capturing the PKCE code on click).
   const headerStore = await headers();
-  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
-  const proto = headerStore.get("x-forwarded-proto") ?? "http";
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? `${proto}://${host}`;
+  const host = (headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "")
+    .toLowerCase();
+  const proto = host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
+  const headerOrigin = ALLOWED_FALLBACK_HOSTS.has(host) ? `${proto}://${host}` : null;
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? headerOrigin ?? PROD_ORIGIN;
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithOtp({

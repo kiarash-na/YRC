@@ -10,18 +10,17 @@ import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { PostCard } from "@/components/post-card";
 import { Badge } from "@/components/ui/badge";
-import {
-  formatDate,
-  getAllPosts,
-  getPostBySlug,
-  toPostSummary,
-} from "@/lib/content";
+import { formatDate } from "@/lib/content-shared";
+import { getPostBySlug, getPostSummaries } from "@/lib/posts-db";
 
-export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+// ISR: journal posts change rarely; admin edits revalidate on demand.
+export const revalidate = 900;
+
+/** Prerender known posts at build; new slugs render on-demand (dynamicParams default). */
+export async function generateStaticParams() {
+  const summaries = await getPostSummaries();
+  return summaries.map((post) => ({ slug: post.slug }));
 }
-
-export const dynamicParams = false;
 
 export async function generateMetadata({
   params,
@@ -29,7 +28,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return { title: "Article not found — YRC" };
@@ -47,7 +46,7 @@ export default async function JournalPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -58,10 +57,9 @@ export default async function JournalPostPage({
     components: mdxComponents,
   });
 
-  const related = getAllPosts()
-    .filter((candidate) => candidate.slug !== post.slug)
-    .slice(0, 3)
-    .map(toPostSummary);
+  const related = (await getPostSummaries())
+    .filter((p) => p.slug !== slug)
+    .slice(0, 3);
 
   return (
     <main className="flex-1">

@@ -9,7 +9,7 @@ import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/content";
+import { formatDate } from "@/lib/content-shared";
 import { getAllEvents, getEventBySlug } from "@/lib/events-db";
 
 // ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.

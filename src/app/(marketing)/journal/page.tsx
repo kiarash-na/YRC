@@ -4,12 +4,7 @@ import { Blog52 } from "@/components/blog52";
 import { Blog56 } from "@/components/blog56";
 import { JoinCta } from "@/components/join-cta";
 import { PostCard } from "@/components/post-card";
-import {
-  getAllPosts,
-  getAllTags,
-  getPostsByTag,
-  toPostSummary,
-} from "@/lib/content";
+import { getAllTags, getPostSummaries, getPostsByTag } from "@/lib/posts-db";
 
 export const metadata: Metadata = {
   title: "Journal — YRC",
@@ -17,9 +12,12 @@ export const metadata: Metadata = {
     "Stories, training notes and race recaps from the Yas Rise Community journal.",
 };
 
-export default function JournalPage() {
-  const latest = getAllPosts().map(toPostSummary);
-  const tags = getAllTags();
+// ISR: journal posts change rarely; admin edits revalidate on demand.
+export const revalidate = 900;
+
+export default async function JournalPage() {
+  const summaries = await getPostSummaries();
+  const tags = getAllTags(summaries);
 
   return (
     <main className="flex-1">
@@ -36,7 +34,7 @@ export default function JournalPage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-6">
-              {latest.slice(0, 9).map((post) => (
+              {summaries.slice(0, 9).map((post) => (
                 <PostCard
                   key={post.slug}
                   post={post}
@@ -49,7 +47,7 @@ export default function JournalPage() {
       </section>
 
       {tags.map((tag) => {
-        const posts = getPostsByTag(tag).map(toPostSummary);
+        const posts = getPostsByTag(summaries, tag);
         return (
           <section key={tag} className="bg-background pb-32">
             <div className="container">
