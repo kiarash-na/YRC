@@ -12,4 +12,4 @@ Plan file: ~/.claude/plans/pasted-content-id-7f3c-yrc-munich-ancient-hare.md (ap
 - [x] T7 hero video card (/YRC/13372516_1080_1920_30fps.mp4, ik-thumbnail poster, autoplay muted loop)
 - [x] T8/T9 about structure + services definition — TODO(user) placeholders await real copy
 - [x] T10 seed.sql parity + regression (build/lint green, curl smoke matrix passed, DB contract verified)
-- [ ] Pending USER: about/services/founder/shapers copy; hero clip final pick OK'd; optional 2nd video tile on /community
+- [ ] Pending USER (prep list): rotate secrets (Strava/Resend/Supabase PAT); dashboard Site URL → yasrise.run; about copy (founder/2 shapers/bio+\"Salty\" style/Tehran/services intro); review does-column one-liners; confirm hero clip; first events for long-run/drills/swim/trail; manual preview checks (RSVP+.ics, newsletter, magic link); then Devp→main PR
