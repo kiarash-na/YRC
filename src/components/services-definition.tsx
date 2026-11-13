@@ -42,13 +42,27 @@ const does: Service[] = [
   },
 ];
 
-// TODO(user): every entry in this column is a placeholder — write the real
-// "what YRC doesn't do" list before launch.
-const doesnt: string[] = [
-  "[Not a competitive racing team — TODO(user)]",
-  "[Not a drop-in fitness class — TODO(user)]",
-  "[Not about pace pressure or leaderboards — TODO(user)]",
-  "[DOESN'T 4 — TODO(user)]",
+const doesnt: Service[] = [
+  {
+    title: "Not a racing team.",
+    description:
+      "No selections, no pace requirements, no podiums for speed — the board rewards showing up, not finishing first.",
+  },
+  {
+    title: "Not a coaching business.",
+    description:
+      "No paid training plans or one-on-one coaching — sessions and camps are community-organized and volunteer-led.",
+  },
+  {
+    title: "No paywalls.",
+    description:
+      "Weekly community runs are free; you only ever cover your own race entry or a travel share on trips.",
+  },
+  {
+    title: "Not a gym.",
+    description:
+      "No indoor facility, no machines, no equipment rental — we meet at cafés, piers, tracks, and trailheads.",
+  },
 ];
 
 interface ServicesDefinitionProps {
@@ -106,14 +120,18 @@ const ServicesDefinition = ({ className }: ServicesDefinitionProps) => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* TODO(user): replace all placeholder entries below. */}
               <ul className="flex flex-col divide-y divide-border">
                 {doesnt.map((item) => (
-                  <li key={item} className="flex gap-3 py-4 first:pt-0 last:pb-0">
+                  <li key={item.title} className="flex gap-3 py-4 first:pt-0 last:pb-0">
                     <X className="mt-1 size-4 shrink-0 text-muted-foreground" />
-                    <p className="text-body-small text-muted-foreground">
-                      {item}
-                    </p>
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-body-small font-semibold">
+                        {item.title}
+                      </h3>
+                      <p className="text-body-small text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </div>
                   </li>
                 ))}
               </ul>
