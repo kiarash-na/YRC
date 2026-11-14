@@ -80,10 +80,9 @@ const ServicesDefinition = ({ className }: ServicesDefinitionProps) => {
           <h2 className="text-h2 md:text-h1">
             What YRC does. What YRC doesn&rsquo;t.
           </h2>
-          {/* TODO(user): final intro paragraph for this section. */}
           <p className="max-w-2xl text-body text-muted-foreground">
-            [SERVICES INTRO — one or two sentences setting up why YRC is clear
-            about what it does and doesn&rsquo;t do]
+            A community works best when everyone knows what they&rsquo;re
+            showing up to — so here it is, plainly.
           </p>
         </div>
 
