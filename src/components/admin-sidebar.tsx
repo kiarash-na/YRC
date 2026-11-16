@@ -15,9 +15,15 @@ import {
 
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
+const NAV_ITEMS: {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  /** Accent tab (yellow, bold) that stands out from the rest. */
+  highlight?: boolean;
+}[] = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin/agent", label: "Agent", icon: Sparkles },
+  { href: "/admin/agent", label: "Agent", icon: Sparkles, highlight: true },
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/scoring", label: "Scoring", icon: Star },
   { href: "/admin/members", label: "Members", icon: Users },
@@ -42,11 +48,17 @@ export function AdminNav({ orientation = "vertical" }: { orientation?: "vertical
           <Link
             key={item.href}
             href={item.href}
+            aria-current={active ? "page" : undefined}
             className={cn(
               "flex items-center gap-2.5 rounded-lg px-3 py-2 text-body-small font-medium whitespace-nowrap transition-colors",
-              active
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+              item.highlight
+                ? cn(
+                    "bg-yrc-accent font-bold text-yrc-accent-foreground hover:bg-yrc-accent/85",
+                    active && "ring-2 ring-primary ring-inset",
+                  )
+                : active
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             <item.icon className="size-4 shrink-0" />
