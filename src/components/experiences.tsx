@@ -47,9 +47,8 @@ const experiences: Experience[] = [
     description:
       "A community built around sustainable training, shared goals, continuous growth and people moving forward together.",
     image: {
-      src: "/YRC/Home/Untitled%20design%20(6).png",
-      alt: "YRC runner pushing through a training session",
-      updatedAt: "1789993235481",
+      src: "/YRC/Community/IMG_2475.JPG",
+      alt: "YRC runners sharing an easy run on a park path",
     },
   },
 ];

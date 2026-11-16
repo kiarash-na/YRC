@@ -6,7 +6,7 @@ import { Reveal } from "@/components/reveal";
 interface AboutImage {
   src: string;
   alt: string;
-  updatedAt: string;
+  updatedAt?: string;
   width?: number;
   /** Grid placement in the asymmetric editorial pair. */
   span: string;
@@ -16,9 +16,8 @@ interface AboutImage {
 
 const images: AboutImage[] = [
   {
-    src: "/YRC/Home/SRK09740%20(1).jpg",
+    src: "/YRC/Community/IMG_2469.JPG",
     alt: "YRC community members connecting after a run",
-    updatedAt: "1789992733219",
     span: "md:col-span-7",
     frame: "aspect-4/3",
   },
@@ -73,7 +72,9 @@ const About = ({ className }: AboutProps) => {
                   alt={image.alt}
                   fill
                   sizes="(min-width: 768px) 58vw, 100vw"
-                  queryParameters={{ updatedAt: image.updatedAt }}
+                  queryParameters={
+                  image.updatedAt ? { updatedAt: image.updatedAt } : undefined
+                }
                   // No server-side crop: the frame ratio changes per
                   // breakpoint, so object-cover crops the original instead.
                   transformation={

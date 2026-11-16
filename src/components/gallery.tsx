@@ -6,7 +6,7 @@ import { Reveal } from "@/components/reveal";
 interface GalleryImage {
   src: string;
   alt: string;
-  updatedAt: string;
+  updatedAt?: string;
   /** Grid placement (spans, offsets, visibility). */
   className: string;
   /** Collage tilt — on the tile itself, so hover can straighten it. */
@@ -59,9 +59,8 @@ const images: GalleryImage[] = [
     aspect: "3-4",
   },
   {
-    src: "/YRC/Home/Untitled%20design%20(6).png",
-    alt: "Yas Rise community artwork",
-    updatedAt: "1789993235481",
+    src: `${basePath}/M07.jpg`,
+    alt: "A YRC runner celebrating on the course at Istanbul Marathon",
     className: "md:col-span-4 md:mt-16",
     tilt: "md:rotate-[1.5deg]",
     aspect: "3-4",
@@ -157,7 +156,9 @@ const Gallery = ({ className }: GalleryProps) => {
                   alt={image.alt}
                   fill
                   sizes="(min-width: 768px) 33vw, 50vw"
-                  queryParameters={{ updatedAt: image.updatedAt }}
+                  queryParameters={
+                  image.updatedAt ? { updatedAt: image.updatedAt } : undefined
+                }
                   transformation={smartCrop(image.aspect, image.width)}
                   className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
                 />

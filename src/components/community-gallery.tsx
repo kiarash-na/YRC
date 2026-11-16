@@ -5,7 +5,7 @@ import { Image } from "@/components/imagekit";
 interface GalleryImage {
   src: string;
   alt: string;
-  updatedAt: string;
+  updatedAt?: string;
   className: string;
   aspect: string;
   /** Cap source resolution for >25MP originals (ImageKit ELIMIT). */
@@ -21,9 +21,8 @@ const images: GalleryImage[] = [
     aspect: "aspect-4/3",
   },
   {
-    src: "/YRC/Home/Untitled%20design%20(6).png",
-    alt: "Yas Rise community artwork",
-    updatedAt: "1789993235481",
+    src: "/YRC/Community/IMG_2466.JPG",
+    alt: "YRC runners celebrating together after a run",
     className: "md:col-span-4 md:mt-16 md:rotate-[1.5deg]",
     aspect: "aspect-4/3 md:aspect-3/4",
   },
@@ -109,7 +108,9 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
                 alt={image.alt}
                 fill
                 sizes="(min-width: 768px) 33vw, 50vw"
-                queryParameters={{ updatedAt: image.updatedAt }}
+                queryParameters={
+                  image.updatedAt ? { updatedAt: image.updatedAt } : undefined
+                }
                 transformation={image.width ? [{ width: image.width }] : undefined}
                 className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />

@@ -2,10 +2,9 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 
-const landscape = {
-  src: "/YRC/Home/SRK09740%20(1).jpg",
+const landscape: { src: string; alt: string; updatedAt?: string } = {
+  src: "/YRC/Community/IMG_2475.JPG",
   alt: "YRC community running together on a group run",
-  updatedAt: "1789992733219",
 };
 
 const markers = [
@@ -38,7 +37,9 @@ const WithoutBorders = ({ className }: WithoutBordersProps) => {
               alt={landscape.alt}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              queryParameters={{ updatedAt: landscape.updatedAt }}
+              queryParameters={
+              landscape.updatedAt ? { updatedAt: landscape.updatedAt } : undefined
+            }
               className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             />
           </div>
