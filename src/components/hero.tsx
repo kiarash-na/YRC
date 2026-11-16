@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { Image, Video } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
 import { lqip, ORIGINAL_VIDEO } from "@/lib/imagekit";
-import { TALLY_POPUP_HASH } from "@/lib/tally";
 import { useAmbientPlayback } from "@/lib/use-ambient-playback";
 
 /*
@@ -70,7 +69,7 @@ const defaultProps: HeroProps = {
   buttons: {
     primary: {
       text: "JOIN THE COMMUNITY",
-      url: TALLY_POPUP_HASH,
+      url: "/login",
     },
     secondary: {
       text: "SEE UPCOMING RUNS",
@@ -234,7 +233,13 @@ const Hero = (props: Props) => {
                   <Button
                     size="lg"
                     className="h-12 w-full bg-yrc-accent px-7 tracking-wider text-yrc-accent-foreground hover:bg-yrc-accent/85 sm:w-auto"
-                    render={<a href={buttons.primary.url} />}
+                    render={
+                      buttons.primary.url.startsWith("/") ? (
+                        <Link href={buttons.primary.url} />
+                      ) : (
+                        <a href={buttons.primary.url} />
+                      )
+                    }
                     nativeButton={false}
                   >
                     {buttons.primary.text}
