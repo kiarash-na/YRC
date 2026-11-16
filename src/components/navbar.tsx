@@ -33,7 +33,11 @@ interface NavbarProps {
 /** Full-screen overlay menu. Animations are pure CSS (see globals.css). */
 const Navbar = ({ className }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
+  // Vercel prerenders the home page as "/index", so the server HTML would
+  // otherwise miss the over-hero styles (and React keeps server attributes
+  // on hydration, so the client can't correct it).
+  const rawPathname = usePathname();
+  const pathname = rawPathname === "/index" ? "/" : rawPathname;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
