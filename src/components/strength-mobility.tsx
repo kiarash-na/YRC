@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";

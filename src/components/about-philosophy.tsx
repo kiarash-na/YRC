@@ -1,5 +1,5 @@
 import { Compass, Route, Sprout, Users } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 interface Principle {
   icon: React.ComponentType<{ className?: string }>;

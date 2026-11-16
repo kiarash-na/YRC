@@ -14,6 +14,10 @@ Local dev runs on **HTTPS at https://localhost:3001** (`pnpm dev:https`, self-si
 
 Push to `Devp` branch → Dokploy auto-builds the Dockerfile (app `yrc-preview`) → live preview at https://yrc-dev.kiarash.online in ~1 min. `main` → Vercel production. ImageKit env var (`NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`) is configured in Dokploy, never commit it. Plain `Dockerfile` is ignored by Vercel; never create `Dockerfile.vercel`.
 
+## Class merging (`cn`)
+
+Always `import { cn } from "@/lib/utils"` — never from the `cn` package directly (eslint `no-restricted-imports` enforces it). The project `cn` registers the custom type scale (`text-hero`, `text-display`, `text-h1`…`text-caption`) as font-size; the stock merger treats them as colors and silently drops the size when a `text-<color>` follows. `shadcn add` writes `from "cn"` — rewrite the import after adding a component. New `--text-*` tokens in `globals.css` must be added to `src/lib/utils.ts` too.
+
 ## Images (ImageKit)
 
 - Always use `Image`/`Video` from `@/components/imagekit` for ImageKit-hosted assets (drop-in replacements for `next/image` / `<video>`). Never raw `<img>`/`<video>`.

@@ -2,7 +2,7 @@
 
 import { Accordion } from "@base-ui/react/accordion";
 import { Plus } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import type { FaqItem } from "@/lib/content-shared";
 

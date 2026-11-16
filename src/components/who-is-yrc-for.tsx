@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import {

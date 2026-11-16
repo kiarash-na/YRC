@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { EventCard } from "@/components/event-card";
 import type { EventSummary } from "@/lib/content-shared";

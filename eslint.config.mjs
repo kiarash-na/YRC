@@ -5,6 +5,25 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    // Use the project cn (src/lib/utils.ts) — it knows the YRC type scale.
+    // The bare package merges text-h1 etc. as colors and drops sizes.
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["src/lib/utils.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "cn",
+              message: 'Import { cn } from "@/lib/utils" instead.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

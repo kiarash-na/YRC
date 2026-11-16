@@ -1,6 +1,6 @@
 import { Footprints, Heart, Users } from "lucide-react";
 import { FaStrava } from "react-icons/fa6";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

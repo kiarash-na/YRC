@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Reveal } from "@/components/reveal";
 import { JoinYrcButton } from "@/components/join-yrc-button";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Reveal } from "@/components/reveal";
 import { formatWeekday, type EventSummary } from "@/lib/content-shared";

@@ -1,5 +1,5 @@
 import { CalendarCheck, Link2, MailPlus, UserRoundCheck } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getLeaderboard } from "@/lib/leaderboard";

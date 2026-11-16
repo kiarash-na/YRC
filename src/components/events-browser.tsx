@@ -6,7 +6,7 @@ import * as React from "react";
 import { EventCard } from "@/components/event-card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 import {
   EVENT_CATEGORIES,
   EVENT_CATEGORY_LABELS,

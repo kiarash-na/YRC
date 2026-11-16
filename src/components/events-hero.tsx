@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";

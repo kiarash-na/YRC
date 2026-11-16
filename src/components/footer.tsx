@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 import { JoinYrcButton } from "@/components/join-yrc-button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
