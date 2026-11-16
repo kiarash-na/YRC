@@ -7,6 +7,7 @@ import { Experiences } from "@/components/experiences";
 import { Philosophy } from "@/components/philosophy";
 import { Story } from "@/components/story";
 import { Gallery } from "@/components/gallery";
+import { HomeEvents } from "@/components/home-events";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 
@@ -21,6 +22,9 @@ export default async function Home() {
   const weekly = upcoming.filter((event) => event.recurrence === "weekly");
   const weeklySlugs = new Set(weekly.map((event) => event.slug));
   const nextEvent = upcoming.find((event) => !weeklySlugs.has(event.slug));
+  // Closing card grid: the next events after the highlighted one (a cover's
+  // view-transition name may appear only once per page).
+  const moreEvents = upcoming.filter((event) => event.slug !== nextEvent?.slug).slice(0, 3);
 
   return (
     <main id="main" className="flex-1">
@@ -33,6 +37,7 @@ export default async function Home() {
       <Philosophy />
       <Story />
       <Gallery />
+      {moreEvents.length > 0 ? <HomeEvents events={moreEvents} /> : null}
       <NewsletterSignup />
     </main>
   );
