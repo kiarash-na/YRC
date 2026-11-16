@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 import { Blog52 } from "@/components/blog52";
-import { Blog56 } from "@/components/blog56";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { PostCard } from "@/components/post-card";
 import { getAllTags, getPostSummaries, getPostsByTag } from "@/lib/posts-db";
 import { Reveal } from "@/components/reveal";
@@ -77,10 +76,7 @@ export default async function JournalPage() {
       })}
 
       <Reveal>
-        <Blog56 />
-      </Reveal>
-      <Reveal>
-        <JoinCta />
+        <NewsletterSignup />
       </Reveal>
     </main>
   );

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { AboutHero } from "@/components/about-hero";
 import { AboutPhilosophy } from "@/components/about-philosophy";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { LivedJourney } from "@/components/lived-journey";
 import { OurStory } from "@/components/our-story";
 import { OurValues } from "@/components/our-values";
@@ -47,7 +47,7 @@ export default function AboutPage() {
         <Team />
       </Reveal>
       <Reveal>
-        <JoinCta />
+        <NewsletterSignup />
       </Reveal>
     </main>
   );

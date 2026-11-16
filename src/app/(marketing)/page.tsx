@@ -7,7 +7,7 @@ import { Experiences } from "@/components/experiences";
 import { Philosophy } from "@/components/philosophy";
 import { Story } from "@/components/story";
 import { Gallery } from "@/components/gallery";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
 
 // ISR: matches the 15-min event-lifecycle cron cadence; admin edits
@@ -33,7 +33,7 @@ export default async function Home() {
       <Philosophy />
       <Story />
       <Gallery />
-      <JoinCta />
+      <NewsletterSignup />
     </main>
   );
 }

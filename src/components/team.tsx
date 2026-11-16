@@ -8,7 +8,6 @@ interface Coach {
   role: string;
   image: string;
   alt: string;
-  online?: boolean;
   bio: string[];
 }
 
@@ -24,13 +23,12 @@ const coaches: Coach[] = [
     ],
   },
   {
-    name: "Kamyar",
+    name: "Kambiz",
     role: "Hybrid Endurance & Strength Coach (Online)",
     image: "/YRC/About/Team/Kambiz-coach.jpg",
-    alt: "Kamyar, YRC online hybrid endurance and strength coach",
-    online: true,
+    alt: "Kambiz, YRC online hybrid endurance and strength coach",
     bio: [
-      "Kamyar is a Hybrid Endurance and Strength Coach with extensive experience in endurance sports and competitions. He has participated in more than 150 races, ranging from Trail, Ultra, and SwimRun to Ironman.",
+      "Kambiz is a Hybrid Endurance and Strength Coach with extensive experience in endurance sports and competitions. He has participated in more than 150 races, ranging from Trail, Ultra, and SwimRun to Ironman.",
       "Today, as an Online Endurance Coach at TrainingPeaks, he uses his experience and knowledge to design personalized training programs for Running, Road Racing, and Marathon.",
       "His experience has taught him that running is not simply about reaching the finish line; it is a journey toward building discipline, developing structure, and discovering your own abilities.",
     ],
@@ -72,14 +70,7 @@ const Team = ({ className }: TeamProps) => {
                   className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
                 />
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <h3 className="text-h4 md:text-h3">{coach.name}</h3>
-                {coach.online && (
-                  <span className="rounded-sm border border-border px-2 py-0.5 text-caption font-bold tracking-[0.2em] text-yrc-accent uppercase">
-                    Online
-                  </span>
-                )}
-              </div>
+              <h3 className="text-h4 md:text-h3">{coach.name}</h3>
               <p className="text-body-small font-semibold">{coach.role}</p>
               <div className="flex flex-col gap-4 text-body-small text-muted-foreground">
                 {coach.bio.map((paragraph, i) => (

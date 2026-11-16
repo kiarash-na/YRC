@@ -10,7 +10,7 @@ import { CoverImage } from "@/components/cover-image";
 import { Reveal } from "@/components/reveal";
 import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
 import { Image } from "@/components/imagekit";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { mdxComponents } from "@/components/mdx";
 import { PostCard } from "@/components/post-card";
 import { Badge } from "@/components/ui/badge";
@@ -208,7 +208,7 @@ export default async function JournalPostPage({
           </div>
         </div>
       </section>
-      <JoinCta />
+      <NewsletterSignup />
     </main>
   );
 }

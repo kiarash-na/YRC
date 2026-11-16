@@ -4,7 +4,7 @@ import { CommunityChallenges } from "@/components/community-challenges";
 import { CommunityGallery } from "@/components/community-gallery";
 import { CommunityHero } from "@/components/community-hero";
 import { CommunityPhilosophy } from "@/components/community-philosophy";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { StravaClub } from "@/components/strava-club";
 import { StridesLeaderboard } from "@/components/strides-leaderboard";
 import { WhoIsYrcFor } from "@/components/who-is-yrc-for";
@@ -43,7 +43,7 @@ export default function CommunityPage() {
         <StravaClub />
       </Reveal>
       <Reveal>
-        <JoinCta />
+        <NewsletterSignup />
       </Reveal>
     </main>
   );

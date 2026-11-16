@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { JoinYrcButton } from "@/components/join-yrc-button";
+import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 interface NavItem {
   name: string;
@@ -59,8 +60,19 @@ const Footer = ({
         <p className="mx-auto max-w-xl leading-snug text-balance text-muted-foreground">
           {description}
         </p>
-        <div>
-          <JoinYrcButton className="mt-4">{ctaText}</JoinYrcButton>
+        <div className="mx-auto flex w-full max-w-xs flex-col justify-center gap-3 pt-4 sm:max-w-none sm:flex-row">
+          <JoinYrcButton className="h-12 w-full px-7 tracking-wider sm:w-auto">
+            {ctaText}
+          </JoinYrcButton>
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-12 w-full px-7 tracking-wider sm:w-auto"
+            render={<Link href="/events" />}
+            nativeButton={false}
+          >
+            EXPLORE EVENTS
+          </Button>
         </div>
       </div>
 

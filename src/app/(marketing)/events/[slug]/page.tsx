@@ -12,7 +12,7 @@ import { EventDetails, EventOverview } from "@/components/event-brief";
 import { EventRegister } from "@/components/event-register";
 import { EventSecondaryActions } from "@/components/event-actions";
 import { EventRouteMap } from "@/components/event-route-map";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { EVENT_CATEGORY_LABELS, formatDate } from "@/lib/content-shared";
@@ -163,7 +163,7 @@ export default async function EventPage({
           </div>
         </div>
       </section>
-      <JoinCta />
+      <NewsletterSignup />
     </main>
   );
 }

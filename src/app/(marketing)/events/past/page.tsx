@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { EventsBrowser } from "@/components/events-browser";
-import { JoinCta } from "@/components/join-cta";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getPastEvents, toEventSummary } from "@/lib/events-db";
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default async function PastEventsPage() {
           </div>
         </div>
       </section>
-      <JoinCta />
+      <NewsletterSignup />
     </main>
   );
 }
