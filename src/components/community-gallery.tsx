@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 
+import { AmbientVideo } from "@/components/ambient-video";
 import { Image } from "@/components/imagekit";
 
 interface GalleryImage {
@@ -10,6 +11,11 @@ interface GalleryImage {
   aspect: string;
   /** Cap source resolution for >25MP originals (ImageKit ELIMIT). */
   width?: number;
+  /**
+   * Portrait clip that brings this tile to life from md up (where the tile
+   * is 3:4); the image stays as its poster and as the phone still.
+   */
+  video?: string;
 }
 
 const images: GalleryImage[] = [
@@ -22,6 +28,7 @@ const images: GalleryImage[] = [
   },
   {
     src: "/YRC/Community/IMG_2466.JPG",
+    video: "/YRC/Community/IMG_2483.MP4",
     alt: "YRC runners celebrating together after a run",
     className: "md:col-span-4 md:mt-16 md:rotate-[1.5deg]",
     aspect: "aspect-4/3 md:aspect-3/4",
@@ -98,22 +105,33 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
             <div
               key={image.src}
               className={cn(
-                "relative w-full overflow-hidden rounded-xl border bg-muted shadow-sm transition-transform duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0",
+                "group relative w-full overflow-hidden rounded-xl border bg-muted shadow-sm transition-transform duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0",
                 image.aspect,
                 image.className,
               )}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(min-width: 768px) 33vw, 50vw"
-                queryParameters={
-                  image.updatedAt ? { updatedAt: image.updatedAt } : undefined
-                }
-                transformation={image.width ? [{ width: image.width }] : undefined}
-                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
-              />
+              {image.video ? (
+                <AmbientVideo
+                  src={image.video}
+                  poster={image}
+                  sizes="(min-width: 768px) 33vw, 50vw"
+                  label="community video"
+                  clipClassName="hidden md:flex"
+                  mediaClassName="object-[50%_60%] grayscale transition-[opacity,filter] duration-700 group-hover:grayscale-0"
+                />
+              ) : (
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 50vw"
+                  queryParameters={
+                    image.updatedAt ? { updatedAt: image.updatedAt } : undefined
+                  }
+                  transformation={image.width ? [{ width: image.width }] : undefined}
+                  className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
+                />
+              )}
             </div>
           ))}
         </div>

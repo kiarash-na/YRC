@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
+import { Reveal } from "@/components/reveal";
 
 interface Camp {
   title: string;
@@ -86,7 +87,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
           </p>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:mt-20 lg:grid-cols-3">
+        <Reveal className="yrc-stagger mx-auto mt-14 grid max-w-6xl gap-4 md:mt-20 lg:grid-cols-3">
           {camps.map((camp) => (
             <a
               key={camp.title}
@@ -125,7 +126,7 @@ const TrainingCamps = ({ className }: TrainingCampsProps) => {
               </div>
             </a>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

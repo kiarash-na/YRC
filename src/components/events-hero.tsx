@@ -21,11 +21,11 @@ const EventsHero = ({ className }: EventsHeroProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="flex max-w-4xl flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="yrc-hero-in text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Community & Experiences
           </p>
-          <h1 className="text-h1 text-balance md:text-display">YRC Events</h1>
-          <div className="flex max-w-2xl flex-col gap-4">
+          <h1 style={{ animationDelay: "80ms" }} className="yrc-hero-in text-h1 text-balance md:text-display">YRC Events</h1>
+          <div style={{ animationDelay: "160ms" }} className="yrc-hero-in flex max-w-2xl flex-col gap-4">
             <p className="text-body font-medium">
               Run together. Explore further. Keep moving.
             </p>
@@ -35,7 +35,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
               endurance sports.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div style={{ animationDelay: "220ms" }} className="yrc-hero-in flex flex-wrap items-center gap-3">
             <Button
               size="lg"
               className="uppercase"
@@ -47,7 +47,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
           </div>
         </div>
 
-        <div className="relative mt-14 aspect-3/2 w-full overflow-hidden rounded-xl border border-border bg-muted md:mt-20 md:aspect-21/9">
+        <div style={{ animationDelay: "300ms" }} className="yrc-hero-in relative mt-14 aspect-3/2 w-full overflow-hidden rounded-xl border border-border bg-muted md:mt-20 md:aspect-21/9">
           <Image
             src={heroImage.src}
             alt={heroImage.alt}
@@ -55,7 +55,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
             queryParameters={{ updatedAt: heroImage.updatedAt }}
-            className="object-cover object-center"
+            className="yrc-drift object-cover object-center"
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,
               backgroundSize: "cover",

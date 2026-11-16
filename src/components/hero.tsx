@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,7 @@ import { Image, Video } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
 import { lqip, ORIGINAL_VIDEO } from "@/lib/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
+import { useAmbientPlayback } from "@/lib/use-ambient-playback";
 
 /*
  * Home hero — adapted from shadcnblocks hero185 (split hero + bento photo
@@ -114,31 +115,12 @@ const Hero = (props: Props) => {
   };
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Mirrors the element's own play/pause events (drives the toggle icon).
-  const [playing, setPlaying] = useState(false);
+  // Plays while on screen; never autoplays for reduced motion / Save-Data.
+  const { playing, toggle: togglePlayback } = useAmbientPlayback(videoRef, 0.1);
   const [videoFailed, setVideoFailed] = useState(false);
   // The video fades in over the fallback once its first frame is playing.
   const [videoShown, setVideoShown] = useState(false);
   const [fallbackLoaded, setFallbackLoaded] = useState(false);
-
-  // Respect reduced motion: never autoplay, the fallback image stays. Users can still start it with the toggle.
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.pause();
-      return;
-    }
-    // Autoplay can be refused (e.g. low-power mode); the fallback stays.
-    el.play().catch(() => {});
-  }, []);
-
-  const togglePlayback = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (el.paused) el.play().catch(() => {});
-    else el.pause();
-  };
 
   const [tall, supporting] = images;
 
@@ -180,7 +162,6 @@ const Hero = (props: Props) => {
             ref={videoRef}
             src={video.src}
             queryParameters={ORIGINAL_VIDEO}
-            autoPlay
             muted
             loop
             playsInline
@@ -188,8 +169,6 @@ const Hero = (props: Props) => {
             controls={false}
             tabIndex={-1}
             onPlaying={() => setVideoShown(true)}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
             onError={() => setVideoFailed(true)}
             className={cn(
               "absolute inset-0 size-full object-cover object-[50%_35%] transition-opacity duration-1000",

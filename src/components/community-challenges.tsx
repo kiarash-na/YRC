@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { Reveal } from "@/components/reveal";
 
 const marathonBase = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
 
@@ -88,7 +89,7 @@ const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
           </p>
         </div>
 
-        <div className="mt-14 flex flex-col gap-5 md:mt-20">
+        <Reveal className="yrc-stagger mt-14 flex flex-col gap-5 md:mt-20">
           {challenges.map((challenge, idx) => (
             <div
               key={challenge.heading}
@@ -126,7 +127,7 @@ const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

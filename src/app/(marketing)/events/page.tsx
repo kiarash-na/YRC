@@ -12,6 +12,7 @@ import { Faq } from "@/components/faq";
 import { getContentBlock } from "@/lib/content-blocks";
 import type { CourseDetail, FaqItem } from "@/lib/content-shared";
 import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Events — YRC",
@@ -33,13 +34,27 @@ export default async function EventsPage() {
     <main className="flex-1">
       <EventsHero />
       <UpcomingEvents events={upcoming} />
-      <InternationalEvents />
-      <TrainingCamps />
-      <StructuredCourses />
-      <TrainingProcess />
-      <StrengthMobility />
-      <CourseDetails details={courseDetails} />
-      <Faq items={faqs} />
+      <Reveal>
+        <InternationalEvents />
+      </Reveal>
+      <Reveal>
+        <TrainingCamps />
+      </Reveal>
+      <Reveal>
+        <StructuredCourses />
+      </Reveal>
+      <Reveal>
+        <TrainingProcess />
+      </Reveal>
+      <Reveal>
+        <StrengthMobility />
+      </Reveal>
+      <Reveal>
+        <CourseDetails details={courseDetails} />
+      </Reveal>
+      <Reveal>
+        <Faq items={faqs} />
+      </Reveal>
     </main>
   );
 }

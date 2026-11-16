@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -8,29 +9,45 @@ import { formatDate, type PostSummary } from "@/lib/content-shared";
 
 interface PostCardProps {
   post: PostSummary;
+  /**
+   * Morph this card's image into the article cover on navigation. Only
+   * where each post appears once on the page (a duplicated name cancels
+   * the transition).
+   */
+  morph?: boolean;
   className?: string;
 }
 
-const PostCard = ({ post, className }: PostCardProps) => {
+const PostCard = ({ post, morph = false, className }: PostCardProps) => {
+  const cover = (
+    <Link
+      href={`/journal/${post.slug}`}
+      className="relative block aspect-16/9 overflow-hidden bg-muted"
+    >
+      <Image
+        src={post.cover}
+        alt={post.title}
+        fill
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        className="object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 hover:filter-none group-hover:filter-none active:filter-none"
+      />
+    </Link>
+  );
+
   return (
     <article
       className={cn(
-        "group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-background",
+        "yrc-lift group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-background",
         className,
       )}
     >
-      <Link
-        href={`/journal/${post.slug}`}
-        className="relative block aspect-16/9 overflow-hidden bg-muted"
-      >
-        <Image
-          src={post.cover}
-          alt={post.title}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 hover:filter-none group-hover:filter-none active:filter-none"
-        />
-      </Link>
+      {morph ? (
+        <ViewTransition name={`post-cover-${post.slug}`} share="yrc-morph" default="none">
+          {cover}
+        </ViewTransition>
+      ) : (
+        cover
+      )}
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-7">
         <div className="flex flex-wrap items-center gap-3">
@@ -56,7 +73,7 @@ const PostCard = ({ post, className }: PostCardProps) => {
           href={`/journal/${post.slug}`}
           className="mt-auto inline-flex w-fit items-center gap-1 pt-2 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
         >
-          Read article <ArrowRight className="size-4" />
+          Read article <ArrowRight className="size-4 transition-transform duration-500 ease-out group-hover:translate-x-1" />
         </Link>
       </div>
     </article>

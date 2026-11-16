@@ -46,16 +46,16 @@ const Blog52 = (props: Props) => {
       <div className="container">
         <div className="mx-auto flex max-w-5xl flex-col">
           <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
-            <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
+            <p className="yrc-hero-in text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
               {label}
             </p>
-            <h1 className="text-h1 md:text-display">{heading}</h1>
-            <p className="mx-auto max-w-2xl text-body text-muted-foreground">
+            <h1 style={{ animationDelay: "80ms" }} className="yrc-hero-in text-h1 md:text-display">{heading}</h1>
+            <p style={{ animationDelay: "160ms" }} className="yrc-hero-in mx-auto max-w-2xl text-body text-muted-foreground">
               {description}
             </p>
           </div>
 
-          <div className="relative mt-14 aspect-3/2 w-full overflow-hidden rounded-xl border border-border bg-muted md:mt-20 md:aspect-21/9">
+          <div style={{ animationDelay: "260ms" }} className="yrc-hero-in relative mt-14 aspect-3/2 w-full overflow-hidden rounded-xl border border-border bg-muted md:mt-20 md:aspect-21/9">
             <Image
               src={image.src}
               alt={image.alt}
@@ -63,7 +63,7 @@ const Blog52 = (props: Props) => {
               priority
               sizes="(min-width: 1024px) 1024px, 100vw"
               queryParameters={{ updatedAt: image.updatedAt }}
-              className="object-cover object-center"
+              className="yrc-drift object-cover object-center"
               style={{
                 backgroundImage: `url(${lqip(image.src, image.updatedAt)})`,
                 backgroundSize: "cover",

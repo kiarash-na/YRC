@@ -29,6 +29,14 @@ Always `import { cn } from "@/lib/utils"` — never from the `cn` package direct
 - No query strings in `src`; use the `queryParameters` prop. `src` is a relative path against the urlEndpoint.
 - Videos: `preload="none"` + an `ik-thumbnail.jpg` poster via `buildSrc`.
 
+## Motion & video
+
+All motion is slow, subtle and gated on `prefers-reduced-motion` (see the "Motion" notes in `globals.css`). Use the existing primitives instead of new libraries:
+- `.yrc-hero-in` (CSS load-in, stagger with inline `animationDelay`) for above-the-fold page heroes; `<Reveal>` (`@/components/reveal`) for everything below the fold — sections are wrapped at page level. `<Reveal className="yrc-stagger …">` makes its direct children arrive one by one (card grids).
+- `.yrc-drift` (slow breathing zoom) on large hero images, `.yrc-lift` on cards, `.yrc-live-dot` for "next/live" accents, `.yrc-tick` on success check icons, `<CountUp>` for scoreboard numbers, `.yrc-read-progress` on articles.
+- Covers morph between card and detail page via React `<ViewTransition name="event-cover-<slug>" | "post-cover-<slug>" share="yrc-morph" default="none">`. A name must appear once per page (that's why `PostCard` only morphs with the `morph` prop).
+- Decorative/ambient clips use `<AmbientVideo>` (`@/components/ambient-video`): muted loop, plays only while on screen, never autoplays for reduced motion / Save-Data / 2G, image poster underneath, pause toggle (`controls` for content clips). The hero uses the same `useAmbientPlayback` hook. Videos are served with `ORIGINAL_VIDEO` (`tr=orig-true`) and posters are real images — the ImageKit video-transformation quota is exhausted, so `ik-thumbnail.jpg` fails. Known clips: `/YRC/13372516_1080_1920_30fps.mp4` (hero), `/YRC/Community/IMG_2483.MP4` and `IMG_2484.MP4` (portrait balance-board drills, 576×1024 — use in 3:4 / 4:5 slots).
+
 # YRC — Yas Rise Company
 
 ## Project

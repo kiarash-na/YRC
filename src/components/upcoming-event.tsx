@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +23,8 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
     <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
         <Reveal className="flex flex-col gap-7">
-          <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+          <p className="flex items-center gap-3 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
+            <span className="yrc-live-dot" aria-hidden="true" />
             Upcoming Event
           </p>
           <h2 className="text-h2 md:text-h1">Next on the calendar</h2>
@@ -33,18 +35,20 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
             href={`/events/${event.slug}`}
             className="group grid gap-8 lg:grid-cols-12 lg:gap-16"
           >
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7">
-              <Image
-                src={event.cover}
-                alt={event.title}
-                fill
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                transformation={[
-                  { aspectRatio: "4-3", crop: "force", focus: "auto" },
-                ]}
-                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
+            <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
+              <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7">
+                <Image
+                  src={event.cover}
+                  alt={event.title}
+                  fill
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                  transformation={[
+                    { aspectRatio: "4-3", crop: "force", focus: "auto" },
+                  ]}
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            </ViewTransition>
 
             <div className="flex flex-col gap-6 lg:col-span-5 lg:py-4">
               <div className="flex flex-wrap items-center gap-3">

@@ -7,6 +7,7 @@ import {
   Sprout,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/reveal";
 
 interface Value {
   icon: React.ComponentType<{ className?: string }>;
@@ -72,7 +73,7 @@ const OurValues = ({ className }: OurValuesProps) => {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
+        <Reveal className="yrc-stagger mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
           {values.map((value) => (
             <div
               key={value.title}
@@ -85,7 +86,7 @@ const OurValues = ({ className }: OurValuesProps) => {
               </p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

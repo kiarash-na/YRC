@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getLeaderboard } from "@/lib/leaderboard";
 import { createPublicClient } from "@/lib/supabase/public";
+import { Reveal } from "@/components/reveal";
+import { CountUp } from "@/components/count-up";
 
 /**
  * YRC Strides — the public leaderboard section on /community. Points are
@@ -84,7 +86,7 @@ const StridesLeaderboard = async ({ className }: StridesLeaderboardProps) => {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="yrc-stagger mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {earnRules.map((rule) => {
             const points = earnPoints?.get(rule.key);
             return (
@@ -102,7 +104,7 @@ const StridesLeaderboard = async ({ className }: StridesLeaderboardProps) => {
               </div>
             );
           })}
-        </div>
+        </Reveal>
 
         {entries.length === 0 ? (
           <div className="mt-14 rounded-xl border border-border bg-muted/40 p-8 md:p-14">
@@ -139,7 +141,7 @@ const StridesLeaderboard = async ({ className }: StridesLeaderboardProps) => {
                   {entry.eventsAttended} events
                 </span>
                 <span className="shrink-0 text-h4 font-semibold text-yrc-accent">
-                  {entry.totalPoints} strides
+                  <CountUp value={entry.totalPoints} /> strides
                 </span>
               </li>
             ))}

@@ -21,10 +21,15 @@ export function CheckInButton({ token }: { token: string }) {
   if (result?.status === "checked_in") {
     return (
       <div className="flex flex-col items-center gap-3 text-center">
-        <CheckCircle2 className="size-10 text-green-600" />
+        <CheckCircle2 className="yrc-tick size-10 text-green-600" aria-hidden="true" />
         <p className="text-body-small font-semibold">You&apos;re checked in!</p>
         {typeof result.points === "number" && result.points > 0 && (
-          <p className="text-h3 font-bold text-yrc-accent">+{result.points} points</p>
+          <p
+            className="yrc-hero-in text-h3 font-bold text-yrc-accent"
+            style={{ animationDelay: "450ms" }}
+          >
+            +{result.points} points
+          </p>
         )}
         <Button
           variant="outline"
@@ -41,7 +46,7 @@ export function CheckInButton({ token }: { token: string }) {
   if (result?.status === "already_checked_in") {
     return (
       <div className="flex flex-col items-center gap-3 text-center">
-        <CheckCircle2 className="size-10 text-green-600" />
+        <CheckCircle2 className="yrc-tick size-10 text-green-600" aria-hidden="true" />
         <p className="text-body-small font-semibold">You&apos;re already checked in</p>
         <p className="text-caption text-muted-foreground">
           Points were awarded on your first scan.

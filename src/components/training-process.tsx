@@ -1,14 +1,18 @@
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { Image } from "@/components/imagekit";
+import { AmbientVideo } from "@/components/ambient-video";
 import { Button } from "@/components/ui/button";
 
+// Poster = the original still (also what reduced-motion visitors keep).
 const image = {
   src: "/YRC/24.png",
   alt: "YRC runner pushing through a training session",
   updatedAt: "1789773516640",
 };
+
+// Balance-board drills at a YRC Munich session (portrait clip).
+const DRILLS_VIDEO = "/YRC/Community/IMG_2484.MP4";
 
 const steps = [
   "Understand your goal — start with where you are and where you want to go.",
@@ -26,14 +30,13 @@ const TrainingProcess = ({ className }: TrainingProcessProps) => {
     <section className={cn("py-32", className)}>
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-          <div className="relative aspect-square w-full overflow-hidden rounded-xl border bg-muted">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
+          <div className="relative mx-auto aspect-3/4 w-full max-w-lg overflow-hidden rounded-xl border bg-muted lg:max-w-none">
+            <AmbientVideo
+              src={DRILLS_VIDEO}
+              poster={image}
               sizes="(min-width: 1024px) 50vw, 100vw"
-              queryParameters={{ updatedAt: image.updatedAt }}
-              className="object-cover object-center"
+              label="training drills video"
+              mediaClassName="object-[50%_60%]"
             />
           </div>
 

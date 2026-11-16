@@ -9,6 +9,7 @@ import { OurValues } from "@/components/our-values";
 import { ServicesDefinition } from "@/components/services-definition";
 import { Team } from "@/components/team";
 import { WithoutBorders } from "@/components/without-borders";
+import { Reveal } from "@/components/reveal";
 
 // FounderSection and ShapersSection exist (src/components/) but stay OFF the
 // page until the real founder/shapers/bio copy arrives — no placeholder text
@@ -24,14 +25,30 @@ export default function AboutPage() {
   return (
     <main className="flex-1">
       <AboutHero />
-      <OurStory />
-      <LivedJourney />
-      <AboutPhilosophy />
-      <OurValues />
-      <ServicesDefinition />
-      <WithoutBorders />
-      <Team />
-      <JoinCta />
+      <Reveal>
+        <OurStory />
+      </Reveal>
+      <Reveal>
+        <LivedJourney />
+      </Reveal>
+      <Reveal>
+        <AboutPhilosophy />
+      </Reveal>
+      <Reveal>
+        <OurValues />
+      </Reveal>
+      <Reveal>
+        <ServicesDefinition />
+      </Reveal>
+      <Reveal>
+        <WithoutBorders />
+      </Reveal>
+      <Reveal>
+        <Team />
+      </Reveal>
+      <Reveal>
+        <JoinCta />
+      </Reveal>
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -19,22 +20,25 @@ const EventCard = ({ event, className }: EventCardProps) => {
   return (
     <article
       className={cn(
-        "group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-background",
+        "yrc-lift group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-background",
         className,
       )}
     >
-      <Link
-        href={`/events/${event.slug}`}
-        className="relative block aspect-4/3 overflow-hidden bg-muted"
-      >
-        <Image
-          src={event.cover}
-          alt={event.title}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-        />
-      </Link>
+      {/* Same name as the event page cover: the image morphs into it. */}
+      <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
+        <Link
+          href={`/events/${event.slug}`}
+          className="relative block aspect-4/3 overflow-hidden bg-muted"
+        >
+          <Image
+            src={event.cover}
+            alt={event.title}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          />
+        </Link>
+      </ViewTransition>
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-7">
         <div className="flex flex-wrap items-center gap-3">
@@ -63,7 +67,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
           href={`/events/${event.slug}`}
           className="mt-auto inline-flex w-fit items-center gap-1 pt-2 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
         >
-          View event <ArrowRight className="size-4" />
+          View event <ArrowRight className="size-4 transition-transform duration-500 ease-out group-hover:translate-x-1" />
         </Link>
       </div>
     </article>

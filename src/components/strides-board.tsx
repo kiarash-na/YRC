@@ -9,6 +9,7 @@ import {
   getLeaderboard,
   type LeaderboardEntry,
 } from "@/lib/leaderboard";
+import { CountUp } from "@/components/count-up";
 
 /*
  * Homepage YRC Strides board — podium (top 3) + ranked rows, structured after
@@ -105,7 +106,7 @@ const StridesBoard = async ({ className }: StridesBoardProps) => {
                       {entry.eventsAttended}
                     </span>
                     <span className="text-right text-body font-semibold md:text-h4">
-                      {entry.totalPoints}
+                      <CountUp value={entry.totalPoints} />
                     </span>
                   </li>
                 );
@@ -185,7 +186,7 @@ const PodiumCard = ({ entry, rank }: PodiumCardProps) => {
               first ? "text-h1 text-yrc-accent" : "text-h2",
             )}
           >
-            {entry.totalPoints}
+            <CountUp value={entry.totalPoints} />
             <span className="ml-1.5 text-caption font-bold tracking-[0.2em] text-muted-foreground uppercase">
               strides
             </span>

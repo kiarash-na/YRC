@@ -481,3 +481,187 @@
     transform: translateY(28px);
   }
 }
+
+/*
+ * Motion, part 2 — slow, premium, sports-inspired details. Same rules as
+ * above: transform/opacity only (compositor-friendly), everything gated on
+ * prefers-reduced-motion, nothing hidden unless JS can reveal it again.
+ *
+ *   .yrc-stagger    on a <Reveal>: the group stays put, its children arrive
+ *                   one after another (cards, lists, grids).
+ *   .yrc-drift      very slow "breathing" zoom for large hero imagery.
+ *   .yrc-lift       card rises a few px on hover (hover-capable devices).
+ *   .yrc-live-dot   accent dot with a resting-heart-rate pulse ("next run").
+ *   .yrc-tick       check icon that draws itself (registration confirmed).
+ *   .yrc-read-progress  journal reading progress, scroll-linked (CSS only).
+ *   .yrc-morph      shared-element morph for event/journal covers
+ *                   (React <ViewTransition>, see view-transitions guide).
+ */
+:root {
+  --yrc-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --yrc-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.yrc-stagger > :nth-child(2) { --yrc-i: 1; }
+.yrc-stagger > :nth-child(3) { --yrc-i: 2; }
+.yrc-stagger > :nth-child(4) { --yrc-i: 3; }
+.yrc-stagger > :nth-child(5) { --yrc-i: 4; }
+.yrc-stagger > :nth-child(6) { --yrc-i: 5; }
+.yrc-stagger > :nth-child(7) { --yrc-i: 6; }
+.yrc-stagger > :nth-child(n + 8) { --yrc-i: 7; }
+
+@keyframes yrc-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06) translate3d(-1%, -0.5%, 0);
+  }
+}
+
+@keyframes yrc-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--yrc-accent) 70%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 0.6rem color-mix(in oklab, var(--yrc-accent) 0%, transparent);
+  }
+}
+
+@keyframes yrc-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes yrc-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes yrc-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.yrc-live-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--yrc-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .yrc-reveal.yrc-stagger > * {
+    transition:
+      opacity 0.8s var(--yrc-ease-out),
+      transform 0.8s var(--yrc-ease-out);
+    transition-delay: calc(var(--yrc-i, 0) * 90ms);
+  }
+
+  .yrc-drift {
+    animation: yrc-drift 26s var(--yrc-ease-in-out) infinite alternate;
+  }
+
+  .yrc-live-dot {
+    animation: yrc-pulse 2.4s var(--yrc-ease-out) infinite;
+  }
+
+  .yrc-tick {
+    animation: yrc-pop 0.45s var(--yrc-ease-out) both;
+  }
+
+  /* lucide CircleCheck: the circle pops, the tick (~8.5 units) draws. */
+  .yrc-tick path {
+    stroke-dasharray: 10;
+    stroke-dashoffset: 10;
+    animation: yrc-draw 0.7s var(--yrc-ease-out) 0.2s forwards;
+  }
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  /* A staggered group doesn't move itself — only its children do. */
+  .yrc-reveal.yrc-stagger:not([data-reveal="in"]) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .yrc-reveal.yrc-stagger:not([data-reveal="in"]) > * {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .yrc-lift {
+    transition:
+      transform 0.5s var(--yrc-ease-out),
+      box-shadow 0.5s var(--yrc-ease-out);
+  }
+
+  .yrc-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px -28px rgb(0 0 0 / 0.35);
+  }
+}
+
+/* Scroll-linked, so it only moves when the reader scrolls; browsers without
+   scroll timelines simply don't show it. */
+.yrc-read-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .yrc-read-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    display: block;
+    height: 3px;
+    pointer-events: none;
+    background: var(--yrc-accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    animation: yrc-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* Page transitions (React <ViewTransition>): covers morph from card to page. */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(.yrc-morph) {
+  animation-duration: 550ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+::view-transition-image-pair(.yrc-morph) {
+  animation-name: yrc-via-blur;
+}
+
+@keyframes yrc-via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

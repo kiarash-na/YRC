@@ -98,7 +98,7 @@ export function EventRegister({ eventId, eventSlug }: EventRegisterProps) {
         role="status"
         className="flex items-start gap-3 rounded-xl border border-green-600/30 bg-green-600/5 p-4"
       >
-        <CheckCircle2 className="mt-0.5 size-6 shrink-0 text-green-600" aria-hidden="true" />
+        <CheckCircle2 className="yrc-tick mt-0.5 size-6 shrink-0 text-green-600" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <p className="text-body font-semibold">You&apos;re registered</p>
           <p className="text-body-small text-muted-foreground">

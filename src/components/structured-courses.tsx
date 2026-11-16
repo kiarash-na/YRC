@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/reveal";
 
 interface CoursePrinciple {
   index: string;
@@ -49,7 +50,7 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
           </p>
         </div>
 
-        <div className="mt-14 border-t border-border md:mt-20">
+        <Reveal className="yrc-stagger mt-14 border-t border-border md:mt-20">
           {principles.map((principle) => (
             <div
               key={principle.index}
@@ -66,7 +67,7 @@ const StructuredCourses = ({ className }: StructuredCoursesProps) => {
               </p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

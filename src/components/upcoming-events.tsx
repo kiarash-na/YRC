@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { EventCard } from "@/components/event-card";
 import type { EventSummary } from "@/lib/content-shared";
+import { Reveal } from "@/components/reveal";
 
 interface UpcomingEventsProps {
   events: EventSummary[];
@@ -24,7 +25,7 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
           </p>
         </div>
 
-        <div className="mt-14 flex flex-wrap justify-center gap-6 md:mt-20">
+        <Reveal className="yrc-stagger mt-14 flex flex-wrap justify-center gap-6 md:mt-20">
           {events.map((event) => (
             <EventCard
               key={event.slug}
@@ -60,7 +61,7 @@ const UpcomingEvents = ({ events, className }: UpcomingEventsProps) => {
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ import { Blog56 } from "@/components/blog56";
 import { JoinCta } from "@/components/join-cta";
 import { PostCard } from "@/components/post-card";
 import { getAllTags, getPostSummaries, getPostsByTag } from "@/lib/posts-db";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Journal — YRC",
@@ -33,15 +34,16 @@ export default async function JournalPage() {
               <h2 className="text-h2 md:text-h1">Fresh from the journal</h2>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            <Reveal className="yrc-stagger flex flex-wrap justify-center gap-6">
               {summaries.slice(0, 9).map((post) => (
                 <PostCard
                   key={post.slug}
                   post={post}
+                  morph
                   className="sm:max-w-[calc(50%-0.75rem)] lg:max-w-[calc(33.333%-1rem)]"
                 />
               ))}
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -59,7 +61,7 @@ export default async function JournalPage() {
                   <h2 className="text-h2 md:text-h1">{tag}</h2>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-6">
+                <Reveal className="yrc-stagger flex flex-wrap justify-center gap-6">
                   {posts.slice(0, 3).map((post) => (
                     <PostCard
                       key={post.slug}
@@ -67,15 +69,19 @@ export default async function JournalPage() {
                       className="sm:max-w-[calc(50%-0.75rem)] lg:max-w-[calc(33.333%-1rem)]"
                     />
                   ))}
-                </div>
+                </Reveal>
               </div>
             </div>
           </section>
         );
       })}
 
-      <Blog56 />
-      <JoinCta />
+      <Reveal>
+        <Blog56 />
+      </Reveal>
+      <Reveal>
+        <JoinCta />
+      </Reveal>
     </main>
   );
 }

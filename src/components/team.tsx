@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { Reveal } from "@/components/reveal";
 
 interface Coach {
   name: string;
@@ -78,7 +79,7 @@ const Team = ({ className }: TeamProps) => {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20">
+        <Reveal className="yrc-stagger mt-14 grid gap-4 sm:grid-cols-2 md:mt-20">
           {coaches.map((coach) => (
             <article
               key={coach.name}
@@ -109,7 +110,7 @@ const Team = ({ className }: TeamProps) => {
               </div>
             </article>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

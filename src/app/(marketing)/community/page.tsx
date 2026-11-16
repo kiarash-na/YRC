@@ -8,6 +8,7 @@ import { JoinCta } from "@/components/join-cta";
 import { StravaClub } from "@/components/strava-club";
 import { StridesLeaderboard } from "@/components/strides-leaderboard";
 import { WhoIsYrcFor } from "@/components/who-is-yrc-for";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Community — YRC",
@@ -23,13 +24,27 @@ export default function CommunityPage() {
   return (
     <main className="flex-1">
       <CommunityHero />
-      <CommunityPhilosophy />
-      <WhoIsYrcFor />
-      <StridesLeaderboard />
-      <CommunityChallenges />
-      <CommunityGallery />
-      <StravaClub />
-      <JoinCta />
+      <Reveal>
+        <CommunityPhilosophy />
+      </Reveal>
+      <Reveal>
+        <WhoIsYrcFor />
+      </Reveal>
+      <Reveal>
+        <StridesLeaderboard />
+      </Reveal>
+      <Reveal>
+        <CommunityChallenges />
+      </Reveal>
+      <Reveal>
+        <CommunityGallery />
+      </Reveal>
+      <Reveal>
+        <StravaClub />
+      </Reveal>
+      <Reveal>
+        <JoinCta />
+      </Reveal>
     </main>
   );
 }
