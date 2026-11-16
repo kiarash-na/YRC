@@ -1,12 +1,17 @@
 import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
+import { Reveal } from "@/components/reveal";
 
 interface AboutImage {
   src: string;
   alt: string;
   updatedAt: string;
   width?: number;
+  /** Grid placement in the asymmetric editorial pair. */
+  span: string;
+  /** Frame aspect classes (literal, so Tailwind's scanner sees them). */
+  frame: string;
 }
 
 const images: AboutImage[] = [
@@ -14,12 +19,16 @@ const images: AboutImage[] = [
     src: "/YRC/Home/SRK09740%20(1).jpg",
     alt: "YRC community members connecting after a run",
     updatedAt: "1789992733219",
+    span: "md:col-span-7",
+    frame: "aspect-4/3",
   },
   {
     src: "/YRC/Home/SRK09793.jpg",
     alt: "YRC runner pushing through a training session",
     updatedAt: "1789992741992",
     width: 1600,
+    span: "md:col-span-5 md:mb-24",
+    frame: "aspect-4/3 md:aspect-3/4",
   },
 ];
 
@@ -29,15 +38,15 @@ interface AboutProps {
 
 const About = ({ className }: AboutProps) => {
   return (
-    <section className={cn("py-32", className)}>
+    <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
-        <div className="grid gap-6 md:grid-cols-7 md:gap-10">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase md:col-span-2">
+        <Reveal className="grid gap-6 md:grid-cols-12 md:gap-10">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase md:col-span-3">
             Who we are
           </p>
-          <div className="flex flex-col gap-5 md:col-span-4 md:col-start-4">
+          <div className="flex flex-col gap-6 md:col-span-8 md:col-start-5">
             <h2 className="text-h2 md:text-h1">Yas Rise Community</h2>
-            <p className="text-body font-medium md:text-h4">
+            <p className="text-h4 font-medium md:text-h3">
               Personal growth through a shared journey.
             </p>
             <p className="max-w-2xl text-body-small text-muted-foreground md:text-body">
@@ -48,40 +57,41 @@ const About = ({ className }: AboutProps) => {
               journey matters as much as the finish line.
             </p>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20">
-          {images.map((image) => (
-            <div
-              key={image.src}
-              className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted md:aspect-3/2"
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(min-width: 640px) 50vw, 100vw"
-                queryParameters={{ updatedAt: image.updatedAt }}
-                transformation={[
-                  {
-                    aspectRatio: "3-2",
-                    crop: "force",
-                    focus: "auto",
-                    ...(image.width ? { width: image.width } : {}),
-                  },
-                ]}
-                className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
-              />
-            </div>
+        <div className="mt-14 grid items-end gap-4 md:mt-20 md:grid-cols-12 md:gap-6">
+          {images.map((image, index) => (
+            <Reveal key={image.src} delay={index * 120} className={image.span}>
+              <div
+                className={cn(
+                  "relative w-full overflow-hidden rounded-xl border bg-muted",
+                  image.frame,
+                )}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="(min-width: 768px) 58vw, 100vw"
+                  queryParameters={{ updatedAt: image.updatedAt }}
+                  // No server-side crop: the frame ratio changes per
+                  // breakpoint, so object-cover crops the original instead.
+                  transformation={
+                    image.width ? [{ width: image.width }] : undefined
+                  }
+                  className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
+                />
+              </div>
+            </Reveal>
           ))}
         </div>
 
-        <div className="mt-14 grid gap-6 md:mt-20 md:grid-cols-7 md:gap-10">
-          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase md:col-span-2">
+        <Reveal className="mt-20 grid gap-6 border-t-2 border-foreground pt-10 md:mt-28 md:grid-cols-12 md:gap-10">
+          <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase md:col-span-3">
             What drives us
           </p>
-          <div className="flex flex-col gap-5 md:col-span-4 md:col-start-4">
-            <h3 className="text-h3 md:text-h2">
+          <div className="flex flex-col gap-6 md:col-span-8 md:col-start-5">
+            <h3 className="text-h2 md:text-h1">
               The journey matters as much as the finish line.
             </h3>
             <p className="max-w-2xl text-body-small text-muted-foreground md:text-body">
@@ -91,7 +101,7 @@ const About = ({ className }: AboutProps) => {
               and worth showing up for.
             </p>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

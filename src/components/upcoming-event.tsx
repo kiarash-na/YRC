@@ -3,8 +3,8 @@ import { cn } from "cn";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { Reveal } from "@/components/reveal";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface UpcomingEventProps {
@@ -19,23 +19,26 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
     : formatDate(event.date);
 
   return (
-    <section className={cn("py-32", className)}>
+    <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
-        <div className="mx-auto flex max-w-3xl flex-col justify-center gap-7 md:text-center">
+        <Reveal className="flex flex-col gap-7">
           <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Upcoming Event
           </p>
           <h2 className="text-h2 md:text-h1">Next on the calendar</h2>
-        </div>
+        </Reveal>
 
-        <Card className="group mx-auto mt-14 max-w-5xl gap-0 bg-background p-0 md:mt-20">
-          <CardContent className="grid gap-0 p-0 lg:grid-cols-2">
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-t-xl bg-muted lg:aspect-auto lg:min-h-96 lg:rounded-t-none lg:rounded-l-xl">
+        <Reveal delay={120} className="mt-14 md:mt-20">
+          <Link
+            href={`/events/${event.slug}`}
+            className="group grid gap-8 lg:grid-cols-12 lg:gap-16"
+          >
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7">
               <Image
                 src={event.cover}
                 alt={event.title}
                 fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 58vw, 100vw"
                 transformation={[
                   { aspectRatio: "4-3", crop: "force", focus: "auto" },
                 ]}
@@ -43,7 +46,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
               />
             </div>
 
-            <div className="flex flex-col gap-6 p-8 md:p-12">
+            <div className="flex flex-col gap-6 lg:col-span-5 lg:py-4">
               <div className="flex flex-wrap items-center gap-3">
                 <Badge
                   variant="outline"
@@ -56,7 +59,9 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 </p>
               </div>
 
-              <h3 className="text-h2 md:text-h1">{event.title}</h3>
+              <h3 className="text-h2 transition-colors group-hover:text-foreground/80 md:text-h1">
+                {event.title}
+              </h3>
 
               <p className="text-body-small font-semibold uppercase">
                 {event.location} · {event.city}
@@ -66,19 +71,19 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 {event.excerpt}
               </p>
 
-              <div className="mt-auto pt-2">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  render={<Link href={`/events/${event.slug}`} />}
-                  nativeButton={false}
+              <div className="mt-auto border-t border-border pt-6">
+                <span
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "h-11 w-full px-6 tracking-wider uppercase sm:w-auto",
+                  )}
                 >
                   View event
-                </Button>
+                </span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

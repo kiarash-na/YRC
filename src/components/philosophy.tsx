@@ -1,6 +1,8 @@
 import { ArrowRight, Footprints, NotebookPen, SportShoe } from "lucide-react";
 import { cn } from "cn";
 
+import { Reveal } from "@/components/reveal";
+
 interface Belief {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -34,13 +36,19 @@ interface PhilosophyProps {
 
 const Philosophy = ({ className }: PhilosophyProps) => {
   return (
-    <section className={cn("py-32", className)}>
+    <section
+      className={cn(
+        // Dark band — the "what we don't sell" statement gets its own beat.
+        "dark bg-background py-24 text-foreground md:py-32",
+        className,
+      )}
+    >
       <div className="container">
-        <div className="flex max-w-4xl flex-col gap-7">
+        <Reveal className="flex max-w-5xl flex-col gap-7">
           <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
             What we don&rsquo;t sell
           </p>
-          <h2 className="text-h2 md:text-h1">
+          <h2 className="text-h2 md:text-h1 lg:text-display">
             We build the experience — from the first step to the starting
             line.
           </h2>
@@ -51,21 +59,24 @@ const Philosophy = ({ className }: PhilosophyProps) => {
           </p>
           <a
             href="/about"
-            className="inline-flex w-fit items-center gap-1 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
+            className="group inline-flex w-fit items-center gap-1 font-medium text-foreground underline underline-offset-4 transition-colors hover:text-yrc-accent"
           >
-            More about YRC <ArrowRight className="size-4" />
+            More about YRC{" "}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </a>
-        </div>
+        </Reveal>
 
-        <div className="mt-14 grid gap-10 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
-          {beliefs.map((belief) => (
-            <div key={belief.title} className="flex flex-col gap-4">
-              <belief.icon className="size-6 text-foreground" />
-              <h3 className="text-h4 md:text-h3">{belief.title}</h3>
-              <p className="text-body-small text-muted-foreground">
-                {belief.description}
-              </p>
-            </div>
+        <div className="mt-16 grid gap-10 sm:grid-cols-2 md:mt-24 lg:grid-cols-3 lg:gap-8">
+          {beliefs.map((belief, index) => (
+            <Reveal key={belief.title} delay={index * 120}>
+              <div className="flex flex-col gap-4 border-t border-border pt-8">
+                <belief.icon className="size-6 text-yrc-accent" />
+                <h3 className="text-h4 md:text-h3">{belief.title}</h3>
+                <p className="text-body-small text-muted-foreground">
+                  {belief.description}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>

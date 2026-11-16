@@ -29,15 +29,31 @@ export const lqip = (src: string, updatedAt?: string) =>
 /**
  * Poster frame for ImageKit-hosted videos.
  *
- * ImageKit serves a video thumbnail at `<video-path>/ik-thumbnail.jpg`;
- * `tr=so-<seconds>` selects the frame at that start offset. Returns "" when
+ * ImageKit serves a video thumbnail at `<video-path>/ik-thumbnail.jpg`.
+ * Without an offset it is the first frame and costs no video transformation;
+ * `startOffsetSeconds` adds `tr=so-<seconds>`, which DOES count against the
+ * account's video-transformation quota (when that quota is exhausted the
+ * request 403s with "Video transformations limit exceeded"). Returns "" when
  * the endpoint is not configured, mirroring `lqip`.
  */
-export const videoPoster = (src: string, startOffsetSeconds = 5) =>
+export const videoPoster = (src: string, startOffsetSeconds?: number) =>
   IMAGEKIT_URL_ENDPOINT
     ? buildSrc({
         src: `${src}/ik-thumbnail.jpg`,
         urlEndpoint: IMAGEKIT_URL_ENDPOINT,
-        queryParameters: { tr: `so-${startOffsetSeconds}` },
+        queryParameters:
+          startOffsetSeconds === undefined
+            ? undefined
+            : { tr: `so-${startOffsetSeconds}` },
       })
     : "";
+
+/**
+ * Query parameters that make ImageKit serve a video file untouched.
+ *
+ * For browser requests ImageKit otherwise applies automatic video
+ * optimisation (WebM/AV1 conversion), which is a video transformation — once
+ * the account quota is spent every such request fails with 403. `orig-true`
+ * bypasses it and serves the uploaded original.
+ */
+export const ORIGINAL_VIDEO = { tr: "orig-true" } as const;

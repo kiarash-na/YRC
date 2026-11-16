@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "cn";
 
+import { Reveal } from "@/components/reveal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCommunityStats, getLeaderboard } from "@/lib/leaderboard";
 
@@ -22,14 +23,23 @@ const StridesStrip = async ({ className }: StridesStripProps) => {
 
   return (
     <section
-      className={cn("border-y border-border bg-muted/40 py-10", className)}
+      className={cn("border-b border-border bg-muted/40 py-14 md:py-16", className)}
     >
-      <div className="container flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-        <div className="min-w-0">
+      <Reveal className="container grid gap-8 md:grid-cols-12 md:gap-10">
+        <div className="flex flex-col gap-3 md:col-span-3">
           <h2 className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             YRC Strides
           </h2>
-          <ol className="mt-6 flex gap-x-8 gap-y-4 overflow-x-auto md:flex-wrap md:overflow-visible">
+          {stats && (
+            <p className="text-body-small text-muted-foreground">
+              {stats.members} members · {stats.totalStrides} strides ·{" "}
+              {stats.totalCheckins} check-ins
+            </p>
+          )}
+        </div>
+
+        <div className="flex min-w-0 flex-col gap-6 md:col-span-9 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          <ol className="-mx-4 flex gap-x-8 gap-y-4 overflow-x-auto px-4 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
             {entries.map((entry, index) => (
               <li
                 key={`${index}-${entry.firstName}`}
@@ -58,24 +68,16 @@ const StridesStrip = async ({ className }: StridesStripProps) => {
               </li>
             ))}
           </ol>
-        </div>
 
-        <div className="flex shrink-0 flex-col gap-3 lg:items-end">
-          {stats && (
-            <p className="text-body-small text-muted-foreground">
-              {stats.members} members · {stats.totalStrides} strides ·{" "}
-              {stats.totalCheckins} check-ins
-            </p>
-          )}
           <Link
             href="/community"
-            className="group flex w-fit items-center gap-1.5 text-caption font-bold tracking-[0.2em] text-yrc-accent uppercase"
+            className="group flex w-fit shrink-0 items-center gap-1.5 text-caption font-bold tracking-[0.2em] text-yrc-accent uppercase"
           >
             See the full board
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };

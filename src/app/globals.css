@@ -66,6 +66,7 @@
  * style. Weights come from Tailwind's font-normal/medium/semibold/bold
  * (400/500/600/700) and are set per use case in the base layer below.
  *
+ *   hero         80px / 700 / lh 0.98  / -0.04em  home hero H1 only (xl+)
  *   display      60px / 700 / lh 1.05  / -0.03em  hero & display headings
  *   h1           48px / 600 / lh 1.10  / -0.02em  page titles
  *   h2           36px / 600 / lh 1.15  / -0.015em section headings
@@ -87,7 +88,13 @@
  *                                              followed by a bordered media
  *                                              block below (mt-14 md:mt-20,
  *                                              aspect-3/2 md:aspect-21/9).
- *                                              No overlay-on-image heroes.
+ *                                              No overlay-on-image heroes —
+ *                                              except the HOME hero: full-
+ *                                              bleed background video under
+ *                                              a dark scrim, hero185 split
+ *                                              layout (copy + bento tiles),
+ *                                              text-h1 md:text-display
+ *                                              xl:text-hero.
  *   section H2     text-h2 md:text-h1             default section heading
  *   card H3        text-h4 md:text-h3             event/blog/coach/program
  *                                              card titles
@@ -119,6 +126,9 @@
  *                  md:text-body (compact sections)
  */
 @theme {
+  --text-hero: 5rem;
+  --text-hero--line-height: 0.98;
+  --text-hero--letter-spacing: -0.04em;
   --text-display: 3.75rem;
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.03em;
@@ -148,7 +158,9 @@
  * base --spacing of 0.25rem, so the numeric scale IS the token system —
  * no extra tokens are defined here):
  *
- *   section rhythm    py-32                    major page sections
+ *   section rhythm    py-24 md:py-32           major page sections
+ *                                              (py-32 on phones wastes a
+ *                                              full thumb-scroll)
  *   block separation  mt-14 / md:mt-20         heading block → content
  *   header stack      flex-col gap-7           eyebrow → heading →
  *                                              description (EYEBROW /
@@ -227,8 +239,12 @@
  * long-form copy and editorial blocks.
  *
  * Wide content — also lives inside the standard container (full-width
- * media grids, galleries). Full-bleed layouts are not part of the YRC
- * layout language.
+ * media grids, galleries). Full-bleed *content* is not part of the YRC
+ * layout language; full-bleed *backgrounds* are: tonal bands (bg-muted/40)
+ * and dark bands (`dark` class on the section — scopes the .dark token set
+ * so every primitive inside adapts). The home page alternates light and
+ * dark bands for rhythm; the home hero's background video is the only
+ * full-bleed media.
  */
 @utility container {
   width: 100%;
@@ -415,4 +431,35 @@
 
 .yrc-menu-label-in {
   animation: yrc-fade-label 0.2s ease-in-out both;
+}
+
+/*
+ * Motion — deliberately small. Two primitives only:
+ *
+ *   .yrc-hero-in   CSS-only load-in for above-the-fold hero content (no
+ *                  hydration wait); stagger with inline animation-delay.
+ *   .yrc-reveal    scroll reveal, toggled by <Reveal> (data-reveal="in");
+ *                  stagger with the `delay` prop.
+ *
+ * Both are gated on prefers-reduced-motion: no-preference, and the reveal
+ * hidden state additionally on `scripting: enabled`, so content is never
+ * stuck invisible.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .yrc-hero-in {
+    animation: yrc-fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .yrc-reveal {
+    transition:
+      opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .yrc-reveal:not([data-reveal="in"]) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
 }
