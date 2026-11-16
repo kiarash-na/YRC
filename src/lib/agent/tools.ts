@@ -1,9 +1,9 @@
-import type Anthropic from "@anthropic-ai/sdk";
 import { revalidatePath } from "next/cache";
 
 import { EVENT_CATEGORIES } from "@/lib/content-shared";
 import * as newsletter from "@/lib/newsletter";
 import { renderNewsletterHtml, withoutUnsubscribePlaceholder } from "@/lib/newsletter-template";
+import type { LoopTool } from "@/lib/agent/loop";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -17,8 +17,15 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 type Input = Record<string, unknown>;
 
+/** JSON-schema tool declaration (provider-neutral). */
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  input_schema: Record<string, unknown>;
+}
+
 export interface AgentTool {
-  definition: Anthropic.Beta.BetaTool;
+  definition: ToolDefinition;
   mutates: boolean;
   /** One line shown on the approval card. */
   summarize: (input: Input) => string;
@@ -152,7 +159,7 @@ function eventFields(input: Input): Record<string, unknown> {
 const obj = (
   properties: Record<string, unknown>,
   required: string[] = [],
-): Anthropic.Beta.BetaTool["input_schema"] => ({
+): Record<string, unknown> => ({
   type: "object",
   properties,
   required,
@@ -681,5 +688,19 @@ const tools: AgentTool[] = [
 
 export const AGENT_TOOLS = new Map(tools.map((t) => [t.definition.name, t]));
 
-/** Tool definitions for the API — stable order (prompt cache prefix). */
-export const TOOL_DEFINITIONS: Anthropic.Beta.BetaTool[] = tools.map((t) => t.definition);
+/** The tools bound to one admin's request, in the agent loop's shape. */
+export function agentLoopTools(ctx: ToolContext): Map<string, LoopTool> {
+  return new Map(
+    tools.map((t) => [
+      t.definition.name,
+      {
+        name: t.definition.name,
+        description: t.definition.description,
+        inputSchema: t.definition.input_schema,
+        mutates: t.mutates,
+        summarize: t.summarize,
+        run: (input: Record<string, unknown>) => t.run(input, ctx),
+      },
+    ]),
+  );
+}

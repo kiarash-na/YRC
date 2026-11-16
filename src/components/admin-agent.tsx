@@ -1,16 +1,24 @@
 "use client";
 
-import type Anthropic from "@anthropic-ai/sdk";
 import Link from "next/link";
 import { Fragment, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
-import { ArrowUp, Check, CircleAlert, LoaderCircle, RotateCcw, Sparkles, Wrench, X } from "lucide-react";
+import { ArrowUp, Check, CircleAlert, ImageUp, LoaderCircle, RotateCcw, Sparkles, Wrench, X } from "lucide-react";
 
+import { useImageKitUpload } from "@/components/admin-media-upload";
 import { Button } from "@/components/ui/button";
-import { agentTurn, type PendingCall } from "@/lib/actions/agent";
+import { agentTurn, type AgentMessage, type PendingCall } from "@/lib/actions/agent";
+import { AGENT_MODELS, DEFAULT_AGENT_MODEL, isAgentModel } from "@/lib/agent/models";
 import { cn } from "@/lib/utils";
 
-type Message = Anthropic.Beta.BetaMessageParam;
-type Block = Anthropic.Beta.BetaContentBlockParam;
+type Message = AgentMessage;
+/** The parts this UI renders; other part kinds (reasoning, files) are skipped. */
+type Block =
+  | { type: "text"; text: string }
+  | { type: "tool-call"; toolCallId: string; toolName: string }
+  | { type: "tool-result"; toolCallId: string; output: { type: string } }
+  | { type: "other" };
+
+const MODEL_STORAGE_KEY = "yrc-agent-model";
 
 const SUGGESTIONS = [
   "What's coming up in the next two weeks?",
@@ -22,9 +30,12 @@ const SUGGESTIONS = [
 ];
 
 function blocks(message: Message): Block[] {
-  return typeof message.content === "string"
-    ? [{ type: "text", text: message.content }]
-    : (message.content ?? []);
+  if (typeof message.content === "string") return [{ type: "text", text: message.content }];
+  return (message.content as { type: string }[]).map((part) =>
+    part.type === "text" || part.type === "tool-call" || part.type === "tool-result"
+      ? (part as Block)
+      : { type: "other" },
+  );
 }
 
 /** **bold** and site-relative paths (/events/x, /admin/y) → links. */
@@ -52,7 +63,40 @@ export function AgentChat({ configured }: { configured: boolean }) {
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [busy, startTransition] = useTransition();
+  const [modelId, setModelId] = useState(DEFAULT_AGENT_MODEL);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const media = useImageKitUpload("/YRC/Events");
+
+  // Upload an image to ImageKit and drop its path into the message, so the
+  // admin can say e.g. "use this as the cover".
+  async function attachImage(file: File | undefined) {
+    if (!file) return;
+    const result = await media.uploadImage(file);
+    if (fileRef.current) fileRef.current.value = "";
+    if (result) setDraft((d) => `${d}${d && !d.endsWith(" ") ? " " : ""}${result.path} `);
+  }
+
+  // Remember the admin's model choice in this browser.
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(MODEL_STORAGE_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time restore after hydration
+      if (isAgentModel(saved)) setModelId(saved);
+    } catch {
+      // storage blocked: keep the default
+    }
+  }, []);
+
+  function chooseModel(id: string) {
+    if (!isAgentModel(id)) return;
+    setModelId(id);
+    try {
+      window.localStorage.setItem(MODEL_STORAGE_KEY, id);
+    } catch {
+      // storage blocked: the choice lasts for this page only
+    }
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -62,7 +106,9 @@ export function AgentChat({ configured }: { configured: boolean }) {
   const outcomes = new Map<string, "ok" | "error">();
   for (const m of messages) {
     for (const b of blocks(m)) {
-      if (b.type === "tool_result") outcomes.set(b.tool_use_id, b.is_error ? "error" : "ok");
+      if (b.type === "tool-result") {
+        outcomes.set(b.toolCallId, b.output.type.startsWith("error") ? "error" : "ok");
+      }
     }
   }
 
@@ -70,7 +116,7 @@ export function AgentChat({ configured }: { configured: boolean }) {
     setError(null);
     setPending([]);
     startTransition(async () => {
-      const result = await agentTurn(history, approvals);
+      const result = await agentTurn(history, approvals, modelId);
       setMessages(result.messages);
       if (result.ok) setPending(result.pending);
       else setError(result.error);
@@ -99,7 +145,7 @@ export function AgentChat({ configured }: { configured: boolean }) {
 
   return (
     <div className="flex min-h-[70vh] flex-col rounded-xl border border-border bg-card">
-      <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3">
         <div className="flex items-center gap-2">
           <Sparkles className="size-4 text-foreground" aria-hidden />
           <span className="text-body-small font-semibold">Agent</span>
@@ -107,10 +153,28 @@ export function AgentChat({ configured }: { configured: boolean }) {
             Reads freely · asks before changing anything
           </span>
         </div>
+        <div className="flex w-full min-w-0 items-center gap-2 sm:w-auto">
+          <label htmlFor="agent-model" className="text-caption text-muted-foreground">
+            Model
+          </label>
+          <select
+            id="agent-model"
+            value={modelId}
+            onChange={(e) => chooseModel(e.target.value)}
+            disabled={busy || pending.length > 0}
+            className="h-8 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-caption font-medium outline-none sm:w-72 sm:flex-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-60"
+          >
+            {AGENT_MODELS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label} · {m.note}
+              </option>
+            ))}
+          </select>
         {!empty && (
           <Button
             size="xs"
             variant="ghost"
+            className="shrink-0"
             disabled={busy}
             onClick={() => {
               setMessages([]);
@@ -121,13 +185,14 @@ export function AgentChat({ configured }: { configured: boolean }) {
             <RotateCcw /> New chat
           </Button>
         )}
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 py-6">
         {!configured && (
           <p className="rounded-lg border border-yrc-accent bg-yrc-accent/10 px-4 py-3 text-body-small">
-            Set <code>ANTHROPIC_API_KEY</code> in this environment (Dokploy / Vercel / .env.local) to use the
-            Agent.
+            Set <code>VERCEL_AI_GATEWAY</code> (a Vercel AI Gateway key) in this environment (Dokploy / Vercel /
+            .env.local) to use the Agent.
           </p>
         )}
 
@@ -170,8 +235,8 @@ export function AgentChat({ configured }: { configured: boolean }) {
                     </div>
                   );
                 }
-                if (b.type === "tool_use") {
-                  const outcome = outcomes.get(b.id);
+                if (b.type === "tool-call") {
+                  const outcome = outcomes.get(b.toolCallId);
                   return (
                     <span
                       key={j}
@@ -187,7 +252,7 @@ export function AgentChat({ configured }: { configured: boolean }) {
                       ) : (
                         <Wrench className="size-3" />
                       )}
-                      {toolLabel(b.name)}
+                      {toolLabel(b.toolName)}
                     </span>
                   );
                 }
@@ -250,6 +315,11 @@ export function AgentChat({ configured }: { configured: boolean }) {
         <div ref={bottomRef} />
       </div>
 
+      {(media.uploading || media.error) && (
+        <p aria-live="polite" className={cn("border-t border-border px-4 py-2 text-caption", media.error ? "text-destructive" : "text-muted-foreground")}>
+          {media.error ?? `Uploading image… ${media.progress}%`}
+        </p>
+      )}
       <form
         className="flex items-end gap-2 border-t border-border p-3"
         onSubmit={(e) => {
@@ -271,6 +341,27 @@ export function AgentChat({ configured }: { configured: boolean }) {
           disabled={!configured || busy || pending.length > 0}
           className="min-h-11 flex-1 resize-none rounded-lg border border-input bg-transparent px-3 py-2 text-body-small outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-60"
         />
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          className="sr-only"
+          tabIndex={-1}
+          aria-hidden="true"
+          data-testid="agent-image-file"
+          onChange={(e) => attachImage(e.target.files?.[0])}
+        />
+        <Button
+          type="button"
+          size="icon-lg"
+          variant="outline"
+          aria-label="Upload an image (adds its ImageKit path to your message)"
+          title="Upload an image"
+          disabled={!configured || busy || media.uploading}
+          onClick={() => fileRef.current?.click()}
+        >
+          {media.uploading ? <LoaderCircle className="animate-spin" /> : <ImageUp />}
+        </Button>
         <Button
           type="submit"
           size="icon-lg"

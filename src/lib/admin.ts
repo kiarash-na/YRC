@@ -1,6 +1,8 @@
+import type { User } from "@supabase/supabase-js";
 import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
 
+import { E2E_ADMIN, isE2ERequest } from "@/lib/e2e";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,6 +22,15 @@ export interface AdminSeat {
  * Memoized per request: the admin layout and its page share one lookup.
  */
 export const requireAdmin = cache(async () => {
+  // Token-free e2e mode only (gated in src/lib/e2e.ts; never on production).
+  if (await isE2ERequest()) {
+    return {
+      user: { id: E2E_ADMIN.userId, email: E2E_ADMIN.email } as User,
+      admin: createAdminClient(),
+      seat: { id: E2E_ADMIN.seatId, email: E2E_ADMIN.email, strava_athlete_id: null } satisfies AdminSeat,
+    };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

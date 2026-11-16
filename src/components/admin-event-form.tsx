@@ -1,3 +1,4 @@
+import { MediaUploadField } from "@/components/admin-media-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EVENT_CATEGORIES, EVENT_CATEGORY_LABELS, routeGpxUrl } from "@/lib/content-shared";
@@ -55,10 +56,7 @@ export function AdminEventForm({ action, event }: EventFormProps) {
         <textarea id="excerpt" name="excerpt" rows={2} defaultValue={event?.excerpt} required className={textareaClass} />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="cover" className={labelClass}>Cover (ImageKit path, e.g. /YRC/Events/…)</label>
-        <Input id="cover" name="cover" defaultValue={event?.cover} required />
-      </div>
+      <MediaUploadField name="cover" label="Cover image" defaultValue={event?.cover} folder="/YRC/Events" required />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">

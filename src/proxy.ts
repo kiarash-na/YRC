@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { E2E_COOKIE, e2eCookieValid } from "@/lib/e2e";
+
 /** Routes that require a logged-in member. */
 const PROTECTED_PREFIXES = ["/admin", "/profile", "/checkin"];
 
@@ -59,7 +61,11 @@ export async function proxy(request: NextRequest) {
     (prefix) => path === prefix || path.startsWith(`${prefix}/`),
   );
 
-  if (needsAuth && !user) {
+  // Token-free e2e mode (src/lib/e2e.ts): the test admin has no Supabase
+  // session; requireAdmin() admits it. Off unless explicitly configured.
+  const e2eAdmin = path.startsWith("/admin") && e2eCookieValid(request.cookies.get(E2E_COOKIE)?.value);
+
+  if (needsAuth && !user && !e2eAdmin) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", path + request.nextUrl.search);
     return NextResponse.redirect(loginUrl);

@@ -1,33 +1,26 @@
 "use server";
 
-import Anthropic from "@anthropic-ai/sdk";
+import { createGateway, type LanguageModel, type ModelMessage } from "ai";
 
 import { requireAdmin } from "@/lib/admin";
-import { AGENT_TOOLS, TOOL_DEFINITIONS, ToolInputError } from "@/lib/agent/tools";
+import { agentConfigured, gatewayApiKey } from "@/lib/agent/config";
+import { runAgentTurn, type LoopTool, type PendingCall, type TurnResult } from "@/lib/agent/loop";
+import { DEFAULT_AGENT_MODEL, isAgentModel } from "@/lib/agent/models";
+import { agentLoopTools, ToolInputError } from "@/lib/agent/tools";
+import { isE2ERequest } from "@/lib/e2e";
 import { NewsletterError } from "@/lib/newsletter";
 
 /**
- * Admin Agent: a manual tool-use loop. Read-only tools run as soon as the
- * model asks for them; any turn that contains a mutating tool call pauses and
- * returns the calls to the UI, where the admin confirms or declines each one.
- * The client holds the transcript and sends it back with each turn.
+ * Admin Agent server action. Runs the provider-neutral tool loop
+ * (src/lib/agent/loop.ts) on the model the admin picked, through the Vercel
+ * AI Gateway. Read-only tools run immediately; mutating tool calls pause the
+ * turn and come back as `pending` for the admin to confirm.
+ * The client holds the transcript (ModelMessage[]) and sends it back.
  */
 
-type Message = Anthropic.Beta.BetaMessageParam;
-
-export interface PendingCall {
-  id: string;
-  name: string;
-  summary: string;
-  input: Record<string, unknown>;
-}
-
-export type AgentResult =
-  | { ok: true; messages: Message[]; pending: PendingCall[] }
-  | { ok: false; error: string; messages: Message[] };
-
-const MODEL = "claude-opus-5-5";
-const MAX_STEPS = 12;
+export type AgentMessage = ModelMessage;
+export type { PendingCall };
+export type AgentResult = TurnResult;
 
 const SYSTEM = `You are "Agent", the operations assistant inside the admin dashboard of Yas Rise Community (YRC), a running community (website yasrise.run). The person talking to you is a signed-in YRC admin.
 
@@ -41,10 +34,6 @@ How to work:
 - Event covers are ImageKit paths like /YRC/Community/IMG_2469.JPG. Times are Europe/Berlin. Categories: race, training, social, camp.
 - Reply briefly and plainly, in the admin's language. Use short lists for multiple items. After changes, say what changed and link pages as relative paths (e.g. /events/<slug>).`;
 
-function client(): Anthropic {
-  return new Anthropic(); // reads ANTHROPIC_API_KEY
-}
-
 function berlinToday(): string {
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/Berlin",
@@ -55,134 +44,44 @@ function berlinToday(): string {
   }).format(new Date());
 }
 
-function toolUses(content: Message["content"]): Anthropic.Beta.BetaToolUseBlockParam[] {
-  if (!content || typeof content === "string") return [];
-  const calls: Anthropic.Beta.BetaToolUseBlockParam[] = [];
-  for (const block of content) if (block.type === "tool_use") calls.push(block);
-  return calls;
-}
-
-async function execute(
-  call: Anthropic.Beta.BetaToolUseBlockParam,
-  seatId: string,
-): Promise<Anthropic.Beta.BetaToolResultBlockParam> {
-  const tool = AGENT_TOOLS.get(call.name);
-  if (!tool) {
-    return { type: "tool_result", tool_use_id: call.id, is_error: true, content: `Unknown tool ${call.name}.` };
-  }
-  try {
-    const result = await tool.run((call.input ?? {}) as Record<string, unknown>, { seatId });
-    const text = JSON.stringify(result ?? { ok: true });
-    return {
-      type: "tool_result",
-      tool_use_id: call.id,
-      content: text.length > 60_000 ? `${text.slice(0, 60_000)}… (truncated)` : text,
-    };
-  } catch (error) {
-    const known = error instanceof ToolInputError || error instanceof NewsletterError;
-    if (!known) console.error(`agent tool ${call.name} failed:`, error);
-    return {
-      type: "tool_result",
-      tool_use_id: call.id,
-      is_error: true,
-      content: error instanceof Error ? error.message : "Tool failed.",
-    };
-  }
-}
-
-function pendingFor(calls: Anthropic.Beta.BetaToolUseBlockParam[]): PendingCall[] {
-  return calls
-    .filter((c) => AGENT_TOOLS.get(c.name)?.mutates)
-    .map((c) => {
-      const input = (c.input ?? {}) as Record<string, unknown>;
-      return { id: c.id, name: c.name, input, summary: AGENT_TOOLS.get(c.name)!.summarize(input) };
-    });
-}
-
 /**
  * Advance the conversation. Pass the transcript (ending with a new user
- * message, or with an assistant turn awaiting approval plus `approvals`).
+ * message, or with an assistant step awaiting approval plus `approvals`)
+ * and the model id the admin picked.
  */
 export async function agentTurn(
-  history: Message[],
+  history: AgentMessage[],
   approvals?: Record<string, boolean>,
+  modelId?: string,
 ): Promise<AgentResult> {
   const { seat } = await requireAdmin();
-  const messages = [...history];
+  const id = isAgentModel(modelId) ? modelId : DEFAULT_AGENT_MODEL;
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return { ok: false, error: "ANTHROPIC_API_KEY isn't set in this environment.", messages };
+  let model: LanguageModel;
+  let tools: Map<string, LoopTool>;
+  if (await isE2ERequest()) {
+    // Token-free test mode: scripted model + in-memory tools (no DB, no API).
+    const fixtures = await import("@/lib/agent/e2e-fixtures");
+    model = fixtures.scriptedAgentModel(id);
+    tools = fixtures.fixtureAgentTools();
+  } else {
+    if (!(await agentConfigured())) {
+      return {
+        ok: false,
+        error: "The AI Gateway isn't configured. Set VERCEL_AI_GATEWAY in this environment.",
+        messages: history,
+      };
+    }
+    model = createGateway({ apiKey: gatewayApiKey() })(id);
+    tools = agentLoopTools({ seatId: seat.id });
   }
 
-  try {
-    // Resume a paused turn: run its reads and the approved writes.
-    const last = messages.at(-1);
-    if (last?.role === "assistant") {
-      const calls = toolUses(last.content);
-      if (calls.length === 0) {
-        return { ok: false, error: "Nothing to resume.", messages };
-      }
-      const results = [];
-      for (const call of calls) {
-        const mutates = AGENT_TOOLS.get(call.name)?.mutates ?? true;
-        if (mutates && approvals?.[call.id] !== true) {
-          results.push({
-            type: "tool_result" as const,
-            tool_use_id: call.id,
-            is_error: true,
-            content: "Declined by the admin.",
-          });
-        } else {
-          results.push(await execute(call, seat.id));
-        }
-      }
-      messages.push({ role: "user", content: results });
-    }
-
-    const api = client();
-    for (let step = 0; step < MAX_STEPS; step++) {
-      const response = await api.beta.messages.create({
-        model: MODEL,
-        max_tokens: 16000,
-        betas: ["server-side-fallback-2026-07-01"],
-        fallbacks: "default",
-        output_config: { effort: "medium" },
-        system: [
-          { type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } },
-          { type: "text", text: `Today is ${berlinToday()} (Europe/Berlin).` },
-        ],
-        tools: TOOL_DEFINITIONS,
-        messages,
-      });
-
-      messages.push({ role: "assistant", content: response.content as Anthropic.Beta.BetaContentBlockParam[] });
-
-      if (response.stop_reason !== "tool_use") {
-        return { ok: true, messages, pending: [] };
-      }
-
-      const calls = toolUses(messages.at(-1)!.content);
-      const pending = pendingFor(calls);
-      if (pending.length > 0) {
-        return { ok: true, messages, pending };
-      }
-
-      const results = [];
-      for (const call of calls) results.push(await execute(call, seat.id));
-      messages.push({ role: "user", content: results });
-    }
-
-    messages.push({
-      role: "assistant",
-      content: [{ type: "text", text: "I stopped after many steps — tell me how you'd like to continue." }],
-    });
-    return { ok: true, messages, pending: [] };
-  } catch (error) {
-    console.error("agent turn failed:", error);
-    const message =
-      error instanceof Anthropic.APIError
-        ? `Claude API error (${error.status ?? "network"}): ${error.message}`
-        : "The agent failed — check the server logs.";
-    return { ok: false, error: message, messages: history };
-  }
+  return runAgentTurn({
+    model,
+    instructions: `${SYSTEM}\n\nToday is ${berlinToday()} (Europe/Berlin).`,
+    tools,
+    history,
+    approvals,
+    isExpectedToolError: (error) => error instanceof ToolInputError || error instanceof NewsletterError,
+  });
 }
