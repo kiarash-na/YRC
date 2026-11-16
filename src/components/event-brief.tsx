@@ -57,6 +57,9 @@ interface Fact {
  */
 export function EventOverview({ event }: EventBriefProps) {
   const where = event.meetingPoint ?? event.location;
+  // Admins sometimes paste a maps link as the meeting point: link to it
+  // directly instead of printing the raw URL.
+  const whereIsUrl = /^https?:\/\//i.test(where.trim());
   const facts: Fact[] = [
     {
       icon: CalendarDays,
@@ -88,15 +91,17 @@ export function EventOverview({ event }: EventBriefProps) {
     wide: true,
     value: (
       <a
-        className="group inline-flex items-start gap-1 underline-offset-4 hover:underline"
-        href={mapsUrl(`${where}, ${event.city}`)}
+        className="group inline-flex max-w-full items-start gap-1 underline-offset-4 hover:underline"
+        href={whereIsUrl ? where.trim() : mapsUrl(`${where}, ${event.city}`)}
         target="_blank"
         rel="noopener"
       >
-        <span>
-          {where.toLowerCase().includes(event.city.toLowerCase())
-            ? where
-            : `${where} · ${event.city}`}
+        <span className="min-w-0 [overflow-wrap:anywhere]">
+          {whereIsUrl
+            ? `Open map · ${event.city}`
+            : where.toLowerCase().includes(event.city.toLowerCase())
+              ? where
+              : `${where} · ${event.city}`}
         </span>
         <ArrowUpRight
           className="mt-1 size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground"
