@@ -123,7 +123,7 @@ export default async function EventPage({
                 {/* The one primary action on every upcoming event. */}
                 {!event.isPast && (
                   <div className="pt-8">
-                    <EventRegister eventId={event.id} eventSlug={event.slug} />
+                    <EventRegister eventId={event.id} eventSlug={event.slug} eventTitle={event.title} />
                   </div>
                 )}
               </aside>

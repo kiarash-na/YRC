@@ -4,13 +4,26 @@ import { CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { registerForEvent } from "@/lib/actions/registration";
+import { registerForEvent, unregisterFromEvent } from "@/lib/actions/registration";
 import { createClient } from "@/lib/supabase/client";
 
 interface EventRegisterProps {
   eventId: string;
   eventSlug: string;
+  /** Named in the unregister confirmation. */
+  eventTitle?: string;
 }
 
 type Status = "unknown" | "guest" | "member" | "registered";
@@ -25,7 +38,8 @@ const REGISTER_PARAM = "register";
  *               after login the member lands back here and is registered
  *               automatically (the flag is then stripped from the URL).
  *  member     → Register registers in place (server action, own session).
- *  registered → green-tick confirmation instead of the button.
+ *  registered → green-tick confirmation plus an Unregister button, which
+ *               asks for confirmation in a dialog before cancelling.
  *
  * Register buttons elsewhere (cards, home) link here with the same flag,
  * so a guest goes straight on to login and a member is registered.
@@ -33,10 +47,11 @@ const REGISTER_PARAM = "register";
  * The page is ISR-cached, so who-is-viewing is resolved client-side. The
  * link works without JS (login then bounces straight back with the flag).
  */
-export function EventRegister({ eventId, eventSlug }: EventRegisterProps) {
+export function EventRegister({ eventId, eventSlug, eventTitle }: EventRegisterProps) {
   const [status, setStatus] = useState<Status>("unknown");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const router = useRouter();
 
   const returnTo = `/events/${eventSlug}?${REGISTER_PARAM}=1`;
@@ -51,6 +66,19 @@ export function EventRegister({ eventId, eventSlug }: EventRegisterProps) {
       else if (result.status === "closed")
         setError("Registration for this event has closed.");
       else setError("Couldn't register you. Try again in a minute.");
+    });
+  };
+
+  const unregister = () => {
+    setError(null);
+    startTransition(async () => {
+      const result = await unregisterFromEvent(eventId);
+      setConfirmOpen(false);
+      if (result.status === "unregistered") setStatus("member");
+      else if (result.status === "not_authenticated") router.push(loginHref);
+      else if (result.status === "closed")
+        setError("This event has already happened, so the registration can't be changed.");
+      else setError("Couldn't unregister you. Try again in a minute.");
     });
   };
 
@@ -100,17 +128,63 @@ export function EventRegister({ eventId, eventSlug }: EventRegisterProps) {
 
   if (status === "registered") {
     return (
-      <div
-        role="status"
-        className="flex items-start gap-3 rounded-xl border border-green-600/30 bg-green-600/5 p-4"
-      >
-        <CheckCircle2 className="yrc-tick mt-0.5 size-6 shrink-0 text-green-600" aria-hidden="true" />
-        <div className="flex flex-col gap-1">
-          <p className="text-body font-semibold">You&apos;re registered</p>
-          <p className="text-body-small text-muted-foreground">
-            See you at the start line.
-          </p>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <div
+            role="status"
+            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-green-600/30 bg-green-600/5 px-4 text-body-small font-semibold tracking-wider text-green-700 uppercase dark:text-green-500"
+          >
+            <CheckCircle2 className="yrc-tick size-5 shrink-0" aria-hidden="true" />
+            You&apos;re registered
+          </div>
+          <AlertDialog open={confirmOpen} onOpenChange={(open) => !isPending && setConfirmOpen(open)}>
+            <AlertDialogTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-12 px-6 tracking-wider uppercase"
+                  disabled={isPending}
+                />
+              }
+            >
+              {isPending ? "Unregistering…" : "Unregister"}
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-h4">Unregister from this event?</AlertDialogTitle>
+                <AlertDialogDescription className="text-body-small">
+                  {eventTitle ? (
+                    <>
+                      You&apos;ll give up your spot at <strong>{eventTitle}</strong>.
+                    </>
+                  ) : (
+                    "You'll give up your spot at this event."
+                  )}{" "}
+                  You can register again any time before it starts.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isPending}>Keep my spot</AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  className="bg-destructive text-white hover:bg-destructive/90 dark:bg-destructive dark:hover:bg-destructive/90"
+                  disabled={isPending}
+                  onClick={unregister}
+                >
+                  {isPending ? "Unregistering…" : "Yes, unregister"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
+        {error ? (
+          <p className="text-caption text-destructive" role="alert">
+            {error}
+          </p>
+        ) : (
+          <p className="text-body-small text-muted-foreground">See you at the start line.</p>
+        )}
       </div>
     );
   }
