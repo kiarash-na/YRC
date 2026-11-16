@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireAdmin } from "@/lib/admin";
+import { lineLengthKm, parseGpx, simplifyLine } from "@/lib/gpx";
 
 /**
  * Admin server actions. Every action re-verifies the caller via
@@ -65,9 +66,62 @@ function eventPayload(formData: FormData) {
   };
 }
 
+const ROUTE_BUCKET = "event-routes";
+const MAX_GPX_BYTES = 4 * 1024 * 1024; // matches the bucket's file_size_limit
+
+type AdminClient = Awaited<ReturnType<typeof requireAdmin>>["admin"];
+
+/**
+ * Route columns from the form: a new GPX upload (parsed, simplified and
+ * stored in the public `event-routes` bucket) or the "remove route" box.
+ * Returns {} when the route is untouched. A bad file is logged and ignored
+ * so the rest of the event still saves. When the distance field was left
+ * blank, it is filled from the track length.
+ */
+async function routeFields(
+  admin: AdminClient,
+  formData: FormData,
+  distanceKm: number | null,
+): Promise<Record<string, unknown>> {
+  if (formData.get("route_remove") === "on") {
+    return { route_gpx_path: null, route_line: null };
+  }
+  const file = formData.get("route_gpx");
+  if (!(file instanceof File) || file.size === 0) return {};
+  if (file.size > MAX_GPX_BYTES || !/\.gpx$/i.test(file.name)) {
+    console.error("route upload rejected:", file.name, file.size);
+    return {};
+  }
+
+  const xml = await file.text();
+  const line = parseGpx(xml);
+  if (line.length < 2) {
+    console.error("route upload has no track/route points:", file.name);
+    return {};
+  }
+
+  const path = `routes/${crypto.randomUUID()}.gpx`;
+  const { error } = await admin.storage
+    .from(ROUTE_BUCKET)
+    .upload(path, xml, { contentType: "application/gpx+xml", upsert: false });
+  if (error) {
+    console.error("route upload failed:", error.message);
+    return {};
+  }
+
+  return {
+    route_gpx_path: path,
+    route_line: simplifyLine(line),
+    ...(distanceKm == null
+      ? { distance_km: Math.round(lineLengthKm(line) * 10) / 10 || null }
+      : {}),
+  };
+}
+
 export async function createEvent(formData: FormData): Promise<void> {
   const { admin } = await requireAdmin();
-  const payload = eventPayload(formData);
+  const base = eventPayload(formData);
+  const payload = { ...base, ...(await routeFields(admin, formData, base.distance_km)) };
   const { error } = await admin.from("events").insert(payload);
   if (error) {
     console.error("createEvent failed:", error.message);
@@ -88,7 +142,8 @@ export async function createEvent(formData: FormData): Promise<void> {
 
 export async function updateEvent(eventId: string, formData: FormData): Promise<void> {
   const { admin } = await requireAdmin();
-  const payload = eventPayload(formData);
+  const base = eventPayload(formData);
+  const payload = { ...base, ...(await routeFields(admin, formData, base.distance_km)) };
   const { error } = await admin.from("events").update(payload).eq("id", eventId);
   if (error) {
     console.error("updateEvent failed:", error.message);

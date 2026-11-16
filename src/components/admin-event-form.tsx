@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EVENT_CATEGORIES, EVENT_CATEGORY_LABELS } from "@/lib/content-shared";
+import { EVENT_CATEGORIES, EVENT_CATEGORY_LABELS, routeGpxUrl } from "@/lib/content-shared";
 
 interface EventFormProps {
   action: (formData: FormData) => void;
@@ -26,6 +26,7 @@ interface EventFormProps {
     route_notes?: string | null;
     what_to_bring?: string | null;
     coach_tips?: string | null;
+    route_gpx_path?: string | null;
     body: string;
   };
 }
@@ -152,6 +153,35 @@ export function AdminEventForm({ action, event }: EventFormProps) {
             <label htmlFor="elevation_gain_m" className={labelClass}>Elevation gain (m)</label>
             <Input id="elevation_gain_m" name="elevation_gain_m" type="number" min={0} defaultValue={event?.elevation_gain_m ?? ""} />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="route_gpx" className={labelClass}>
+            Route map (GPX file, max 4 MB) — shown as a map on the event page
+          </label>
+          <Input id="route_gpx" name="route_gpx" type="file" accept=".gpx,application/gpx+xml" />
+          {event?.route_gpx_path ? (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-muted-foreground">
+              <span>
+                Current route:{" "}
+                <a
+                  href={routeGpxUrl(event.route_gpx_path)}
+                  className="underline underline-offset-4 hover:text-foreground"
+                >
+                  download GPX
+                </a>{" "}
+                — upload a new file to replace it.
+              </span>
+              <label className="flex items-center gap-1.5">
+                <input type="checkbox" name="route_remove" className="size-3.5 accent-primary" />
+                Remove route
+              </label>
+            </div>
+          ) : (
+            <p className="text-caption text-muted-foreground">
+              Leave “Distance” empty to fill it from the GPX track.
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-1.5">

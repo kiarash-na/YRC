@@ -18,6 +18,13 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
   output: "standalone",
+  experimental: {
+    serverActions: {
+      // Admin event form uploads GPX routes (≤ 4 MB, the event-routes bucket
+      // limit). Default is 1 MB; Vercel's request cap is ~4.5 MB.
+      bodySizeLimit: "4.5mb",
+    },
+  },
   headers() {
     const headers = [...securityHeaders];
     if (process.env.NODE_ENV === "production") {

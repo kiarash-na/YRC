@@ -7,6 +7,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { CoverImage } from "@/components/cover-image";
 import { EventDetails, EventOverview } from "@/components/event-brief";
 import { EventRegister } from "@/components/event-register";
+import { EventRouteMap } from "@/components/event-route-map";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
@@ -137,6 +138,14 @@ export default async function EventPage({
                 <div className="flex flex-col">{content}</div>
 
                 <EventDetails event={event} />
+
+                {event.routeLine && (
+                  <EventRouteMap
+                    line={event.routeLine}
+                    gpxUrl={event.routeGpxUrl}
+                    eventSlug={event.slug}
+                  />
+                )}
               </article>
             </div>
           </div>

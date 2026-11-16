@@ -60,8 +60,17 @@ export interface EventItem {
   routeNotes?: string;
   whatToBring?: string;
   coachTips?: string;
+  /** Simplified GPX track, [lng, lat] pairs (event page map). */
+  routeLine?: [number, number][];
+  /** Public download URL of the original .gpx. */
+  routeGpxUrl?: string;
   /** Raw MDX body */
   content: string;
+}
+
+/** Public URL of a GPX object in the `event-routes` Storage bucket. */
+export function routeGpxUrl(path: string): string {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/event-routes/${path}`;
 }
 
 /** EventItem without the MDX body — safe to pass to client components. */

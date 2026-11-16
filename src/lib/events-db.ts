@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import { formatTime, type EventCategory, type EventItem, type EventSummary } from "@/lib/content-shared";
+import { formatTime, routeGpxUrl, type EventCategory, type EventItem, type EventSummary } from "@/lib/content-shared";
 import { createPublicClient } from "@/lib/supabase/public";
 
 /**
@@ -38,11 +38,13 @@ interface EventRow {
   route_notes: string | null;
   what_to_bring: string | null;
   coach_tips: string | null;
+  route_gpx_path?: string | null;
+  route_line?: [number, number][] | null;
 }
 
 const EVENT_SELECT_SUMMARY =
   "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence";
-const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips`;
+const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, route_gpx_path, route_line`;
 
 function toEventItem(row: EventRow): EventItem {
   return {
@@ -68,6 +70,11 @@ function toEventItem(row: EventRow): EventItem {
     routeNotes: row.route_notes ?? undefined,
     whatToBring: row.what_to_bring ?? undefined,
     coachTips: row.coach_tips ?? undefined,
+    routeLine:
+      Array.isArray(row.route_line) && row.route_line.length >= 2
+        ? row.route_line
+        : undefined,
+    routeGpxUrl: row.route_gpx_path ? routeGpxUrl(row.route_gpx_path) : undefined,
     content: row.body ?? "",
   };
 }
