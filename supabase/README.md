@@ -7,7 +7,7 @@ One-time setup, ~10 minutes, no CLI needed — everything runs in the Supabase S
 1. [supabase.com](https://supabase.com) → **New project** → name `yrc`, pick the region closest to the community (e.g. Frankfurt).
 2. From **Project Settings → API** copy:
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
-   - `anon public` key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - publishable key (`sb_publishable_…`) → `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (never exposed to the browser)
 
 ## 2. Apply schema + seed
@@ -20,8 +20,10 @@ In **SQL Editor**, run in this order:
 4. `supabase/migrations/0004_admin_aggregates.sql` — aggregate views (security_invoker)
 5. `supabase/migrations/0005_protect_profile_strava_link.sql` — locks `strava_athlete_id` to the Strava auth flow (anti-privilege-escalation)
 6. `supabase/migrations/0006_content_db.sql` — `posts` + `content_blocks` tables (journal + page copy live in the DB)
-7. `supabase/seed.sql` — points menu + all events + one QR token per event
-8. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
+7. `supabase/migrations/0007_event_briefs.sql` — structured event brief fields (time, meeting point, distance…) + new categories
+8. `supabase/migrations/0008_rsvp_leaderboard_newsletter.sql` — `event_rsvps`, `newsletter_subscribers`, leaderboard opt-out, `get_leaderboard()` / `get_community_stats()`
+9. `supabase/seed.sql` — points menu + all events + one QR token per event
+10. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
 
 Then open **Database → Advisors → Security Advisor** — it should show no errors.
 
@@ -51,7 +53,7 @@ Set the env vars (see `.env.example`) in:
 
 - **Dokploy** (app `yrc-preview`) — dev values, `NEXT_PUBLIC_SITE_URL=https://yrc-dev.kiarash.online`
 - **Vercel** (production) — prod values, `NEXT_PUBLIC_SITE_URL=https://yasrise.run`
-- **Local** `.env.local` — dev values, `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+- **Local** `.env.local` — dev values, `NEXT_PUBLIC_SITE_URL=https://localhost:3001` (matches `pnpm dev:https`)
 
 ## Tables at a glance
 
@@ -67,6 +69,8 @@ Set the env vars (see `.env.example`) in:
 | `score_entries` | append-only points ledger; score = sum |
 | `posts` | journal articles (MDX body; replaced content/blog/*.mdx) |
 | `content_blocks` | structured page copy blocks (faqs, course details) |
+| `event_rsvps` | Join-flow contact capture per event (service-role writes only) |
+| `newsletter_subscribers` | newsletter list (service-role writes only) |
 
 ## Branded auth emails (React Email + Resend)
 
