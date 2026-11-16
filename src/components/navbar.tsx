@@ -40,9 +40,26 @@ const Navbar = ({ className }: NavbarProps) => {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  // Home: the bar floats transparently over the full-bleed hero video, in
+  // the dark token set (white logo, light Join button). While the menu is
+  // open it reverts so it reads on the light overlay.
+  const overHero = pathname === "/" && !isOpen;
+
   return (
-    <section className={cn("bg-background", className)}>
-      <div className="container flex items-center justify-between py-6">
+    <section
+      className={cn(
+        pathname === "/"
+          ? "absolute inset-x-0 top-0 z-30 bg-transparent"
+          : "bg-background",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "container flex items-center justify-between py-6",
+          overHero && "dark text-foreground",
+        )}
+      >
         <div className="z-50">
           <Link
             href="/"
@@ -56,7 +73,10 @@ const Navbar = ({ className }: NavbarProps) => {
               width={1080}
               height={1080}
               priority
-              className="h-9 w-auto"
+              className={cn(
+                "h-9 w-auto transition-[filter] duration-300",
+                overHero && "invert",
+              )}
             />
           </Link>
         </div>

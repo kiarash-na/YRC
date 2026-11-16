@@ -52,7 +52,7 @@ interface HeroProps {
    * the account's video quota is exhausted.
    */
   fallback: HeroMedia;
-  /** Bento tiles: [tall, supporting]. */
+  /** The two photo cards, shown side by side at the same size. */
   images: [HeroMedia, HeroMedia];
   className?: string;
 }
@@ -129,7 +129,7 @@ const Hero = (props: Props) => {
       className={cn(
         // `dark` scopes the dark token set to the hero so shadcn primitives
         // (outline button, borders, muted text) adapt automatically.
-        "dark relative isolate flex overflow-hidden bg-background text-foreground lg:min-h-[calc(100svh-5.25rem)]",
+        "dark relative isolate flex overflow-hidden bg-background text-foreground lg:min-h-svh",
         className,
       )}
     >
@@ -187,8 +187,13 @@ const Hero = (props: Props) => {
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-background to-transparent"
       />
+      {/* Top fade so the transparent site header stays legible on bright frames */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 h-36 bg-linear-to-b from-black/60 to-transparent"
+      />
 
-      <div className="container flex items-center py-24 md:py-32">
+      <div className="container flex items-center pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="grid w-full items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="flex flex-col gap-7 lg:col-span-7">
             {badge && (
@@ -256,18 +261,18 @@ const Hero = (props: Props) => {
             )}
           </div>
 
-          {/* hero185 bento: tall primary tile + offset supporting tile */}
+          {/* Two equal photo cards */}
           <div
-            className="yrc-hero-in grid grid-cols-5 items-end gap-3 sm:gap-4 lg:col-span-5"
+            className="yrc-hero-in grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-5"
             style={{ animationDelay: "320ms" }}
           >
-            <div className="relative col-span-3 aspect-3/4 overflow-hidden rounded-xl border bg-muted">
+            <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-muted">
               <Image
                 src={tall.src}
                 alt={tall.alt}
                 fill
                 loading="eager"
-                sizes="(min-width: 1024px) 25vw, 60vw"
+                sizes="(min-width: 1024px) 20vw, 50vw"
                 queryParameters={
                   tall.updatedAt ? { updatedAt: tall.updatedAt } : undefined
                 }
@@ -277,13 +282,13 @@ const Hero = (props: Props) => {
                 className="object-cover object-center"
               />
             </div>
-            <div className="relative col-span-2 mb-10 aspect-3/4 overflow-hidden rounded-xl border bg-muted sm:mb-16">
+            <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-muted">
               <Image
                 src={supporting.src}
                 alt={supporting.alt}
                 fill
                 loading="eager"
-                sizes="(min-width: 1024px) 17vw, 40vw"
+                sizes="(min-width: 1024px) 20vw, 50vw"
                 queryParameters={
                   supporting.updatedAt
                     ? { updatedAt: supporting.updatedAt }
