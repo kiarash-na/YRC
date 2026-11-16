@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { EventSecondaryActions, eventRegisterHref } from "@/components/event-actions";
 import { Reveal } from "@/components/reveal";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
@@ -31,12 +32,14 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
         </Reveal>
 
         <Reveal delay={120} className="mt-14 md:mt-20">
-          <Link
-            href={`/events/${event.slug}`}
-            className="group grid gap-8 lg:grid-cols-12 lg:gap-16"
-          >
+          <div className="group grid gap-8 lg:grid-cols-12 lg:gap-16">
             <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
-              <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7">
+              <Link
+                href={`/events/${event.slug}`}
+                tabIndex={-1}
+                aria-hidden="true"
+                className="relative block aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7"
+              >
                 <Image
                   src={event.cover}
                   alt={event.title}
@@ -47,7 +50,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                   ]}
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             </ViewTransition>
 
             <div className="flex flex-col gap-6 lg:col-span-5 lg:py-4">
@@ -63,8 +66,13 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 </p>
               </div>
 
-              <h3 className="text-h2 transition-colors group-hover:text-foreground/80 md:text-h1">
-                {event.title}
+              <h3 className="text-h2 md:text-h1">
+                <Link
+                  href={`/events/${event.slug}`}
+                  className="transition-colors hover:text-foreground/75"
+                >
+                  {event.title}
+                </Link>
               </h3>
 
               <p className="text-body-small font-semibold uppercase">
@@ -75,18 +83,25 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 {event.excerpt}
               </p>
 
+              <EventSecondaryActions
+                slug={event.slug}
+                registrationUrl={event.registrationUrl}
+                details
+                compact
+              />
+
               <div className="mt-auto border-t border-border pt-6">
-                <span
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "h-11 w-full px-6 tracking-wider uppercase sm:w-auto",
-                  )}
+                <Button
+                  size="lg"
+                  className="h-11 w-full px-6 tracking-wider uppercase sm:w-auto"
+                  render={<Link href={eventRegisterHref(event.slug)} />}
+                  nativeButton={false}
                 >
-                  View event
-                </span>
+                  Register
+                </Button>
               </div>
             </div>
-          </Link>
+          </div>
         </Reveal>
       </div>
     </section>

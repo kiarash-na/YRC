@@ -24,16 +24,6 @@ const coaches: Coach[] = [
     ],
   },
   {
-    name: "Erfan",
-    role: "Running & Functional Training",
-    image: "/YRC/About/Team/Erfan-couch.jpg",
-    alt: "Erfan, YRC running and functional training coach",
-    bio: [
-      "Erfan began his athletic journey with sports such as football, volleyball, boxing, and bodybuilding, before turning his focus to running. Along the way, he gained experience in competitions and professional training, as well as a deeper understanding of nutrition and sports performance.",
-      "He believes that progress doesn't require a complicated formula; it requires a strong mind and the ability to maintain consistency and discipline. Today, Erfan brings this perspective to Running and Functional Training, helping runners become stronger, more focused, and more consistent.",
-    ],
-  },
-  {
     name: "Kamyar",
     role: "Hybrid Endurance & Strength Coach (Online)",
     image: "/YRC/About/Team/Kambiz-coach.jpg",
@@ -43,18 +33,6 @@ const coaches: Coach[] = [
       "Kamyar is a Hybrid Endurance and Strength Coach with extensive experience in endurance sports and competitions. He has participated in more than 150 races, ranging from Trail, Ultra, and SwimRun to Ironman.",
       "Today, as an Online Endurance Coach at TrainingPeaks, he uses his experience and knowledge to design personalized training programs for Running, Road Racing, and Marathon.",
       "His experience has taught him that running is not simply about reaching the finish line; it is a journey toward building discipline, developing structure, and discovering your own abilities.",
-    ],
-  },
-  {
-    name: "Amirhossein",
-    role: "Strength & Conditioning Coach | Movement & Corrective Exercise (Online)",
-    image: "/YRC/About/Team/AmirHossein-coach.jpg",
-    alt: "Amirhossein, YRC online strength and conditioning coach",
-    online: true,
-    bio: [
-      "Amirhossein is a strength and conditioning coach specializing in Mobility, Functional Training, Strength, and corrective exercises. His approach focuses on evaluating movement, improving movement quality, increasing strength and performance, and preventing injuries.",
-      "He designs training programs tailored to the individual needs of each runner. At YRC, Amirhossein focuses on helping runners build the physical foundations they need to move better, train more effectively, and perform more consistently.",
-      "The goal is not simply to become faster; it is to build a body that is prepared to move better, train better, and run more sustainably.",
     ],
   },
 ];

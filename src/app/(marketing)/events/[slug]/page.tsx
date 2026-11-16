@@ -1,6 +1,6 @@
 import { ViewTransition } from "react";
 import type { Metadata } from "next";
-import { ArrowUpRight, CalendarPlus, ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -10,6 +10,7 @@ import { Reveal } from "@/components/reveal";
 import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
 import { EventDetails, EventOverview } from "@/components/event-brief";
 import { EventRegister } from "@/components/event-register";
+import { EventSecondaryActions } from "@/components/event-actions";
 import { EventRouteMap } from "@/components/event-route-map";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
@@ -103,42 +104,28 @@ export default async function EventPage({
                 <h1 className="text-h2 mb-7 text-balance md:text-h1">
                   {event.title}
                 </h1>
-                <p className="text-body-small mb-8 text-muted-foreground md:text-body">
+                <p className="text-body-small text-muted-foreground md:text-body">
                   {event.excerpt}
                 </p>
+                {/* Secondary actions: small buttons on one line under the description. */}
+                <EventSecondaryActions
+                  slug={event.slug}
+                  registrationUrl={event.registrationUrl}
+                  isPast={event.isPast}
+                  className="pt-5 pb-8"
+                />
                 <div className="flex flex-col gap-2 border-t border-border pt-6">
                   <p className="text-body-small font-semibold">{dateLabel}</p>
                   <p className="text-caption text-muted-foreground uppercase">
                     {event.location} · {event.city}
                   </p>
                 </div>
-                {/* One primary action; everything else is a quiet link. */}
+                {/* The one primary action on every upcoming event. */}
                 {!event.isPast && (
                   <div className="pt-8">
                     <EventRegister eventId={event.id} eventSlug={event.slug} />
                   </div>
                 )}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-5">
-                  <a
-                    href={`/events/${event.slug}/calendar.ics`}
-                    download
-                    className="inline-flex items-center gap-1.5 text-body-small font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                  >
-                    <CalendarPlus className="size-4" aria-hidden="true" />
-                    Add to calendar
-                  </a>
-                  {!event.isPast && event.registrationUrl && (
-                    <a
-                      href={event.registrationUrl}
-                      target="_blank"
-                      rel="noopener"
-                      className="inline-flex items-center gap-1.5 text-body-small font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                    >
-                      Official registration
-                      <ArrowUpRight className="size-4" aria-hidden="true" />
-                    </a>
-                  )}
-                </div>
               </aside>
 
               <article className="min-w-0 flex-1">

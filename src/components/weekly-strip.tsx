@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { eventRegisterHref } from "@/components/event-actions";
 import { Reveal } from "@/components/reveal";
 import { formatWeekday, type EventSummary } from "@/lib/content-shared";
 
@@ -38,23 +39,27 @@ const WeeklyStrip = ({ events, className }: WeeklyStripProps) => {
           {events.map((event, index) => (
             <li key={event.slug} className="border-b border-border">
               <Reveal delay={index * 100}>
-                <Link
-                  href={`/events/${event.slug}`}
-                  className="group flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 md:py-8"
-                >
-                  <span className="text-h4 font-semibold transition-colors group-hover:text-yrc-accent md:text-h3 lg:text-h2">
+                <div className="group flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 md:py-8">
+                  <Link
+                    href={`/events/${event.slug}`}
+                    className="text-h4 font-semibold transition-colors hover:text-yrc-accent md:text-h3 lg:text-h2"
+                  >
                     Every {formatWeekday(event.date)} — {event.title}
-                  </span>
+                  </Link>
                   <span className="flex shrink-0 items-center gap-5">
                     <span className="text-body-small font-semibold text-muted-foreground uppercase">
                       {event.city}
                     </span>
-                    <span className="text-caption flex items-center gap-1.5 font-bold tracking-[0.2em] text-yrc-accent uppercase">
-                      View event
-                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                    </span>
+                    <Link
+                      href={eventRegisterHref(event.slug)}
+                      aria-label={`Register for ${event.title} on ${formatWeekday(event.date)}`}
+                      className="text-caption group/cta flex min-h-11 items-center gap-1.5 font-bold tracking-[0.2em] text-yrc-accent uppercase hover:underline hover:underline-offset-4"
+                    >
+                      Register
+                      <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
+                    </Link>
                   </span>
-                </Link>
+                </div>
               </Reveal>
             </li>
           ))}

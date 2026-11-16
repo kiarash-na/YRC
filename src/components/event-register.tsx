@@ -27,6 +27,9 @@ const REGISTER_PARAM = "register";
  *  member     → Register registers in place (server action, own session).
  *  registered → green-tick confirmation instead of the button.
  *
+ * Register buttons elsewhere (cards, home) link here with the same flag,
+ * so a guest goes straight on to login and a member is registered.
+ *
  * The page is ISR-cached, so who-is-viewing is resolved client-side. The
  * link works without JS (login then bounces straight back with the flag).
  */
@@ -69,6 +72,9 @@ export function EventRegister({ eventId, eventSlug }: EventRegisterProps) {
       if (cancelled) return;
       if (!session) {
         setStatus("guest");
+        // Came from a "Register" button elsewhere: continue to login (and
+        // back here, registered) instead of making them click twice.
+        if (wantsRegister) router.push(loginHref);
         return;
       }
       const { data } = await supabase

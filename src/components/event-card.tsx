@@ -4,7 +4,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { EventSecondaryActions, eventRegisterHref } from "@/components/event-actions";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface EventCardProps {
@@ -53,7 +55,11 @@ const EventCard = ({ event, className }: EventCardProps) => {
           </p>
         </div>
 
-        <h3 className="text-h4 md:text-h3">{event.title}</h3>
+        <h3 className="text-h4 md:text-h3">
+          <Link href={`/events/${event.slug}`} className="transition-colors hover:text-foreground/75">
+            {event.title}
+          </Link>
+        </h3>
 
         <p className="text-body-small font-semibold uppercase">
           {event.location} · {event.city}
@@ -63,12 +69,27 @@ const EventCard = ({ event, className }: EventCardProps) => {
           {event.excerpt}
         </p>
 
-        <Link
-          href={`/events/${event.slug}`}
-          className="mt-auto inline-flex w-fit items-center gap-1 pt-2 font-medium text-primary underline underline-offset-4 transition-opacity hover:opacity-75"
-        >
-          View event <ArrowRight className="size-4 transition-transform duration-500 ease-out group-hover:translate-x-1" />
-        </Link>
+        <EventSecondaryActions
+          slug={event.slug}
+          registrationUrl={event.registrationUrl}
+          isPast={event.isPast}
+          details={!event.isPast}
+          compact
+        />
+
+        <div className="mt-auto pt-2">
+          <Button
+            size="lg"
+            className="h-11 w-full tracking-wider uppercase"
+            render={
+              <Link href={event.isPast ? `/events/${event.slug}` : eventRegisterHref(event.slug)} />
+            }
+            nativeButton={false}
+          >
+            {event.isPast ? "View event" : "Register"}
+            <ArrowRight className="transition-transform duration-500 ease-out group-hover:translate-x-1" />
+          </Button>
+        </div>
       </div>
     </article>
   );

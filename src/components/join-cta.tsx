@@ -13,24 +13,25 @@ const JoinCta = ({ className }: JoinCtaProps) => {
   return (
     <section
       className={cn(
-        // Dark closing band — mirrors the hero so the page ends on the
-        // same note it opens with.
-        "dark bg-background py-24 text-foreground md:py-36",
+        // Closing band: centred, on the page background, with the accent
+        // rule above the content.
+        "py-24 md:py-36",
         className,
       )}
     >
       <div className="container">
-        <Reveal className="flex max-w-5xl flex-col gap-5 border-l-4 border-yrc-accent pl-6 md:pl-10 lg:gap-7">
+        <Reveal className="mx-auto flex max-w-5xl flex-col items-center gap-5 text-center lg:gap-7">
+          <span aria-hidden="true" className="mb-2 h-1 w-16 bg-yrc-accent md:mb-4 md:w-24" />
           <p className="text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase">
             Yas Rise Community
           </p>
           <h2 className="text-h1 font-bold md:text-display xl:text-hero">
             RUN WITH US.
           </h2>
-          <p className="max-w-xl text-body text-muted-foreground md:text-h4 md:font-normal">
+          <p className="max-w-xl text-balance text-body text-muted-foreground md:text-h4 md:font-normal">
             Find your people, choose your challenge and keep moving forward.
           </p>
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-3 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <JoinYrcButton className="h-12 w-full bg-yrc-accent px-7 tracking-wider text-yrc-accent-foreground hover:bg-yrc-accent/85 sm:w-auto">
               JOIN YRC
             </JoinYrcButton>
