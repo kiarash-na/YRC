@@ -22,8 +22,9 @@ In **SQL Editor**, run in this order:
 6. `supabase/migrations/0006_content_db.sql` — `posts` + `content_blocks` tables (journal + page copy live in the DB)
 7. `supabase/migrations/0007_event_briefs.sql` — structured event brief fields (time, meeting point, distance…) + new categories
 8. `supabase/migrations/0008_rsvp_leaderboard_newsletter.sql` — `event_rsvps`, `newsletter_subscribers`, leaderboard opt-out, `get_leaderboard()` / `get_community_stats()`
-9. `supabase/seed.sql` — points menu + all events + one QR token per event
-10. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
+9. `supabase/migrations/0009_event_registrations.sql` — `event_registrations` (members register themselves for upcoming events; RLS-guarded)
+10. `supabase/seed.sql` — points menu + all events + one QR token per event
+11. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
 
 Then open **Database → Advisors → Security Advisor** — it should show no errors.
 
@@ -69,6 +70,7 @@ Set the env vars (see `.env.example`) in:
 | `score_entries` | append-only points ledger; score = sum |
 | `posts` | journal articles (MDX body; replaced content/blog/*.mdx) |
 | `content_blocks` | structured page copy blocks (faqs, course details) |
+| `event_registrations` | members registered for an upcoming event (own-row RLS insert) |
 | `event_rsvps` | Join-flow contact capture per event (service-role writes only) |
 | `newsletter_subscribers` | newsletter list (service-role writes only) |
 

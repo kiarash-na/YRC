@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { CalendarPlus, ChevronLeft } from "lucide-react";
+import { ArrowUpRight, CalendarPlus, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 
 import { CoverImage } from "@/components/cover-image";
-import { EventBrief } from "@/components/event-brief";
-import { EventRsvp } from "@/components/event-rsvp";
+import { EventDetails, EventOverview } from "@/components/event-brief";
+import { EventRegister } from "@/components/event-register";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { EVENT_CATEGORY_LABELS, formatDate } from "@/lib/content-shared";
 import { getAllEvents, getEventBySlug } from "@/lib/events-db";
 
@@ -94,42 +93,33 @@ export default async function EventPage({
                     {event.location} · {event.city}
                   </p>
                 </div>
-                <div className="pt-6">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                    render={
-                      <a
-                        href={`/events/${event.slug}/calendar.ics`}
-                        download
-                      />
-                    }
-                    nativeButton={false}
-                  >
-                    <CalendarPlus />
-                    Add to calendar
-                  </Button>
-                </div>
+                {/* One primary action; everything else is a quiet link. */}
                 {!event.isPast && (
-                  <>
-                    {event.registrationUrl && (
-                      <div className="pt-6">
-                        <Button
-                          size="lg"
-                          className="w-full sm:w-auto"
-                          render={<a href={event.registrationUrl} />}
-                          nativeButton={false}
-                        >
-                          Register
-                        </Button>
-                      </div>
-                    )}
-                    <div className="pt-6">
-                      <EventRsvp eventId={event.id} eventSlug={event.slug} />
-                    </div>
-                  </>
+                  <div className="pt-8">
+                    <EventRegister eventId={event.id} eventSlug={event.slug} />
+                  </div>
                 )}
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-5">
+                  <a
+                    href={`/events/${event.slug}/calendar.ics`}
+                    download
+                    className="inline-flex items-center gap-1.5 text-body-small font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  >
+                    <CalendarPlus className="size-4" aria-hidden="true" />
+                    Add to calendar
+                  </a>
+                  {!event.isPast && event.registrationUrl && (
+                    <a
+                      href={event.registrationUrl}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center gap-1.5 text-body-small font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                    >
+                      Official registration
+                      <ArrowUpRight className="size-4" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
               </aside>
 
               <article className="min-w-0 flex-1">
@@ -142,9 +132,11 @@ export default async function EventPage({
                   />
                 </div>
 
-                <EventBrief event={event} />
+                <EventOverview event={event} />
 
                 <div className="flex flex-col">{content}</div>
+
+                <EventDetails event={event} />
               </article>
             </div>
           </div>
