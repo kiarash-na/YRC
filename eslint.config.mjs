@@ -24,6 +24,14 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  {
+    // Edge functions render React Email, not Next pages: a <link> to a
+    // webfont in an email <Head> is correct there.
+    files: ["supabase/functions/**/*.{ts,tsx}"],
+    rules: {
+      "@next/next/no-page-custom-font": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
