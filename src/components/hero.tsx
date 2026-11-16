@@ -77,7 +77,7 @@ const defaultProps: HeroProps = {
     },
   },
   video: {
-    src: "/YRC/13372516_1080_1920_30fps.mp4",
+    src: "/YRC/19538560-uhd_3840_2160_24fps.mp4",
   },
   fallback: {
     src: "/YRC/Home/pexels-runffwpu-18409430.jpg",
@@ -86,9 +86,9 @@ const defaultProps: HeroProps = {
   },
   images: [
     {
-      src: "/YRC/Home/pexels-runffwpu-18408962.jpg",
-      alt: "YRC runners racing shoulder to shoulder in a road race",
-      updatedAt: "1789681295806",
+      src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
+      alt: "A smiling YRC trail runner with poles and a running vest climbing a forest gravel path",
+      updatedAt: "1794843416956",
     },
     {
       src: "/YRC/Community/photo_5877443723178741686_w.jpg",
@@ -170,7 +170,7 @@ const Hero = (props: Props) => {
             onPlaying={() => setVideoShown(true)}
             onError={() => setVideoFailed(true)}
             className={cn(
-              "absolute inset-0 size-full object-cover object-[50%_35%] transition-opacity duration-1000",
+              "absolute inset-0 size-full object-cover object-center transition-opacity duration-1000",
               videoShown ? "opacity-100" : "opacity-0",
             )}
           />
