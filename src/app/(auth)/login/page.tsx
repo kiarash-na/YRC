@@ -56,7 +56,10 @@ export default async function LoginPage({
           <Link href="/" className="text-h3 font-bold tracking-tight">
             YRC
           </Link>
-          <CardTitle className="text-h3">Member login</CardTitle>
+          <CardTitle className="text-h3">
+            {/* The page's one heading (a11y / SEO); keeps the card-title look. */}
+            <h1 className="text-[length:inherit] leading-[inherit] font-[inherit]">Member login</h1>
+          </CardTitle>
           <CardDescription>
             No passwords — sign in with Strava or a one-time email link.
           </CardDescription>

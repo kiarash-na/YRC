@@ -7,6 +7,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 
 import { CoverImage } from "@/components/cover-image";
 import { Reveal } from "@/components/reveal";
+import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
 import { EventDetails, EventOverview } from "@/components/event-brief";
 import { EventRegister } from "@/components/event-register";
 import { EventRouteMap } from "@/components/event-route-map";
@@ -37,9 +38,24 @@ export async function generateMetadata({
     return { title: "Event not found — YRC" };
   }
 
+  // Weekly copies share a title; the date keeps each page (and tab) distinct.
+  const title =
+    event.recurrence === "weekly"
+      ? `${event.title} · ${formatDate(event.date)} — YRC`
+      : `${event.title} — YRC`;
+
   return {
-    title: `${event.title} — YRC`,
+    title,
     description: event.excerpt,
+    openGraph: {
+      title,
+      description: event.excerpt,
+      type: "article",
+      url: `/events/${event.slug}`,
+      images: IMAGEKIT_URL_ENDPOINT
+        ? [`${IMAGEKIT_URL_ENDPOINT}${event.cover}?tr=w-1200,h-630,fo-auto`]
+        : undefined,
+    },
   };
 }
 
@@ -65,7 +81,7 @@ export default async function EventPage({
     : formatDate(event.date);
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <section className="bg-background py-32">
         <div className="container">
           <div className="mx-auto flex max-w-6xl flex-col gap-16">

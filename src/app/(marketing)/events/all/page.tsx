@@ -17,7 +17,7 @@ export default async function AllEventsPage() {
   const events = (await getAllEvents()).map(toEventSummary);
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <section className="py-32">
         <div className="container">
           <div className="mx-auto flex max-w-6xl flex-col gap-14">

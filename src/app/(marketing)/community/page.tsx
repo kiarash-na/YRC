@@ -22,7 +22,7 @@ export const revalidate = 300;
 
 export default function CommunityPage() {
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <CommunityHero />
       <Reveal>
         <CommunityPhilosophy />

@@ -28,6 +28,9 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
+      // Member photos are hot-linked from Google/Strava, which refuse
+      // requests that carry a third-party Referer.
+      referrerPolicy="no-referrer"
       className={cn(
         "aspect-square size-full rounded-full object-cover",
         className

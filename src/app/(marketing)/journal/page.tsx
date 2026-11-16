@@ -21,7 +21,7 @@ export default async function JournalPage() {
   const tags = getAllTags(summaries);
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <Blog52 />
 
       <section className="bg-background pb-32">

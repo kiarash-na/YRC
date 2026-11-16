@@ -31,7 +31,7 @@ export default async function EventsPage() {
   ]);
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <EventsHero />
       <UpcomingEvents events={upcoming} />
       <Reveal>

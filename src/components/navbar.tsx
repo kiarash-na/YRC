@@ -74,7 +74,8 @@ const Navbar = ({ className }: NavbarProps) => {
             onClick={toggleMenu}
             aria-expanded={isOpen}
             aria-label={isOpen ? "Close menu" : "Open menu"}
-            className="text-body-small font-medium tracking-wider text-foreground uppercase transition-colors hover:text-muted-foreground"
+            // 44px tap target without changing the visual size.
+            className="-mx-2 inline-flex min-h-11 items-center px-2 text-body-small font-medium tracking-wider text-foreground uppercase transition-colors hover:text-muted-foreground"
           >
             <span key={isOpen ? "close" : "menu"} className="yrc-menu-label-in inline-block">
               {isOpen ? "Close" : "Menu"}

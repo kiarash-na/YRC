@@ -8,6 +8,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { AmbientVideo } from "@/components/ambient-video";
 import { CoverImage } from "@/components/cover-image";
 import { Reveal } from "@/components/reveal";
+import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
 import { Image } from "@/components/imagekit";
 import { JoinCta } from "@/components/join-cta";
 import { mdxComponents } from "@/components/mdx";
@@ -40,6 +41,16 @@ export async function generateMetadata({
   return {
     title: `${post.title} — YRC`,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      url: `/journal/${post.slug}`,
+      publishedTime: post.date,
+      images: IMAGEKIT_URL_ENDPOINT
+        ? [`${IMAGEKIT_URL_ENDPOINT}${post.cover}?tr=w-1200,h-630,fo-auto`]
+        : undefined,
+    },
   };
 }
 
@@ -70,7 +81,7 @@ export default async function JournalPostPage({
     .slice(0, 3);
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <div className="yrc-read-progress" aria-hidden="true" />
       <section className="bg-background py-32">
         <div className="container">

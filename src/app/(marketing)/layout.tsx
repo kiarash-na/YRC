@@ -14,6 +14,13 @@ export default function MarketingLayout({
         src="https://tally.so/widgets/embed.js"
         strategy="afterInteractive"
       />
+      {/* First tab stop: lets keyboard users jump past the navigation. */}
+      <a
+        href="#main"
+        className="sr-only z-100 rounded-md bg-yrc-accent px-4 py-2 text-body-small font-semibold text-yrc-accent-foreground focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      >
+        Skip to content
+      </a>
       <Navbar />
       {children}
       <Footer />

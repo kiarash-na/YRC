@@ -23,7 +23,7 @@ export default async function Home() {
   const nextEvent = upcoming.find((event) => !weeklySlugs.has(event.slug));
 
   return (
-    <main className="flex-1">
+    <main id="main" className="flex-1">
       <Hero />
       {weekly.length > 0 ? <WeeklyStrip events={weekly} /> : null}
       <StridesBoard />
