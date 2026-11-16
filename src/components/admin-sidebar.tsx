@@ -6,7 +6,9 @@ import {
   CalendarDays,
   LayoutDashboard,
   LogOut,
+  Mail,
   ShieldCheck,
+  Sparkles,
   Star,
   Users,
 } from "lucide-react";
@@ -15,9 +17,11 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/agent", label: "Agent", icon: Sparkles },
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/scoring", label: "Scoring", icon: Star },
   { href: "/admin/members", label: "Members", icon: Users },
+  { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/admin/admins", label: "Admins", icon: ShieldCheck },
 ];
 
