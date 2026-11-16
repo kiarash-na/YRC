@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 
 import { Image } from "@/components/imagekit";
@@ -20,7 +21,7 @@ import { cn } from "@/lib/utils";
  * removed from the project on purpose (bundle size).
  */
 
-interface Photo {
+export interface GalleryPhoto {
   src: string;
   alt: string;
   updatedAt?: string;
@@ -32,7 +33,7 @@ interface Photo {
 
 type View = "flow" | "grid";
 
-const photos: Photo[] = [
+const communityPhotos: GalleryPhoto[] = [
   {
     src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.JPG",
     alt: "YRC runners on the course at Istanbul Marathon 2025",
@@ -113,7 +114,6 @@ const measure = (width: number, total: number): Metrics => {
   };
 };
 
-const DEFAULT_METRICS = measure(1200, photos.length);
 
 // Blend each card between its spot in the flow (m = 0) and its grid cell (m = 1).
 const place = (i: number, o: number, m: number, k: Metrics, total: number) => {
@@ -213,14 +213,31 @@ function useAnimatedValue(onChange: (value: number) => void) {
 }
 
 interface CommunityGalleryProps {
+  eyebrow?: string;
+  heading?: ReactNode;
+  description?: string;
+  photos?: GalleryPhoto[];
   className?: string;
 }
 
-const CommunityGallery = ({ className }: CommunityGalleryProps) => {
+const CommunityGallery = ({
+  eyebrow = "Community Gallery",
+  heading = (
+    <>
+      This is what <span className="text-yrc-accent">belonging</span> looks
+      like.
+    </>
+  ),
+  description = "Cold mornings, shared miles, finish-line noise. The community, as it actually is.",
+  photos = communityPhotos,
+  className,
+}: CommunityGalleryProps) => {
   const total = photos.length;
+  // Server/first-paint layout, before the stage is measured.
+  const initialMetrics = measure(1200, total);
   const stageRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const metrics = useRef<Metrics>(DEFAULT_METRICS);
+  const metrics = useRef<Metrics>(measure(1200, photos.length));
   const target = useRef(0);
   const dragged = useRef(false);
   const drag = useRef({ id: -1, x: 0, start: 0, last: 0, time: 0, v: 0 });
@@ -396,15 +413,13 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
       <div className="container">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-7 text-center">
           <p className="text-caption font-bold tracking-[0.3em] text-muted-foreground uppercase">
-            Community Gallery
+            {eyebrow}
           </p>
           <h2 className="text-h2 text-balance md:text-h1">
-            This is what <span className="text-yrc-accent">belonging</span>{" "}
-            looks like.
+            {heading}
           </h2>
           <p className="text-body-small text-muted-foreground md:text-body">
-            Cold mornings, shared miles, finish-line noise. The community, as
-            it actually is.
+            {description}
           </p>
           <div className="flex gap-1 rounded-full border border-border p-1">
             {options.map(({ id, label, icon: Icon }) => (
@@ -445,14 +460,14 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
               settle(keys[event.key]);
             }
           }}
-          style={{ height: DEFAULT_METRICS.flowH }}
+          style={{ height: initialMetrics.flowH }}
           className={cn(
             "relative mx-auto mt-14 max-w-6xl touch-pan-y rounded-2xl outline-none select-none [perspective:1400px] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background md:mt-20",
             view === "flow" && "cursor-grab active:cursor-grabbing",
           )}
         >
           {photos.map((photo, i) => {
-            const initial = place(i, wrap(i, total), 0, DEFAULT_METRICS, total);
+            const initial = place(i, wrap(i, total), 0, initialMetrics, total);
             const focused = view === "flow" && i === active;
             return (
               <button
@@ -473,8 +488,8 @@ const CommunityGallery = ({ className }: CommunityGalleryProps) => {
                   else settle(target.current + wrap(i - target.current, total));
                 }}
                 style={{
-                  width: DEFAULT_METRICS.size,
-                  height: DEFAULT_METRICS.size * 1.25,
+                  width: initialMetrics.size,
+                  height: initialMetrics.size * 1.25,
                   transform: initial.transform,
                   opacity: initial.opacity,
                   zIndex: initial.z,
