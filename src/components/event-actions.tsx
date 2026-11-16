@@ -1,25 +1,13 @@
-import { ArrowUpRight, CalendarPlus, Info } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpRight, CalendarPlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/**
- * Where every "Register" outside the event page points: the event page with
- * the one-shot `register=1` flag. EventRegister then registers a signed-in
- * member on arrival, or sends a guest straight to login (and back).
- */
-export function eventRegisterHref(slug: string) {
-  return `/events/${slug}?register=1`;
-}
-
 interface EventSecondaryActionsProps {
   slug: string;
-  /** Official/external registration page, shown for upcoming events only. */
+  /** The event on Strava (club group event), shown for upcoming events only. */
   registrationUrl?: string;
   isPast?: boolean;
-  /** Show a "Details" button (cards; the event page itself omits it). */
-  details?: boolean;
   /** Short labels so all buttons fit one line in narrow cards. */
   compact?: boolean;
   className?: string;
@@ -27,13 +15,13 @@ interface EventSecondaryActionsProps {
 
 /**
  * The quiet actions of an event: small outline buttons on one line under
- * the description. Register is always the separate, primary CTA.
+ * the description. The primary CTA is separate: Register on the event page,
+ * Event details on cards.
  */
 export function EventSecondaryActions({
   slug,
   registrationUrl,
   isPast = false,
-  details = false,
   compact = false,
   className,
 }: EventSecondaryActionsProps) {
@@ -41,18 +29,6 @@ export function EventSecondaryActions({
   const iconClass = compact ? "max-sm:px-2 max-sm:[&_svg]:hidden" : undefined;
   return (
     <div className={cn("flex flex-wrap items-center gap-2", compact && "max-sm:gap-1.5", className)}>
-      {details && (
-        <Button
-          size="sm"
-          variant="outline"
-          className={iconClass}
-          render={<Link href={`/events/${slug}`} />}
-          nativeButton={false}
-        >
-          <Info aria-hidden="true" />
-          Details
-        </Button>
-      )}
       {!isPast && (
         <Button
           size="sm"
@@ -75,12 +51,12 @@ export function EventSecondaryActions({
               href={registrationUrl}
               target="_blank"
               rel="noopener"
-              aria-label={compact ? "Official registration (opens in a new tab)" : undefined}
+              aria-label="Join with Strava (opens in a new tab)"
             />
           }
           nativeButton={false}
         >
-          {compact ? "Official" : "Official registration"}
+          Join with Strava
           <ArrowUpRight aria-hidden="true" />
         </Button>
       )}

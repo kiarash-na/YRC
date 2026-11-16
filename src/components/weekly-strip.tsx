@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { eventRegisterHref } from "@/components/event-actions";
 import { Reveal } from "@/components/reveal";
 import { formatWeekday, type EventSummary } from "@/lib/content-shared";
 
@@ -51,11 +50,11 @@ const WeeklyStrip = ({ events, className }: WeeklyStripProps) => {
                       {event.city}
                     </span>
                     <Link
-                      href={eventRegisterHref(event.slug)}
-                      aria-label={`Register for ${event.title} on ${formatWeekday(event.date)}`}
+                      href={`/events/${event.slug}`}
+                      aria-label={`Event details: ${event.title}, every ${formatWeekday(event.date)}`}
                       className="text-caption group/cta flex min-h-11 items-center gap-1.5 font-bold tracking-[0.2em] text-yrc-accent uppercase hover:underline hover:underline-offset-4"
                     >
-                      Register
+                      Event details
                       <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
                     </Link>
                   </span>

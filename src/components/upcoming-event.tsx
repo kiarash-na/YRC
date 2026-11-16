@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Image } from "@/components/imagekit";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EventSecondaryActions, eventRegisterHref } from "@/components/event-actions";
+import { EventSecondaryActions } from "@/components/event-actions";
 import { Reveal } from "@/components/reveal";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
@@ -86,7 +86,6 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
               <EventSecondaryActions
                 slug={event.slug}
                 registrationUrl={event.registrationUrl}
-                details
                 compact
               />
 
@@ -94,10 +93,10 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                 <Button
                   size="lg"
                   className="h-11 w-full px-6 tracking-wider uppercase sm:w-auto"
-                  render={<Link href={eventRegisterHref(event.slug)} />}
+                  render={<Link href={`/events/${event.slug}`} />}
                   nativeButton={false}
                 >
-                  Register
+                  Event details
                 </Button>
               </div>
             </div>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
-import { EventSecondaryActions, eventRegisterHref } from "@/components/event-actions";
+import { EventSecondaryActions } from "@/components/event-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
@@ -73,7 +73,6 @@ const EventCard = ({ event, className }: EventCardProps) => {
           slug={event.slug}
           registrationUrl={event.registrationUrl}
           isPast={event.isPast}
-          details={!event.isPast}
           compact
         />
 
@@ -82,11 +81,11 @@ const EventCard = ({ event, className }: EventCardProps) => {
             size="lg"
             className="h-11 w-full tracking-wider uppercase"
             render={
-              <Link href={event.isPast ? `/events/${event.slug}` : eventRegisterHref(event.slug)} />
+              <Link href={`/events/${event.slug}`} />
             }
             nativeButton={false}
           >
-            {event.isPast ? "View event" : "Register"}
+            Event details
             <ArrowRight className="transition-transform duration-500 ease-out group-hover:translate-x-1" />
           </Button>
         </div>
