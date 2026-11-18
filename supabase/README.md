@@ -24,6 +24,7 @@ In **SQL Editor**, run in this order:
 8. `supabase/migrations/0008_rsvp_leaderboard_newsletter.sql` — `event_rsvps`, `newsletter_subscribers`, leaderboard opt-out, `get_leaderboard()` / `get_community_stats()`
 9. `supabase/migrations/0009_event_registrations.sql` — `event_registrations` (members register themselves for upcoming events; RLS-guarded)
 10. `supabase/migrations/0010_event_routes.sql` — `events.route_gpx_path` / `route_line` + public `event-routes` Storage bucket (GPX route maps); weekly copies carry the route
+11. `supabase/migrations/0011_event_overview_gallery.sql` — `events.overview` (Markdown lead under the at-a-glance icons) and `events.gallery` (jsonb list of `{src, type, poster?, alt?}` ImageKit media); weekly copies carry both
 11. `supabase/seed.sql` — points menu + all events + one QR token per event
 12. `supabase/seed_content.sql` — journal posts + page copy blocks (generated once from the retired MDX/data files)
 
@@ -64,7 +65,7 @@ Set the env vars (see `.env.example`) in:
 | `profiles` | one row per member (from Strava login) |
 | `strava_tokens` | server-only vault for Strava API tokens |
 | `admins` | max 3 seats; email label + linked Strava athlete ID |
-| `events` | the events (source of truth, replaced MDX); GPX route in `route_line` + file in Storage `event-routes` |
+| `events` | the events (source of truth, replaced MDX); GPX route in `route_line` + file in Storage `event-routes`; `overview` + `gallery` feed the event page template |
 | `event_checkin_tokens` | QR secrets per event (never client-readable) |
 | `event_attendance` | who checked in where (one per member per event) |
 | `score_actions` | the admin-editable points menu |

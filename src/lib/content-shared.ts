@@ -64,8 +64,68 @@ export interface EventItem {
   routeLine?: [number, number][];
   /** Public download URL of the original .gpx. */
   routeGpxUrl?: string;
+  /** Short Markdown summary shown under the "at a glance" icon box. */
+  overview?: string;
+  /** Ordered media for the gallery section (empty = no section). */
+  gallery?: EventMedia[];
   /** Raw MDX body */
   content: string;
+}
+
+/** One item of an event's media gallery (events.gallery, 0011). */
+export interface EventMedia {
+  /** ImageKit path, e.g. /YRC/Events/…/IMG_2163.mov */
+  src: string;
+  type: "image" | "video";
+  /**
+   * Still image for a video (ImageKit path). ImageKit can't generate video
+   * thumbnails on this account (transformation quota), so posters are real
+   * images, captured at upload time.
+   */
+  poster?: string;
+  alt?: string;
+}
+
+const VIDEO_EXT = /\.(mov|mp4|m4v|webm)$/i;
+
+/** "image" | "video" from an ImageKit path's extension. */
+export function mediaTypeOf(path: string): EventMedia["type"] {
+  return VIDEO_EXT.test(path.split("?")[0]) ? "video" : "image";
+}
+
+/** ImageKit paths are stored URL-encoded (spaces → %20), like covers. */
+function encodeMediaPath(path: string): string {
+  const trimmed = path.trim();
+  return /\s/.test(trimmed) ? encodeURI(trimmed) : trimmed;
+}
+
+/**
+ * Validates and normalizes a raw `events.gallery` value (DB jsonb, admin
+ * form JSON or agent input): drops anything without a usable path, infers
+ * a missing type from the extension, caps at 40 items.
+ */
+export function normalizeEventGallery(raw: unknown): EventMedia[] {
+  if (!Array.isArray(raw)) return [];
+  const out: EventMedia[] = [];
+  for (const item of raw) {
+    const record =
+      typeof item === "string" ? { src: item } : (item as Record<string, unknown> | null);
+    if (!record || typeof record.src !== "string") continue;
+    const src = encodeMediaPath(record.src);
+    if (!src.startsWith("/") || src.length > 500) continue;
+    const type =
+      record.type === "image" || record.type === "video" ? record.type : mediaTypeOf(src);
+    const media: EventMedia = { src, type };
+    if (typeof record.poster === "string" && record.poster.trim().startsWith("/")) {
+      media.poster = encodeMediaPath(record.poster).slice(0, 500);
+    }
+    if (typeof record.alt === "string" && record.alt.trim()) {
+      media.alt = record.alt.trim().slice(0, 200);
+    }
+    out.push(media);
+    if (out.length === 40) break;
+  }
+  return out;
 }
 
 /** Public URL of a GPX object in the `event-routes` Storage bucket. */

@@ -3,20 +3,22 @@ import type { Metadata } from "next";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { compileMDX } from "next-mdx-remote/rsc";
 
 import { CoverImage } from "@/components/cover-image";
 import { Reveal } from "@/components/reveal";
 import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
+import { EventDetailsBody, EventOverviewText } from "@/components/event-body";
 import { EventDetails, EventOverview } from "@/components/event-brief";
+import { EventGallery } from "@/components/event-gallery";
 import { EventRegister } from "@/components/event-register";
 import { EventSecondaryActions } from "@/components/event-actions";
 import { EventRouteMap } from "@/components/event-route-map";
 import { NewsletterSignup } from "@/components/newsletter-signup";
-import { mdxComponents } from "@/components/mdx";
 import { Badge } from "@/components/ui/badge";
 import { EVENT_CATEGORY_LABELS, formatDate } from "@/lib/content-shared";
 import { getAllEvents, getEventBySlug } from "@/lib/events-db";
+
+const EYEBROW = "mb-6 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase";
 
 // ISR: matches the 15-min event-lifecycle cron; admin edits revalidate on demand.
 export const revalidate = 900;
@@ -71,11 +73,6 @@ export default async function EventPage({
   if (!event) {
     notFound();
   }
-
-  const { content } = await compileMDX({
-    source: event.content,
-    components: mdxComponents,
-  });
 
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
@@ -141,9 +138,25 @@ export default async function EventPage({
                   </div>
                 </ViewTransition>
 
-                <EventOverview event={event} />
+                {/* Overview: the at-a-glance icon box, then the short lead. */}
+                <section aria-labelledby="event-overview-heading">
+                  <h2 id="event-overview-heading" className={EYEBROW}>
+                    Overview
+                  </h2>
+                  <EventOverview event={event} />
+                  {event.overview && <EventOverviewText source={event.overview} />}
+                </section>
 
-                <div className="flex flex-col">{content}</div>
+                {event.content.trim() && (
+                  <Reveal>
+                    <section aria-labelledby="event-details-heading" className="mt-16 md:mt-20">
+                      <h2 id="event-details-heading" className={EYEBROW}>
+                        Explore the details
+                      </h2>
+                      <EventDetailsBody source={event.content} />
+                    </section>
+                  </Reveal>
+                )}
 
                 <Reveal>
                   <EventDetails event={event} />
@@ -163,6 +176,9 @@ export default async function EventPage({
           </div>
         </div>
       </section>
+      {event.gallery && event.gallery.length > 0 && (
+        <EventGallery items={event.gallery} eventTitle={event.title} className="border-t border-border" />
+      )}
       <NewsletterSignup />
     </main>
   );

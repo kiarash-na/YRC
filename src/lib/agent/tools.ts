@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 
-import { EVENT_CATEGORIES } from "@/lib/content-shared";
+import { EVENT_CATEGORIES, normalizeEventGallery } from "@/lib/content-shared";
 import * as newsletter from "@/lib/newsletter";
 import { renderNewsletterHtml, withoutUnsubscribePlaceholder } from "@/lib/newsletter-template";
 import type { LoopTool } from "@/lib/agent/loop";
@@ -105,7 +105,30 @@ const EVENT_FIELD_SCHEMA = {
   route_notes: { type: ["string", "null"] },
   what_to_bring: { type: ["string", "null"] },
   coach_tips: { type: ["string", "null"] },
-  body: { type: "string", description: "Event description in Markdown/MDX" },
+  overview: {
+    type: ["string", "null"],
+    description: "2–3 short Markdown lines shown under the at-a-glance icons: what, when, how far, where to meet. **Bold** the key facts.",
+  },
+  gallery: {
+    type: "array",
+    description: "Full replacement list of gallery media (order = display order). Videos need a poster image path.",
+    items: {
+      type: "object",
+      properties: {
+        src: { type: "string", description: "ImageKit path, e.g. /YRC/Events/x/IMG_1.mov" },
+        type: { type: "string", enum: ["image", "video"] },
+        poster: { type: "string", description: "ImageKit path of a still, for videos" },
+        alt: { type: "string", description: "Short description for screen readers" },
+      },
+      required: ["src"],
+      additionalProperties: false,
+    },
+  },
+  body: {
+    type: "string",
+    description:
+      "\"Explore the details\" in Markdown: optional `### kicker` line, an intro paragraph, then `## The session`, `## Meet & move` (list items starting with **HH:MM** render as a timeline), `## Pack your kit` (list renders as a checklist) and a closing `> sign-off` line.",
+  },
 } as const;
 
 function eventFields(input: Input): Record<string, unknown> {
@@ -151,6 +174,11 @@ function eventFields(input: Input): Record<string, unknown> {
   }
   for (const key of ["registration_url", "meeting_point", "finish_point", "route_notes", "what_to_bring", "coach_tips"]) {
     if (has(key)) out[key] = str(input, key, 500) ?? null;
+  }
+  if (has("overview")) out.overview = str(input, "overview", 2000) ?? null;
+  if (has("gallery")) {
+    if (!Array.isArray(input.gallery)) throw new ToolInputError("gallery must be an array.");
+    out.gallery = normalizeEventGallery(input.gallery);
   }
   if (has("body")) out.body = str(input, "body", 100_000) ?? "";
   return out;

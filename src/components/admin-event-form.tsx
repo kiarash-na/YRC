@@ -1,3 +1,4 @@
+import { GalleryField } from "@/components/admin-gallery-field";
 import { MediaUploadField } from "@/components/admin-media-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,9 +29,48 @@ interface EventFormProps {
     what_to_bring?: string | null;
     coach_tips?: string | null;
     route_gpx_path?: string | null;
+    overview?: string | null;
+    gallery?: unknown;
     body: string;
   };
 }
+
+/**
+ * Starting point for a new event's "Explore the details" body — the agreed
+ * event-page structure (see the trail and technique sessions). Lists whose
+ * items start with a **HH:MM** time render as a timeline; the list under a
+ * "Pack your kit" / "Bring along" heading renders as a checklist; a closing
+ * "> …" line is the sign-off.
+ */
+const BODY_TEMPLATE = `### YRC Community Session · City · 1 January 2027
+
+Join us for **X km** of … Expect … followed by coffee and an easy catch-up.
+
+## The session
+
+We kick off with a proper warm-up, then …
+
+## Meet & move
+
+- **07:45** · **Meeting point:** meet the crew.
+- **08:00** · **Let's move:** start the session.
+- **09:15** · **Coffee time:** grab a cup and settle in together.
+
+## Is this your kind of morning?
+
+You …
+
+## Pack your kit
+
+- Running shoes and weather-appropriate layers
+- Water
+
+## The finish line? Coffee.
+
+After the session, we'll settle in for coffee at …
+
+> Come for the run. Stay for the coffee.
+`;
 
 const labelClass = "text-caption font-medium";
 const textareaClass =
@@ -57,6 +97,21 @@ export function AdminEventForm({ action, event }: EventFormProps) {
       </div>
 
       <MediaUploadField name="cover" label="Cover image" defaultValue={event?.cover} folder="/YRC/Events" required />
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="overview" className={labelClass}>Overview (Markdown)</label>
+        <textarea
+          id="overview"
+          name="overview"
+          rows={4}
+          defaultValue={event?.overview ?? ""}
+          placeholder={"Start your weekend with YRC on **28 November**: 75 minutes of running and drills. **Meet at 07:45**.\nSharpen your technique and enjoy coffee with the crew afterwards."}
+          className={textareaClass}
+        />
+        <p className="text-caption text-muted-foreground">
+          Two or three short lines under the at-a-glance icons on the event page. **Bold** the key facts.
+        </p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
@@ -199,9 +254,22 @@ export function AdminEventForm({ action, event }: EventFormProps) {
       </fieldset>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="body" className={labelClass}>Body (MDX)</label>
-        <textarea id="body" name="body" rows={12} defaultValue={event?.body} className={textareaClass} />
+        <label htmlFor="body" className={labelClass}>Explore the details (Markdown)</label>
+        <textarea
+          id="body"
+          name="body"
+          rows={16}
+          defaultValue={event ? event.body : BODY_TEMPLATE}
+          className={`${textareaClass} font-mono text-xs`}
+        />
+        <p className="text-caption text-muted-foreground">
+          Lines like <code>- **07:45** · **Place:** …</code> become a timeline; the list under
+          “Pack your kit” or “Bring along” becomes a checklist; a last line starting with{" "}
+          <code>&gt;</code> is the sign-off.
+        </p>
       </div>
+
+      <GalleryField defaultValue={event?.gallery} folder="/YRC/Events/Gallery" />
 
       <Button type="submit" className="w-fit">
         {event ? "Save changes" : "Create event"}

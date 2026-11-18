@@ -26,6 +26,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4.5mb",
     },
   },
+  redirects() {
+    // Renamed events keep their old links working (shared before the rename).
+    return [
+      {
+        source: "/events/run-balance-coffee-20261128",
+        destination: "/events/run-technique-coffee-20261128",
+        permanent: true,
+      },
+    ];
+  },
   headers() {
     const headers = [...securityHeaders];
     if (process.env.NODE_ENV === "production") {

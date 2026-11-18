@@ -19,6 +19,9 @@ E2E_SKIP_BUILD=1 pnpm test:e2e   # reuse the existing .next build
     and resume rules.
 - `agent-models.test.ts`: the model allowlist (Claude Haiku, Gemini Flash and
   DeepSeek via the AI Gateway) and the scripted e2e model.
+- `event-template.test.ts`: the event page Markdown patterns (kicker,
+  timeline, checklist, sign-off) rendered through `EventDetailsBody`, and
+  `normalizeEventGallery`.
 
 ## End to end — `e2e/`
 
@@ -38,7 +41,7 @@ E2E_SKIP_BUILD=1 pnpm test:e2e   # reuse the existing .next build
 | Spec | Covers |
 |---|---|
 | `agent.spec.ts` | read tool without confirmation, confirm, cancel, approve one of two, model picker reaches the server and is remembered, model error recovery, New chat, image upload into the message, admin guard without the cookie |
-| `media-upload.spec.ts` | event cover upload (signed fields sent, private key never sent, path and preview filled), non-image rejected, ImageKit error, typing a path by hand |
+| `media-upload.spec.ts` | event cover upload (signed fields sent, private key never sent, path and preview filled), non-image rejected, ImageKit error, typing a path by hand; gallery editor: upload into the list, add by path / caption / poster / reorder / remove, non-ImageKit path rejected, new events start from the template body |
 
 ### Scripted model
 

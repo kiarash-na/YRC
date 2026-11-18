@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireAdmin } from "@/lib/admin";
+import { normalizeEventGallery } from "@/lib/content-shared";
 import { lineLengthKm, parseGpx, simplifyLine } from "@/lib/gpx";
 
 /**
@@ -62,8 +63,19 @@ function eventPayload(formData: FormData) {
     route_notes: str(formData, "route_notes", 500) || null,
     what_to_bring: str(formData, "what_to_bring", 500) || null,
     coach_tips: str(formData, "coach_tips", 500) || null,
+    overview: str(formData, "overview", 2000) || null,
+    gallery: galleryField(formData),
     body: str(formData, "body", 100_000),
   };
+}
+
+/** The gallery editor posts its list as JSON in one hidden field. */
+function galleryField(formData: FormData) {
+  try {
+    return normalizeEventGallery(JSON.parse(str(formData, "gallery", 50_000) || "[]"));
+  } catch {
+    return [];
+  }
 }
 
 const ROUTE_BUCKET = "event-routes";

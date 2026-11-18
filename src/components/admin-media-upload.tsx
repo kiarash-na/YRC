@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getImageKitUploadAuth } from "@/lib/actions/media";
 
-const MAX_BYTES = 20 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 200 * 1024 * 1024;
 
 interface MediaUploadFieldProps {
   /** Form field name that receives the ImageKit path (e.g. "cover"). */
@@ -29,22 +30,14 @@ interface MediaUploadFieldProps {
  */
 /**
  * Direct browser → ImageKit upload with a server-signed one-time token.
- * Returns the new file's ImageKit path, or null (with `error` set).
+ * `uploadImage` takes images only; `uploadMedia` also takes videos. Both
+ * return the new file's ImageKit path, or null (with `error` set).
  */
 export function useImageKitUpload(folder: string) {
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function uploadImage(file: File): Promise<{ path: string; name: string } | null> {
-    setError(null);
-    if (!file.type.startsWith("image/")) {
-      setError("Choose an image file (JPG, PNG, WebP…).");
-      return null;
-    }
-    if (file.size > MAX_BYTES) {
-      setError("That image is over 20 MB. Export a smaller version and try again.");
-      return null;
-    }
+  async function send(file: File, fileName = file.name): Promise<{ path: string; name: string } | null> {
     setProgress(0);
     try {
       const auth = await getImageKitUploadAuth();
@@ -54,7 +47,7 @@ export function useImageKitUpload(folder: string) {
       }
       const result = await upload({
         file,
-        fileName: file.name,
+        fileName,
         folder,
         useUniqueFileName: true,
         token: auth.token,
@@ -66,7 +59,7 @@ export function useImageKitUpload(folder: string) {
         },
       });
       if (!result.filePath) throw new Error("ImageKit didn't return a file path.");
-      return { path: result.filePath, name: result.name ?? file.name };
+      return { path: result.filePath, name: result.name ?? fileName };
     } catch (err) {
       console.error("ImageKit upload failed:", err);
       setError("Upload failed. Check your connection and try again.");
@@ -76,7 +69,99 @@ export function useImageKitUpload(folder: string) {
     }
   }
 
-  return { uploadImage, progress, uploading: progress !== null, error };
+  async function uploadImage(file: File) {
+    setError(null);
+    if (!file.type.startsWith("image/")) {
+      setError("Choose an image file (JPG, PNG, WebP…).");
+      return null;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError("That image is over 20 MB. Export a smaller version and try again.");
+      return null;
+    }
+    return send(file);
+  }
+
+  /** Images or videos. Videos also get a poster frame (see capturePoster). */
+  async function uploadMedia(
+    file: File,
+  ): Promise<{ path: string; name: string; type: "image" | "video"; poster?: string } | null> {
+    setError(null);
+    if (file.type.startsWith("image/") || /\.(heic|heif)$/i.test(file.name)) {
+      if (file.size > MAX_IMAGE_BYTES) {
+        setError(`${file.name} is over 20 MB. Export a smaller version and try again.`);
+        return null;
+      }
+      const result = await send(file);
+      return result && { ...result, type: "image" };
+    }
+    if (file.type.startsWith("video/")) {
+      if (file.size > MAX_VIDEO_BYTES) {
+        setError(`${file.name} is over 200 MB. Trim or compress it and try again.`);
+        return null;
+      }
+      const result = await send(file);
+      if (!result) return null;
+      const still = await capturePoster(file);
+      const poster = still ? await send(still) : null;
+      return { ...result, type: "video", poster: poster?.path };
+    }
+    setError("Choose a photo or a video.");
+    return null;
+  }
+
+  return { uploadImage, uploadMedia, progress, uploading: progress !== null, error };
+}
+
+/**
+ * A JPEG still from a video file, taken in the browser (≈0.5 s in, long side
+ * ≤ 1280 px). ImageKit can't make video thumbnails on this account, so the
+ * gallery needs a real image. Null when the browser can't decode the clip
+ * (e.g. HEVC in Chrome) — the admin can then paste a poster path.
+ */
+function capturePoster(file: File): Promise<File | null> {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const video = document.createElement("video");
+    const done = (result: File | null) => {
+      URL.revokeObjectURL(url);
+      video.removeAttribute("src");
+      video.load();
+      resolve(result);
+    };
+    const timer = window.setTimeout(() => done(null), 15_000);
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "auto";
+    video.onerror = () => {
+      window.clearTimeout(timer);
+      done(null);
+    };
+    video.onloadedmetadata = () => {
+      video.currentTime = Math.min(0.5, (video.duration || 1) / 3);
+    };
+    video.onseeked = () => {
+      window.clearTimeout(timer);
+      const scale = Math.min(1, 1280 / Math.max(video.videoWidth, video.videoHeight));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(video.videoWidth * scale);
+      canvas.height = Math.round(video.videoHeight * scale);
+      const context = canvas.getContext("2d");
+      if (!context || !canvas.width) return done(null);
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(
+        (blob) =>
+          done(
+            blob
+              ? new File([blob], `${file.name.replace(/\.[^.]+$/, "")}-poster.jpg`, { type: "image/jpeg" })
+              : null,
+          ),
+        "image/jpeg",
+        0.85,
+      );
+    };
+    video.src = url;
+  });
 }
 
 export function MediaUploadField({ name, label, defaultValue = "", folder, required }: MediaUploadFieldProps) {

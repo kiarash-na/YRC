@@ -1,6 +1,13 @@
 import { cache } from "react";
 
-import { formatTime, routeGpxUrl, type EventCategory, type EventItem, type EventSummary } from "@/lib/content-shared";
+import {
+  formatTime,
+  normalizeEventGallery,
+  routeGpxUrl,
+  type EventCategory,
+  type EventItem,
+  type EventSummary,
+} from "@/lib/content-shared";
 import { createPublicClient } from "@/lib/supabase/public";
 
 /**
@@ -40,11 +47,13 @@ interface EventRow {
   coach_tips: string | null;
   route_gpx_path?: string | null;
   route_line?: [number, number][] | null;
+  overview?: string | null;
+  gallery?: unknown;
 }
 
 const EVENT_SELECT_SUMMARY =
   "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence";
-const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, route_gpx_path, route_line`;
+const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, route_gpx_path, route_line, overview, gallery`;
 
 function toEventItem(row: EventRow): EventItem {
   return {
@@ -75,6 +84,8 @@ function toEventItem(row: EventRow): EventItem {
         ? row.route_line
         : undefined,
     routeGpxUrl: row.route_gpx_path ? routeGpxUrl(row.route_gpx_path) : undefined,
+    overview: row.overview?.trim() || undefined,
+    gallery: normalizeEventGallery(row.gallery),
     content: row.body ?? "",
   };
 }

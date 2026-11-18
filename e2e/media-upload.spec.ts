@@ -44,3 +44,55 @@ test("the path can still be typed by hand", async ({ page }) => {
   await page.getByLabel("Cover image").fill("/YRC/Community/IMG_2469.JPG");
   await expect(page.getByLabel("Cover image")).toHaveValue("/YRC/Community/IMG_2469.JPG");
 });
+
+test.describe("event gallery editor", () => {
+  const galleryJson = (page: import("@playwright/test").Page) =>
+    page.locator('input[type=hidden][name="gallery"]').inputValue();
+
+  test("uploads photos into the gallery list", async ({ page }) => {
+    const uploads = await mockImageKit(page, "/YRC/Events/Gallery/finish_e2e.png");
+    await page.getByTestId("gallery-files").setInputFiles({ name: "finish.png", mimeType: "image/png", buffer: PNG });
+
+    await expect(page.getByText("1 · image")).toBeVisible();
+    await expect(page.getByText("Added 1 item. Save the event to publish.")).toBeVisible();
+    expect(JSON.parse(await galleryJson(page))).toEqual([{ src: "/YRC/Events/Gallery/finish_e2e.png", type: "image" }]);
+    expect(uploads).toHaveLength(1);
+    expect(uploads[0].body).toContain("/YRC/Events/Gallery");
+  });
+
+  test("adds existing paths, captions, reorders and removes", async ({ page }) => {
+    await mockImageKit(page, "/unused.png");
+    const path = page.getByLabel("ImageKit path to add");
+    await path.fill("/YRC/Events/x/IMG_1.jpg");
+    await page.getByRole("button", { name: "Add", exact: true }).click();
+    await path.fill("/YRC/Events/x/clip one.mov");
+    await path.press("Enter");
+
+    await expect(page.getByText("2 · video")).toBeVisible();
+    await page.getByLabel("Caption for item 2").fill("Hill drills");
+    await page.getByLabel("Poster image path for item 2").fill("/YRC/Events/x/clip-poster.jpg");
+    await page.getByRole("button", { name: "Move item 2 earlier" }).click();
+    expect(JSON.parse(await galleryJson(page))).toEqual([
+      { src: "/YRC/Events/x/clip%20one.mov", type: "video", alt: "Hill drills", poster: "/YRC/Events/x/clip-poster.jpg" },
+      { src: "/YRC/Events/x/IMG_1.jpg", type: "image" },
+    ]);
+
+    await page.getByRole("button", { name: "Remove item 1" }).click();
+    expect(JSON.parse(await galleryJson(page))).toEqual([{ src: "/YRC/Events/x/IMG_1.jpg", type: "image" }]);
+  });
+
+  test("rejects a path that isn't an ImageKit path", async ({ page }) => {
+    await page.getByLabel("ImageKit path to add").fill("https://example.com/x.jpg");
+    await page.getByRole("button", { name: "Add", exact: true }).click();
+    await expect(page.getByText(/Paste an ImageKit path that starts with \//)).toBeVisible();
+    expect(JSON.parse(await galleryJson(page))).toEqual([]);
+  });
+
+  test("a new event starts from the template body", async ({ page }) => {
+    await expect(page.getByLabel("Overview (Markdown)")).toBeVisible();
+    const body = await page.getByLabel("Explore the details (Markdown)").inputValue();
+    for (const part of ["## The session", "## Meet & move", "- **07:45** ·", "## Pack your kit", "> Come for the run."]) {
+      expect(body).toContain(part);
+    }
+  });
+});
