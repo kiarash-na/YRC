@@ -92,7 +92,7 @@ const Experiences = ({ className }: ExperiencesProps) => {
                     transformation={[
                       {
                         aspectRatio: "4-5",
-                        crop: "force",
+                        crop: "maintain_ratio",
                         focus: "auto",
                         ...(experience.image.width
                           ? { width: experience.image.width }

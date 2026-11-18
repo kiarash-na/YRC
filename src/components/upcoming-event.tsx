@@ -46,7 +46,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
                   fill
                   sizes="(min-width: 1024px) 58vw, 100vw"
                   transformation={[
-                    { aspectRatio: "4-3", crop: "force", focus: "auto" },
+                    { aspectRatio: "4-3", crop: "maintain_ratio", focus: "auto" },
                   ]}
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />

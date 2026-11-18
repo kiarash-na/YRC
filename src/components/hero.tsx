@@ -22,6 +22,8 @@ interface HeroMedia {
   src: string;
   alt: string;
   updatedAt?: string;
+  /** ImageKit crop focus for the 3:4 card (default "auto"). */
+  focus?: string;
 }
 interface HeroButton {
   text: string;
@@ -86,9 +88,11 @@ const defaultProps: HeroProps = {
   },
   images: [
     {
-      src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
-      alt: "A smiling YRC trail runner with poles and a running vest climbing a forest gravel path",
-      updatedAt: "1794843416956",
+      // 2:3 original; the runners sit in the lower third, so crop from the bottom.
+      src: "/YRC/Home/Untitled%20design%20(5).png",
+      alt: "The YRC crew running uphill together on a road at golden hour, pines overhead",
+      updatedAt: "1789991758872",
+      focus: "bottom",
     },
     {
       src: "/YRC/Community/photo_5877443723178741686_w.jpg",
@@ -282,7 +286,7 @@ const Hero = (props: Props) => {
                   tall.updatedAt ? { updatedAt: tall.updatedAt } : undefined
                 }
                 transformation={[
-                  { aspectRatio: "3-4", crop: "force", focus: "auto" },
+                  { aspectRatio: "3-4", crop: "maintain_ratio", focus: tall.focus ?? "auto" },
                 ]}
                 className="object-cover object-center"
               />
@@ -300,7 +304,7 @@ const Hero = (props: Props) => {
                     : undefined
                 }
                 transformation={[
-                  { aspectRatio: "3-4", crop: "force", focus: "auto" },
+                  { aspectRatio: "3-4", crop: "maintain_ratio", focus: "auto" },
                 ]}
                 className="object-cover object-center"
               />

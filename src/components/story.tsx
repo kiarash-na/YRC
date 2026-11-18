@@ -34,7 +34,7 @@ const Story = ({ className }: StoryProps) => {
                 sizes="(min-width: 1024px) 42vw, 100vw"
                 queryParameters={{ updatedAt: portrait.updatedAt }}
                 transformation={[
-                  { aspectRatio: "3-4", crop: "force", focus: "auto" },
+                  { aspectRatio: "3-4", crop: "maintain_ratio", focus: "auto" },
                 ]}
                 className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
@@ -78,7 +78,7 @@ const Story = ({ className }: StoryProps) => {
                   sizes="(min-width: 1024px) 58vw, 100vw"
                   queryParameters={{ updatedAt: landscape.updatedAt }}
                   transformation={[
-                    { aspectRatio: "3-2", crop: "force", focus: "auto" },
+                    { aspectRatio: "3-2", crop: "maintain_ratio", focus: "auto" },
                   ]}
                   className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
                 />
