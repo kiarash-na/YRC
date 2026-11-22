@@ -5,6 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CoverImage } from "@/components/cover-image";
+import { EventMediaSlideshow } from "@/components/event-media-slideshow";
+import { getEventSlides } from "@/lib/event-media";
 import { Reveal } from "@/components/reveal";
 import { IMAGEKIT_URL_ENDPOINT } from "@/lib/imagekit";
 import { EventDetailsBody, EventOverviewText } from "@/components/event-body";
@@ -74,6 +76,10 @@ export default async function EventPage({
     notFound();
   }
 
+  // Top of the article: a slideshow of the cover + gallery in one
+  // orientation, or the plain cover when there's nothing else to show.
+  const slides = await getEventSlides(event);
+
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
     : formatDate(event.date);
@@ -128,14 +134,24 @@ export default async function EventPage({
               <article className="min-w-0 flex-1">
                 {/* Morph target for the event card / home feature image. */}
                 <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
-                  <div className="relative mb-12 aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
-                    <CoverImage
-                      src={event.cover}
-                      alt={event.title}
-                      sizes="(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 100vw"
-                      className="object-cover object-center"
-                    />
-                  </div>
+                  {slides.items.length > 1 ? (
+                    <div className="mb-12">
+                      <EventMediaSlideshow
+                        items={slides.items}
+                        orientation={slides.orientation}
+                        title={event.title}
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative mb-12 aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
+                      <CoverImage
+                        src={event.cover}
+                        alt={event.title}
+                        sizes="(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 100vw"
+                        className="object-cover object-center"
+                      />
+                    </div>
+                  )}
                 </ViewTransition>
 
                 {/* Overview: the at-a-glance icon box, then the short lead. */}
