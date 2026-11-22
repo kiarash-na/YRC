@@ -58,8 +58,8 @@ const camps: Camp[] = [
     description:
       "Trips that mix training with travel, recovery and time together — the experience matters as much as the sessions.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
-      alt: "YRC community members connecting after a run",
+      src: "/YRC/Community/SRK09740%20(1).jpg",
+      alt: "The YRC crew on a ridge road at golden hour during a sports trip",
       updatedAt: "1789681140651",
     },
     href: TALLY_POPUP_HASH,

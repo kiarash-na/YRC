@@ -10,13 +10,13 @@ const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
 
 const photos: GalleryPhoto[] = [
   {
-    src: `${basePath}/M06.JPG`,
+    src: `${basePath}/M06.jpg`,
     alt: "YRC runners on the course at Istanbul Marathon 2025",
     updatedAt: "1789681147875",
   },
   {
-    src: `${basePath}/M07.jpg`,
-    alt: "A YRC runner celebrating on the course at Istanbul Marathon",
+    src: "/YRC/Home/photo_2026-11-22_14-57-00.jpg",
+    alt: "The YRC pack running through an autumn park",
   },
   {
     src: `${basePath}/09.jpg`,
@@ -30,19 +30,17 @@ const photos: GalleryPhoto[] = [
     width: 1600,
   },
   {
-    src: `${basePath}/M05.JPG`,
-    alt: "YRC runners pushing through Istanbul Marathon 2025",
-    updatedAt: "1789681152474",
+    src: "/YRC/Community/IMG_2713.HEIC",
+    alt: "A YRC runner smiling mid-run with the group behind her",
+    updatedAt: "1794843451896",
   },
   {
-    src: `${basePath}/pexels-ciro-palomba-1275986148-31517243.jpg`,
-    alt: "Runners sharing miles through the city",
-    updatedAt: "1789681305377",
+    src: "/YRC/Home/photo_2026-11-22_14-57-11.jpg",
+    alt: "A mountain lake under clouds on a YRC trip",
   },
   {
-    src: `${basePath}/pexels-stephen-leonardi-587681991-29840316.jpg`,
-    alt: "A runner alone with the road on a long run",
-    updatedAt: "1789681346908",
+    src: "/YRC/Home/photo_2026-11-22_14-57-07.jpg",
+    alt: "Sunrise over the path on an early-morning YRC run",
   },
   {
     src: "/YRC/Community/photo_5877443723178741687_w.jpg",

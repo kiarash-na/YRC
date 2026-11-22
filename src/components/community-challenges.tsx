@@ -25,7 +25,7 @@ const challenges: Challenge[] = [
     example:
       "Think: one long month, one shared target, everyone's kilometers on the same board.",
     image: {
-      src: `${marathonBase}/M01.jpg`,
+      src: "/YRC/Community/SRK09740%20(1).jpg",
       alt: "Runners covering distance together on a long run",
     },
   },

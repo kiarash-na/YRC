@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { lqip } from "@/lib/imagekit";
 
 const heroImage = {
-  src: "/YRC/Home/pexels-runffwpu-18408962.jpg",
-  alt: "YRC community sharing a moment together outdoors",
+  src: "/YRC/Community/photo_5877443723178741687_w.jpg",
+  alt: "The YRC crew together on a mountain road after a run",
   updatedAt: "1789681295806",
 };
 

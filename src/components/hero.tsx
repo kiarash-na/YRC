@@ -83,9 +83,9 @@ const defaultProps: HeroProps = {
     src: "/YRC/Home/hf_20261122_111745_bc09fc36-b5d4-4bb9-bd12-f5d1a2d06393.mp4",
   },
   fallback: {
-    src: "/YRC/Home/pexels-runffwpu-18409430.jpg",
+    src: "/YRC/Community/SRK09740%20(1).jpg",
     alt: "",
-    updatedAt: "1789992716323",
+    updatedAt: "1790005645712",
   },
   images: [
     {

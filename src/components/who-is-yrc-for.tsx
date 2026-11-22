@@ -29,8 +29,8 @@ const personas: Persona[] = [
     summary:
       "Never run a kilometer in your life? Perfect. Most of us started exactly there — with shoes that felt wrong and a pace that felt embarrassing. It wasn't. Nobody's watching your watch here.",
     image: {
-      src: "/YRC/Community/pexels-emrah-yazicioglu-275583761-12918252.jpg",
-      alt: "First-time runner lacing up for their first kilometers with YRC",
+      src: "/YRC/Community/IMG_2469.JPG",
+      alt: "The YRC crew welcoming new runners after a Tuesday morning run",
       width: 1600,
     },
   },
@@ -40,8 +40,8 @@ const personas: Persona[] = [
     summary:
       "Injury, kids, a job that ate your evenings, a few quiet years — whatever pressed pause, the community is the easiest way to press play again. Comeback seasons are our favorite seasons.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840329.jpg",
-      alt: "Runner back on the roads, returning to training and racing",
+      src: "/YRC/Community/pexels-emrah-yazicioglu-275583761-12918258.jpg",
+      alt: "Runners back on the trail, returning to training and racing",
       updatedAt: "1789681314310",
     },
   },
@@ -61,7 +61,7 @@ const personas: Persona[] = [
     summary:
       "A first marathon, a faster 10K, a start line abroad — you have a goal with a date on it. Good. You'll find training partners here who take goals seriously without taking themselves too seriously.",
     image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840316.jpg",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/03.jpg",
       alt: "Runner chasing a race-day goal at a marathon",
       updatedAt: "1789681346908",
     },

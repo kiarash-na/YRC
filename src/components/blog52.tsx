@@ -27,9 +27,9 @@ const defaultProps: Required<
   description:
     "Stories, ideas and practical insights about running, training, movement and building a life around an active community.",
   image: {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-runffwpu-18409430.jpg",
-    alt: "Runners racing together at a marathon event",
-    updatedAt: "1789681346820",
+    src: "/YRC/Community/SRK09740%20(1).jpg",
+    alt: "The YRC crew running together along a ridge road at golden hour",
+    updatedAt: "1790005645712",
   },
 };
 

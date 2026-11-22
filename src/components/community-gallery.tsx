@@ -35,7 +35,7 @@ type View = "flow" | "grid";
 
 const communityPhotos: GalleryPhoto[] = [
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.JPG",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
     alt: "YRC runners on the course at Istanbul Marathon 2025",
     updatedAt: "1789681147875",
   },
@@ -56,19 +56,18 @@ const communityPhotos: GalleryPhoto[] = [
     width: 1600,
   },
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.JPG",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
     alt: "YRC runners pushing through Istanbul Marathon 2025",
     updatedAt: "1789681152474",
   },
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-ciro-palomba-1275986148-31517243.jpg",
-    alt: "Runners sharing miles through the city",
-    updatedAt: "1789681305377",
+    src: "/YRC/Home/photo_2026-11-22_14-57-09.jpg",
+    alt: "A still lake at dawn before a YRC run",
   },
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-stephen-leonardi-587681991-29840316.jpg",
-    alt: "A runner alone with the road on a long run",
-    updatedAt: "1789681346908",
+    src: "/YRC/Community/IMG_2477.JPG",
+    alt: "The YRC crew sharing coffee at Café Tante Chylla after a run",
+    updatedAt: "1790070385515",
   },
   {
     src: "/YRC/Community/photo_5877443723178741687_w.jpg",

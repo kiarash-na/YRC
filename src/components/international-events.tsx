@@ -23,15 +23,15 @@ const items = [
 
 const images: CollageImage[] = [
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/pexels-matreding-33995260.jpg",
-    alt: "Runners racing through the city during the Istanbul Marathon",
+    src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
+    alt: "A YRC runner climbing a mountain trail with poles",
     updatedAt: "1789681338492",
     className: "row-span-2",
     width: 1600,
   },
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M07.jpg",
-    alt: "Runner crossing the finish line at Istanbul Marathon 2025",
+    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
+    alt: "YRC runners crossing the Bosphorus at Istanbul Marathon 2025",
     updatedAt: "1789681140651",
     className: "col-span-2",
   },

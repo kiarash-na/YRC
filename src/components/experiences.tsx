@@ -24,8 +24,8 @@ const experiences: Experience[] = [
     description:
       "Selected road, trail and endurance events chosen with attention to quality, experience and the needs of athletes.",
     image: {
-      src: "/YRC/Home/pexels-runffwpu-18409430.jpg",
-      alt: "YRC runners in motion on a group run",
+      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
+      alt: "YRC runners racing through Istanbul at the Istanbul Marathon",
       updatedAt: "1789992716323",
     },
   },
@@ -35,8 +35,8 @@ const experiences: Experience[] = [
     description:
       "Specialized camps and trips built around sporting experiences, preparation, motivation and meaningful time together.",
     image: {
-      src: "/YRC/Home/pexels-emrah-yazicioglu-275583761-12918252.jpg",
-      alt: "YRC community members connecting after a run",
+      src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
+      alt: "A YRC runner climbing a forest trail with poles on a trail trip",
       updatedAt: "1789993034690",
       width: 1600,
     },
