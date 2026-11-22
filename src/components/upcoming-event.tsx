@@ -2,7 +2,7 @@ import { ViewTransition } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import { Image } from "@/components/imagekit";
+import { EventSlideshow } from "@/components/event-slideshow";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EventSecondaryActions } from "@/components/event-actions";
@@ -19,6 +19,16 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
     : formatDate(event.date);
+  // Slideshow: the cover, then every photo in the gallery (clips show their
+  // poster frame), without repeats.
+  const images = [
+    ...new Set([
+      event.cover,
+      ...(event.gallery ?? []).flatMap((item) =>
+        item.type === "image" ? [item.src] : item.poster ? [item.poster] : [],
+      ),
+    ]),
+  ];
 
   return (
     <section className={cn("py-24 md:py-32", className)}>
@@ -34,23 +44,13 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
         <Reveal delay={120} className="mt-14 md:mt-20">
           <div className="group grid gap-8 lg:grid-cols-12 lg:gap-16">
             <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
-              <Link
+              <EventSlideshow
+                images={images}
+                alt={event.title}
+                sizes="(min-width: 1024px) 58vw, 100vw"
+                className="aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7"
                 href={`/events/${event.slug}`}
-                tabIndex={-1}
-                aria-hidden="true"
-                className="relative block aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7"
-              >
-                <Image
-                  src={event.cover}
-                  alt={event.title}
-                  fill
-                  sizes="(min-width: 1024px) 58vw, 100vw"
-                  transformation={[
-                    { aspectRatio: "4-3", crop: "maintain_ratio", focus: "auto" },
-                  ]}
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                />
-              </Link>
+              />
             </ViewTransition>
 
             <div className="flex flex-col gap-6 lg:col-span-5 lg:py-4">
