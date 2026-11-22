@@ -17,8 +17,11 @@ import { EventSecondaryActions } from "@/components/event-actions";
 import { EventRouteMap } from "@/components/event-route-map";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { Badge } from "@/components/ui/badge";
-import { EVENT_CATEGORY_LABELS, formatDate } from "@/lib/content-shared";
-import { getAllEvents, getEventBySlug } from "@/lib/events-db";
+import { Button } from "@/components/ui/button";
+import { WeeklyBadge } from "@/components/weekly-badges";
+import { WeeklyRegister } from "@/components/weekly-register";
+import { EVENT_CATEGORY_LABELS, formatDate, formatShortDate, weekLabel } from "@/lib/content-shared";
+import { getAllEvents, getEventBySlug, getSeriesDates } from "@/lib/events-db";
 
 const EYEBROW = "mb-6 text-caption font-bold tracking-[0.3em] text-yrc-accent uppercase";
 
@@ -78,7 +81,11 @@ export default async function EventPage({
 
   // Top of the article: a slideshow of the cover + gallery in one
   // orientation, or the plain cover when there's nothing else to show.
-  const slides = await getEventSlides(event);
+  const weekly = event.recurrence === "weekly" || Boolean(event.seriesSlug);
+  const [slides, seriesDates] = await Promise.all([
+    getEventSlides(event),
+    event.seriesSlug ? getSeriesDates(event.seriesSlug) : Promise.resolve([]),
+  ]);
 
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
@@ -104,6 +111,7 @@ export default async function EventPage({
                 >
                   {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
                 </Badge>
+                {weekly && <WeeklyBadge date={event.date} className="mb-6 ml-2" />}
                 <h1 className="text-h2 mb-7 text-balance md:text-h1">
                   {event.title}
                 </h1>
@@ -118,17 +126,40 @@ export default async function EventPage({
                   className="pt-5 pb-8"
                 />
                 <div className="flex flex-col gap-2 border-t border-border pt-6">
-                  <p className="text-body-small font-semibold">{dateLabel}</p>
+                  <p className="text-body-small font-semibold">
+                    {dateLabel}
+                    {weekly && (
+                      <span className="ml-2 text-caption font-bold tracking-[0.14em] text-muted-foreground uppercase">
+                        · {weekLabel(event.date)}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-caption text-muted-foreground uppercase">
                     {event.location} · {event.city}
                   </p>
                 </div>
                 {/* The one primary action on every upcoming event. */}
-                {!event.isPast && (
+                {!event.isPast && seriesDates.length > 1 ? (
+                  <div className="pt-8">
+                    <WeeklyRegister dates={seriesDates} currentId={event.id} title={event.title} />
+                  </div>
+                ) : !event.isPast ? (
                   <div className="pt-8">
                     <EventRegister eventId={event.id} eventSlug={event.slug} eventTitle={event.title} />
                   </div>
-                )}
+                ) : seriesDates[0] ? (
+                  // A past week of a weekly run: send people on to the next one.
+                  <div className="pt-8">
+                    <Button
+                      size="lg"
+                      className="h-12 w-full text-body font-semibold tracking-wider uppercase"
+                      render={<Link href={`/events/${seriesDates[0].slug}`} />}
+                      nativeButton={false}
+                    >
+                      Next run: {formatShortDate(seriesDates[0].date)}
+                    </Button>
+                  </div>
+                ) : null}
               </aside>
 
               <article className="min-w-0 flex-1">

@@ -7,6 +7,7 @@ import { Image } from "@/components/imagekit";
 import { EventSecondaryActions } from "@/components/event-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { WeekTag, WeeklyBadge } from "@/components/weekly-badges";
 import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
 
 interface EventCardProps {
@@ -15,6 +16,7 @@ interface EventCardProps {
 }
 
 const EventCard = ({ event, className }: EventCardProps) => {
+  const weekly = event.recurrence === "weekly" || Boolean(event.seriesSlug);
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
     : formatDate(event.date);
@@ -32,6 +34,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
           href={`/events/${event.slug}`}
           className="relative block aspect-4/3 overflow-hidden bg-muted"
         >
+          {weekly && <WeekTag date={event.date} />}
           <Image
             src={event.cover}
             alt={event.title}
@@ -50,6 +53,7 @@ const EventCard = ({ event, className }: EventCardProps) => {
           >
             {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
           </Badge>
+          {weekly && <WeeklyBadge date={event.date} />}
           <p className="text-caption font-medium tracking-[0.3em] text-muted-foreground uppercase">
             {dateLabel}
           </p>

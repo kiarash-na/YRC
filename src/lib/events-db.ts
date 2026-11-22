@@ -7,6 +7,8 @@ import {
   type EventCategory,
   type EventItem,
   type EventSummary,
+  type SeriesDate,
+  WEEKLY_HORIZON,
 } from "@/lib/content-shared";
 import { createPublicClient } from "@/lib/supabase/public";
 
@@ -35,6 +37,7 @@ interface EventRow {
   body: string;
   is_past: boolean;
   recurrence: string | null;
+  series_slug?: string | null;
   start_time: string | null;
   duration_minutes: number | null;
   meeting_point: string | null;
@@ -52,8 +55,8 @@ interface EventRow {
 }
 
 const EVENT_SELECT_SUMMARY =
-  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence, gallery";
-const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, start_time, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, route_gpx_path, route_line, overview`;
+  "id, slug, title, excerpt, cover, event_date, end_date, location, city, category, registration_url, is_past, recurrence, series_slug, start_time, gallery";
+const EVENT_SELECT_FULL = `${EVENT_SELECT_SUMMARY}, body, duration_minutes, meeting_point, finish_point, distance_km, elevation_gain_m, route_notes, what_to_bring, coach_tips, route_gpx_path, route_line, overview`;
 
 function toEventItem(row: EventRow): EventItem {
   return {
@@ -70,6 +73,7 @@ function toEventItem(row: EventRow): EventItem {
     registrationUrl: row.registration_url ?? undefined,
     isPast: row.is_past,
     recurrence: row.recurrence === "weekly" ? "weekly" : null,
+    seriesSlug: row.series_slug ?? undefined,
     startTime: row.start_time ? formatTime(row.start_time) : undefined,
     durationMinutes: row.duration_minutes ?? undefined,
     meetingPoint: row.meeting_point ?? undefined,
@@ -157,6 +161,54 @@ export const getEventBySlug = cache(
     }
   },
 );
+
+/**
+ * The upcoming dates of a weekly series, soonest first (the DB keeps
+ * WEEKLY_HORIZON of them open). Shared by every date's page in one request.
+ */
+export const getSeriesDates = cache(async (seriesSlug: string): Promise<SeriesDate[]> => {
+  if (!configured()) return [];
+  try {
+    const { data, error } = await createPublicClient()
+      .from("events")
+      .select("id, slug, event_date")
+      .eq("series_slug", seriesSlug)
+      .eq("is_past", false)
+      .order("event_date", { ascending: true })
+      .limit(WEEKLY_HORIZON);
+    if (error || !data) return [];
+    return data.map((row) => ({ id: row.id, slug: row.slug, date: row.event_date }));
+  } catch {
+    return [];
+  }
+});
+
+/**
+ * Splits upcoming events into one-off events and weekly series. Each series
+ * is represented by its soonest date, with all its open dates attached.
+ */
+export function splitWeekly(events: EventSummary[]): {
+  oneOff: EventSummary[];
+  weekly: (EventSummary & { dates: SeriesDate[] })[];
+} {
+  const oneOff: EventSummary[] = [];
+  const series = new Map<string, EventSummary & { dates: SeriesDate[] }>();
+  for (const event of events) {
+    const key = event.recurrence === "weekly" || event.seriesSlug ? (event.seriesSlug ?? event.slug) : null;
+    if (!key) {
+      oneOff.push(event);
+      continue;
+    }
+    const date = { id: event.id, slug: event.slug, date: event.date };
+    const existing = series.get(key);
+    if (existing) {
+      if (existing.dates.length < WEEKLY_HORIZON) existing.dates.push(date);
+    } else {
+      series.set(key, { ...event, dates: [date] });
+    }
+  }
+  return { oneOff, weekly: [...series.values()] };
+}
 
 export function toEventSummary(event: EventItem): EventSummary {
   const rest: Partial<EventItem> = { ...event };

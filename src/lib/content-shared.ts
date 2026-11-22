@@ -49,6 +49,8 @@ export interface EventItem {
   isPast?: boolean;
   /** Weekly series self-perpetuate via the event-lifecycle cron; null = one-off. */
   recurrence?: "weekly" | null;
+  /** Weekly series this date belongs to (slug without the -YYYYMMDD). */
+  seriesSlug?: string;
   /** HH:MM, Berlin wall-clock. */
   startTime?: string;
   durationMinutes?: number;
@@ -192,6 +194,41 @@ const weekdayFormatter = new Intl.DateTimeFormat("en-GB", {
 /** "2026-11-12" → "Thursday" */
 export function formatWeekday(iso: string): string {
   return weekdayFormatter.format(new Date(`${iso}T00:00:00`));
+}
+
+/** How many upcoming dates a weekly series keeps open (DB: maintain_event_lifecycle). */
+export const WEEKLY_HORIZON = 6;
+
+const monthShortFormatter = new Intl.DateTimeFormat("en-GB", { month: "short" });
+
+/** "2026-11-24" → { month: "Nov", week: 4 } — the week of the month, 1–5. */
+export function weekOfMonth(iso: string): { month: string; week: number } {
+  const date = new Date(`${iso}T00:00:00`);
+  return { month: monthShortFormatter.format(date), week: Math.ceil(date.getDate() / 7) };
+}
+
+/** "2026-11-24" → "Nov · Week 4" */
+export function weekLabel(iso: string): string {
+  const { month, week } = weekOfMonth(iso);
+  return `${month} · Week ${week}`;
+}
+
+const shortDateFormatter = new Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
+  day: "numeric",
+  month: "short",
+});
+
+/** "2026-11-24" → "Tue, 24 Nov" */
+export function formatShortDate(iso: string): string {
+  return shortDateFormatter.format(new Date(`${iso}T00:00:00`));
+}
+
+/** One date of a weekly series (for the date picker and series cards). */
+export interface SeriesDate {
+  id: string;
+  slug: string;
+  date: string;
 }
 
 /** "07:00:00" → "07:00" (Postgres time strings carry seconds). */

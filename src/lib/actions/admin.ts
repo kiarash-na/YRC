@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { requireAdmin } from "@/lib/admin";
 import { normalizeEventGallery } from "@/lib/content-shared";
+import { applyToFollowingWeeks, openWeeklyDates } from "@/lib/event-series";
 import { lineLengthKm, parseGpx, simplifyLine } from "@/lib/gpx";
 
 /**
@@ -147,6 +148,8 @@ export async function createEvent(formData: FormData): Promise<void> {
     .eq("slug", payload.slug)
     .single();
   if (event) await admin.from("event_checkin_tokens").insert({ event_id: event.id });
+  // A weekly run opens its next six weeks straight away.
+  if (payload.recurrence === "weekly") await openWeeklyDates();
 
   revalidateEventPaths(payload.slug);
   redirect("/admin/events");
@@ -161,6 +164,10 @@ export async function updateEvent(eventId: string, formData: FormData): Promise<
     console.error("updateEvent failed:", error.message);
     return;
   }
+  // Weekly run: carry the edit to the following weeks (on by default in the
+  // form), then make sure six weeks are open (e.g. it was just made weekly).
+  if (formData.get("apply_to_following") === "on") await applyToFollowingWeeks(eventId);
+  if (payload.recurrence === "weekly") await openWeeklyDates();
   revalidateEventPaths(payload.slug);
 }
 

@@ -24,6 +24,8 @@ interface EventRegisterProps {
   eventSlug: string;
   /** Named in the unregister confirmation. */
   eventTitle?: string;
+  /** Told whenever the viewer's registration for this event is known/changes. */
+  onRegisteredChange?: (registered: boolean) => void;
 }
 
 type Status = "unknown" | "guest" | "member" | "registered";
@@ -47,8 +49,11 @@ const REGISTER_PARAM = "register";
  * The page is ISR-cached, so who-is-viewing is resolved client-side. The
  * link works without JS (login then bounces straight back with the flag).
  */
-export function EventRegister({ eventId, eventSlug, eventTitle }: EventRegisterProps) {
+export function EventRegister({ eventId, eventSlug, eventTitle, onRegisteredChange }: EventRegisterProps) {
   const [status, setStatus] = useState<Status>("unknown");
+  useEffect(() => {
+    if (status === "registered" || status === "member") onRegisteredChange?.(status === "registered");
+  }, [status, onRegisteredChange]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [confirmOpen, setConfirmOpen] = useState(false);

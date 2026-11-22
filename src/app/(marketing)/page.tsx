@@ -9,7 +9,7 @@ import { Story } from "@/components/story";
 import { Gallery } from "@/components/gallery";
 import { HomeEvents } from "@/components/home-events";
 import { NewsletterSignup } from "@/components/newsletter-signup";
-import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
+import { getUpcomingEvents, splitWeekly, toEventSummary } from "@/lib/events-db";
 
 // ISR: matches the 15-min event-lifecycle cron cadence; admin edits
 // revalidate on demand via revalidateEventPaths().
@@ -17,14 +17,13 @@ export const revalidate = 900;
 
 export default async function Home() {
   const upcoming = (await getUpcomingEvents()).map(toEventSummary);
-  // Weekly recurring series get their own strip under the hero, so the
-  // highlight card below always shows the soonest one-off event instead.
-  const weekly = upcoming.filter((event) => event.recurrence === "weekly");
-  const weeklySlugs = new Set(weekly.map((event) => event.slug));
-  const nextEvent = upcoming.find((event) => !weeklySlugs.has(event.slug));
+  // Weekly series get their own strip under the hero (one row per series),
+  // so the highlight card and the closing grid show one-off events only.
+  const { oneOff, weekly } = splitWeekly(upcoming);
+  const nextEvent = oneOff[0];
   // Closing card grid: the next events after the highlighted one (a cover's
   // view-transition name may appear only once per page).
-  const moreEvents = upcoming.filter((event) => event.slug !== nextEvent?.slug).slice(0, 3);
+  const moreEvents = oneOff.slice(1, 4);
 
   return (
     <main id="main" className="flex-1">

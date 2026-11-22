@@ -30,6 +30,7 @@ const EventsBrowser = ({ events }: EventsBrowserProps) => {
   const [when, setWhen] = React.useState<When>("all");
   const [category, setCategory] = React.useState<EventCategory | "all">("all");
   const [city, setCity] = React.useState<string>("all");
+  const [kind, setKind] = React.useState<"all" | "one-off" | "weekly">("all");
   const [query, setQuery] = React.useState("");
 
   const today = new Date().toISOString().slice(0, 10);
@@ -44,6 +45,9 @@ const EventsBrowser = ({ events }: EventsBrowserProps) => {
     if (when === "past" && isUpcoming) return false;
     if (category !== "all" && event.category !== category) return false;
     if (city !== "all" && event.city !== city) return false;
+    const isWeekly = event.recurrence === "weekly" || Boolean(event.seriesSlug);
+    if (kind === "weekly" && !isWeekly) return false;
+    if (kind === "one-off" && isWeekly) return false;
     if (query.trim() !== "") {
       const haystack =
         `${event.title} ${event.excerpt} ${event.location} ${event.city}`.toLowerCase();
@@ -100,6 +104,17 @@ const EventsBrowser = ({ events }: EventsBrowserProps) => {
                 {EVENT_CATEGORY_LABELS[c] ?? c}
               </option>
             ))}
+          </select>
+
+          <select
+            value={kind}
+            onChange={(e) => setKind(e.target.value as "all" | "one-off" | "weekly")}
+            className={selectClass}
+            aria-label="Filter by type"
+          >
+            <option value="all">All types</option>
+            <option value="one-off">One-off events</option>
+            <option value="weekly">Weekly runs</option>
           </select>
 
           <select

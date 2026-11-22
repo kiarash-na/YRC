@@ -13,8 +13,8 @@ interface WeeklyStripProps {
 
 /**
  * Slim homepage band under the hero listing the weekly recurring runs
- * ("Every Thursday — Loop of Love …"). This is the ONLY public surface that
- * mentions recurrence — event pages and cards deliberately stay date-only.
+ * ("Every Thursday — Loop of Love …"), one row per series, linking to its
+ * next date, where the date picker lists every open week.
  */
 const WeeklyStrip = ({ events, className }: WeeklyStripProps) => {
   if (events.length === 0) return null;
@@ -51,10 +51,10 @@ const WeeklyStrip = ({ events, className }: WeeklyStripProps) => {
                     </span>
                     <Link
                       href={`/events/${event.slug}`}
-                      aria-label={`Event details: ${event.title}, every ${formatWeekday(event.date)}`}
+                      aria-label={`Pick a date: ${event.title}, every ${formatWeekday(event.date)}`}
                       className="text-caption group/cta flex min-h-11 items-center gap-1.5 font-bold tracking-[0.2em] text-yrc-accent uppercase hover:underline hover:underline-offset-4"
                     >
-                      Event details
+                      Pick a date
                       <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
                     </Link>
                   </span>

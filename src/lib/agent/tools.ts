@@ -5,6 +5,7 @@ import * as newsletter from "@/lib/newsletter";
 import { renderNewsletterHtml, withoutUnsubscribePlaceholder } from "@/lib/newsletter-template";
 import type { LoopTool } from "@/lib/agent/loop";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { applyToFollowingWeeks, openWeeklyDates } from "@/lib/event-series";
 
 /**
  * Tools for the admin Agent. Server-only — executors use the service-role
@@ -284,6 +285,7 @@ const tools: AgentTool[] = [
       const { data, error } = await admin.from("events").insert({ body: "", ...fields }).select("id, slug").single();
       if (error) throw new Error(error.message);
       await admin.from("event_checkin_tokens").insert({ event_id: data.id });
+      if (fields.recurrence === "weekly") await openWeeklyDates();
       revalidateEventPaths(data.slug);
       return { created: data.slug, url: `/events/${data.slug}` };
     },
@@ -297,6 +299,11 @@ const tools: AgentTool[] = [
         {
           slug: { type: "string", description: "Current slug of the event" },
           changes: { type: "object", properties: EVENT_FIELD_SCHEMA, additionalProperties: false },
+          apply_to_following_weeks: {
+            type: "boolean",
+            description:
+              "Weekly runs only: also copy the changed content to the later weeks of the series (default true). Dates and registrations are never changed.",
+          },
         },
         ["slug", "changes"],
       ),
@@ -311,9 +318,15 @@ const tools: AgentTool[] = [
         .update({ ...fields, updated_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw new Error(error.message);
+      const following = input.apply_to_following_weeks === false ? [] : await applyToFollowingWeeks(id);
+      if (fields.recurrence === "weekly") await openWeeklyDates();
       revalidateEventPaths(slug);
       if (fields.slug && fields.slug !== slug) revalidateEventPaths(fields.slug as string);
-      return { updated: (fields.slug as string) ?? slug, fields: Object.keys(fields) };
+      return {
+        updated: (fields.slug as string) ?? slug,
+        fields: Object.keys(fields),
+        ...(following.length ? { alsoUpdatedWeeks: following } : {}),
+      };
     },
   },
   {

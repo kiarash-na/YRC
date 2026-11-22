@@ -167,9 +167,20 @@ export function AdminEventForm({ action, event }: EventFormProps) {
             className={textareaClass}
           >
             <option value="">One-off</option>
-            <option value="weekly">Weekly — auto-creates next week&apos;s copy when this one ends</option>
+            <option value="weekly">Weekly — keeps the next 6 weeks open for registration</option>
           </select>
         </div>
+        {event?.recurrence === "weekly" && (
+          <label className="flex items-start gap-2.5 self-end rounded-lg border border-border p-3 text-body-small">
+            <input type="checkbox" name="apply_to_following" defaultChecked className="mt-1 size-4 accent-foreground" />
+            <span>
+              Apply these changes to the following weeks too
+              <span className="block text-caption text-muted-foreground">
+                Every later week of this run gets the same content. Dates, registrations and QR codes stay as they are.
+              </span>
+            </span>
+          </label>
+        )}
       </div>
 
       <fieldset className="flex flex-col gap-4 rounded-xl border border-border p-4">

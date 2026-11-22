@@ -11,7 +11,7 @@ import { CourseDetails } from "@/components/course-details";
 import { Faq } from "@/components/faq";
 import { getContentBlock } from "@/lib/content-blocks";
 import type { CourseDetail, FaqItem } from "@/lib/content-shared";
-import { getUpcomingEvents, toEventSummary } from "@/lib/events-db";
+import { getUpcomingEvents, splitWeekly, toEventSummary } from "@/lib/events-db";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export const revalidate = 900;
 
 export default async function EventsPage() {
-  const upcoming = (await getUpcomingEvents()).slice(0, 3).map(toEventSummary);
+  const { oneOff, weekly } = splitWeekly((await getUpcomingEvents()).map(toEventSummary));
   const [courseDetails, faqs] = await Promise.all([
     getContentBlock<CourseDetail>("events.course_details"),
     getContentBlock<FaqItem>("events.faqs"),
@@ -33,7 +33,7 @@ export default async function EventsPage() {
   return (
     <main id="main" className="flex-1">
       <EventsHero />
-      <UpcomingEvents events={upcoming} />
+      <UpcomingEvents events={oneOff.slice(0, 3)} weekly={weekly} />
       <Reveal>
         <InternationalEvents />
       </Reveal>
