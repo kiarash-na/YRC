@@ -1,12 +1,11 @@
 "use client";
 
-import { Check } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { CalendarDays, ChevronDown } from "lucide-react";
+import { useCallback, useEffect, useId, useState } from "react";
 
 import { EventRegister } from "@/components/event-register";
 import { formatShortDate, formatWeekday, weekOfMonth, type SeriesDate } from "@/lib/content-shared";
 import { createClient } from "@/lib/supabase/client";
-import { cn } from "@/lib/utils";
 
 interface WeeklyRegisterProps {
   /** The series' open dates, soonest first. */
@@ -17,17 +16,18 @@ interface WeeklyRegisterProps {
 }
 
 /**
- * Register for a weekly run: pick a date (every open week of the series),
- * then the usual Register button acts on that date. Each date is its own
+ * Register for a weekly run: a dropdown of the open weeks (this page's date
+ * first, selected), then the usual Register button acts on the chosen date. Each date is its own
  * event row, so registration, unregistering, the login round-trip and QR
- * check-in all work per date unchanged. Dates the member already holds a
- * spot on show a tick; they can register for as many weeks as they like.
+ * check-in all work per date unchanged. Weeks the member already holds a
+ * spot on are marked "✓ booked"; they can register for as many as they like.
  */
 export function WeeklyRegister({ dates, currentId, title }: WeeklyRegisterProps) {
   const [selectedId, setSelectedId] = useState(
     dates.some((d) => d.id === currentId) ? currentId : dates[0]?.id,
   );
   const [registered, setRegistered] = useState<Set<string>>(new Set());
+  const selectId = useId();
   const selected = dates.find((d) => d.id === selectedId) ?? dates[0];
   const weekday = formatWeekday(dates[0]?.date ?? "");
 
@@ -73,58 +73,55 @@ export function WeeklyRegister({ dates, currentId, title }: WeeklyRegisterProps)
 
   const count = registered.size;
 
+  // The page's own date first (the default), then the other open weeks.
+  const main = dates.find((d) => d.id === currentId);
+  const options = main ? [main, ...dates.filter((d) => d.id !== main.id)] : dates;
+  const optionLabel = (date: SeriesDate) => {
+    const { month, week } = weekOfMonth(date.date);
+    return `${formatShortDate(date.date)} · ${month} week ${week}${registered.has(date.id) ? " · ✓ booked" : ""}`;
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-3 flex w-full items-baseline justify-between gap-3">
-          <span className="text-caption font-bold tracking-[0.2em] uppercase">Pick your {weekday}</span>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-baseline justify-between gap-3">
+          <label htmlFor={selectId} className="text-caption font-bold tracking-[0.2em] uppercase">
+            Pick your {weekday}
+          </label>
           {count > 0 && (
             <span className="text-caption font-semibold text-green-700 dark:text-green-500">
               {count} {count === 1 ? "week" : "weeks"} booked
             </span>
           )}
-        </legend>
-        <div role="radiogroup" aria-label={`${title}: dates open for registration`} className="grid grid-cols-3 gap-2">
-          {dates.map((date) => {
-            const isSelected = date.id === selected.id;
-            const isRegistered = registered.has(date.id);
-            const { month, week } = weekOfMonth(date.date);
-            return (
-              <button
-                key={date.id}
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                aria-label={`${formatShortDate(date.date)}, ${month} week ${week}${isRegistered ? ", registered" : ""}`}
-                onClick={() => setSelectedId(date.id)}
-                className={cn(
-                  "relative flex flex-col items-start gap-0.5 rounded-lg border px-2.5 py-2 text-left transition-colors",
-                  isSelected
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border hover:border-foreground/60",
-                )}
-              >
-                <span className="text-body-small leading-tight font-semibold">
-                  {formatShortDate(date.date).replace(",", "")}
-                </span>
-                <span
-                  className={cn(
-                    "text-[0.625rem] font-bold tracking-[0.14em] uppercase",
-                    isSelected ? "text-background/70" : "text-muted-foreground",
-                  )}
-                >
-                  Week {week}
-                </span>
-                {isRegistered && (
-                  <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-green-600 text-white">
-                    <Check className="size-2.5" strokeWidth={3.5} aria-hidden="true" />
-                  </span>
-                )}
-              </button>
-            );
-          })}
         </div>
-      </fieldset>
+        <div className="relative">
+          <CalendarDays
+            className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <select
+            id={selectId}
+            value={selected.id}
+            onChange={(e) => setSelectedId(e.target.value)}
+            className="h-12 w-full cursor-pointer appearance-none rounded-lg border border-border bg-background pr-10 pl-10 text-body-small font-semibold text-foreground transition-colors hover:border-foreground/60 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+          >
+            {options.map((date) => (
+              <option key={date.id} value={date.id}>
+                {optionLabel(date)}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+        </div>
+        <p className="text-caption text-muted-foreground">
+          {registered.has(selected.id)
+            ? "You're booked for this week. Pick another week to add it too."
+            : `Open for the next ${dates.length} weeks. Book as many as you like.`}
+        </p>
+      </div>
 
       <EventRegister
         key={selected.id}
