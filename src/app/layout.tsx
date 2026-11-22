@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     images: IMAGEKIT_URL_ENDPOINT
       ? [
           {
-            url: `${IMAGEKIT_URL_ENDPOINT}/YRC/Home/pexels-runffwpu-18409430.jpg?tr=w-1200,h-630,c-maintain_ratio,fo-auto`,
+            url: `${IMAGEKIT_URL_ENDPOINT}/YRC/Community/photo_5877443723178741686_w.jpg?tr=w-1200,h-630,c-maintain_ratio,fo-auto`,
             width: 1200,
             height: 630,
             alt: "YRC runners on a group run",
