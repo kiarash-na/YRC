@@ -66,6 +66,23 @@ describe("event details body", () => {
     expect(html).toMatch(/<h3[^>]*>Meet &amp; move<\/h3>/);
   });
 
+  it("turns a short label before a middot into the step's label pill", async () => {
+    const html = await render(
+      "## Meet & move\n\n- **06:30** · Meet 1 · **Pasing station:** meet the crew.\n- **08:00** · **Trail time:** go.\n",
+    );
+    expect(html).toContain('data-variant="timeline-labelled"');
+    expect(html).toMatch(/uppercase">Meet 1<\/span>/);
+    expect(html).toContain("Pasing station:</strong> meet the crew.");
+    expect(html.match(/uppercase">/g)).toHaveLength(1); // the unlabelled step has none
+  });
+
+  it("highlights a mandatory packing item", async () => {
+    const html = await render("## Pack your kit\n\n- Water\n- The GPX on your watch is mandatory\n");
+    expect(html).toContain("border-yrc-accent");
+    expect(html.match(/border-yrc-accent/g)).toHaveLength(1);
+    expect(html).toContain(">Mandatory</span>");
+  });
+
   it("needs every item timed for a timeline", async () => {
     const html = await render("## Meet & move\n\n- **06:45** · **Meet:** café\n- **Route:** on Strava\n");
     expect(html).not.toContain("<time");

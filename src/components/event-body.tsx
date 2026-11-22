@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from "react";
-import { Check, Coffee } from "lucide-react";
+import { Check, Coffee, TriangleAlert } from "lucide-react";
 import type { MDXComponents } from "mdx/types";
 import { compileMDX } from "next-mdx-remote/rsc";
 
@@ -81,10 +81,27 @@ const detailComponents: MDXComponents = {
     ),
   li: (props: ComponentProps<"li">) => {
     const variant = variantOf(props);
-    if (variant === "timeline") {
+    if (variant === "timeline" || variant === "timeline-labelled") {
       return (
-        <li className="group/step grid grid-cols-[4rem_1fr] gap-x-4 md:grid-cols-[5rem_1fr] md:gap-x-6">
+        <li data-variant={variant} className="group/step grid grid-cols-[4rem_1fr] gap-x-4 md:grid-cols-[5rem_1fr] md:gap-x-6">
           {props.children}
+        </li>
+      );
+    }
+    if (variant === "checklist-required") {
+      // A must-have (e.g. "the GPX on your watch is mandatory"): full width,
+      // accent frame, warning mark and a "Mandatory" tag above the text.
+      return (
+        <li className="flex items-start gap-3.5 rounded-xl border-2 border-yrc-accent bg-yrc-accent/10 px-4 py-4 text-body-small font-semibold text-foreground sm:col-span-2 md:px-5 md:text-body">
+          <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-yrc-accent text-yrc-accent-foreground">
+            <TriangleAlert className="size-3.5" strokeWidth={2.5} aria-hidden="true" />
+          </span>
+          <span className="flex min-w-0 flex-col gap-1">
+            <span className="text-caption font-bold tracking-[0.2em] text-muted-foreground uppercase">
+              Mandatory
+            </span>
+            <span>{props.children}</span>
+          </span>
         </li>
       );
     }
@@ -107,12 +124,17 @@ const detailComponents: MDXComponents = {
       <time>{props.children}</time>
     ),
   span: (props: ComponentProps<"span">) =>
-    variantOf(props) === "timeline" ? (
+    variantOf(props) === "step-label" ? (
+      // "Meet 1" — names a step, e.g. one of several meet spots.
+      <span className="mb-2 flex w-fit items-center rounded-full bg-foreground px-2.5 py-1 text-[0.6875rem] leading-none font-bold tracking-[0.18em] text-background uppercase">
+        {props.children}
+      </span>
+    ) : variantOf(props) === "timeline" ? (
       // The rail: a line down the left with a yellow stop per step; the
       // last step's line stops at its dot.
       <span className="relative border-l border-border pb-8 pl-6 text-body-small text-muted-foreground group-last/step:border-transparent group-last/step:pb-0 md:pl-8 md:text-body">
         <span
-          className="absolute top-2 -left-[5px] size-[9px] rounded-full bg-yrc-accent ring-4 ring-background md:top-2.5"
+          className="absolute top-2 -left-[5px] size-[9px] rounded-full bg-yrc-accent ring-4 ring-background group-data-[variant=timeline-labelled]/step:-left-[7px] group-data-[variant=timeline-labelled]/step:size-[13px] group-data-[variant=timeline-labelled]/step:ring-yrc-accent/25 md:top-2.5"
           aria-hidden="true"
         />
         <span className="block pt-0.5 md:pt-1">{props.children}</span>

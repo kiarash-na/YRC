@@ -6,8 +6,11 @@
  *   ### Kicker line            first node, h3   → data-variant="kicker"
  *   - **07:45** · **Place:** … every item starts with a bold HH:MM time
  *                                              → data-variant="timeline"
+ *   - **06:30** · Meet 1 · **Place:** …  a short plain label before a "·"
+ *                                              → that step's label pill
  *   ## Pack your kit / Bring along / What to bring …, then a bullet list
  *                                              → data-variant="checklist"
+ *     (an item saying "mandatory", "required" or "must" → "checklist-required")
  *   > Come for the run. …      last node, quote → data-variant="signoff"
  *
  * Only top-level nodes are inspected; nothing is removed except the
@@ -26,6 +29,9 @@ interface MdNode {
 const TIME_RE = /^\d{1,2}[:.]\d{2}$/;
 const CHECKLIST_HEADING_RE = /\b(pack|packing|bring|kit|gear|what to wear)\b/i;
 const SEPARATOR_RE = /^\s*[·•\-–—|:]\s*/;
+/** "Meet 1 · " — a short plain label, then a middot, before the step text. */
+const STEP_LABEL_RE = /^([^·*\n]{1,24}?)\s*·\s*/;
+const REQUIRED_RE = /\b(mandatory|required|must)\b/i;
 
 function textOf(node: MdNode): string {
   if (typeof node.value === "string") return node.value;
@@ -60,6 +66,15 @@ function asTimeline(list: MdNode): boolean {
     const rest = (paragraph.children ?? []).slice(1);
     if (rest[0]?.type === "text" && rest[0].value) {
       rest[0].value = rest[0].value.replace(SEPARATOR_RE, "");
+      const label = STEP_LABEL_RE.exec(rest[0].value);
+      if (label) {
+        rest[0].value = rest[0].value.slice(label[0].length);
+        const pill: MdNode = { type: "emphasis", children: [{ type: "text", value: label[1].trim() }] };
+        tag(pill, "step-label", "span");
+        rest.unshift(pill);
+        tag(item, "timeline-labelled");
+      }
+      if (rest[1]?.type === "text" && !rest[1].value) rest.splice(1, 1);
     }
     // Wrap the description so the item lays out as [time | text].
     const body: MdNode = { type: "emphasis", children: rest };
@@ -86,7 +101,9 @@ export function remarkEventBody() {
       if (asTimeline(node)) continue;
       if (!node.ordered && CHECKLIST_HEADING_RE.test(heading)) {
         tag(node, "checklist");
-        for (const item of node.children ?? []) tag(item, "checklist");
+        for (const item of node.children ?? []) {
+          tag(item, REQUIRED_RE.test(textOf(item)) ? "checklist-required" : "checklist");
+        }
       }
     }
 
