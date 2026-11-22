@@ -79,7 +79,8 @@ const defaultProps: HeroProps = {
     },
   },
   video: {
-    src: "/YRC/19538560-uhd_3840_2160_24fps.mp4",
+    // The crew at golden hour: 1168×768, 5.4 s loop, ~7 MB.
+    src: "/YRC/Home/hf_20261122_111745_bc09fc36-b5d4-4bb9-bd12-f5d1a2d06393.mp4",
   },
   fallback: {
     src: "/YRC/Home/pexels-runffwpu-18409430.jpg",
