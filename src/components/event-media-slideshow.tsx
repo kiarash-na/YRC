@@ -19,17 +19,6 @@ interface EventMediaSlideshowProps {
 
 const SIZES = "(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 100vw";
 
-/** No autoplay for reduced motion and data-saver / 2G connections. */
-function motionAllowed() {
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
-    .connection;
-  return (
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-    connection?.saveData !== true &&
-    !/(^|-)2g$/.test(connection?.effectiveType ?? "")
-  );
-}
-
 function Slide({
   item,
   index,
@@ -53,6 +42,7 @@ function Slide({
     const el = ref.current;
     if (!el) return;
     if (current && playing) {
+      el.muted = true;
       el.play().catch(() => {});
     } else {
       el.pause();
@@ -111,9 +101,8 @@ function Slide({
 
 /**
  * The event page's top slideshow (replaces the single cover). Photos hold
- * for `interval`, clips play muted to their end; it runs only while on
- * screen and the tab is visible, never for reduced motion / Save-Data / 2G
- * (then it shows the first slide and the dots). Pause toggle and dots for
+ * for `interval`, clips autoplay muted to their end; it runs for everyone
+ * while on screen and the tab is visible. Pause toggle and dots for
  * everyone (WCAG 2.2.2). Slides mount one ahead of being shown.
  */
 export function EventMediaSlideshow({ items, orientation, title, interval = 3000 }: EventMediaSlideshowProps) {
@@ -122,9 +111,8 @@ export function EventMediaSlideshow({ items, orientation, title, interval = 3000
   const [seen, setSeen] = useState(1);
   const [inView, setInView] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [allowed, setAllowed] = useState(false);
   const count = items.length;
-  const running = count > 1 && inView && !paused && allowed;
+  const running = count > 1 && inView && !paused;
   const item = items[index];
 
   useEffect(() => {
@@ -134,14 +122,7 @@ export function EventMediaSlideshow({ items, orientation, title, interval = 3000
       threshold: 0.35,
     });
     observer.observe(el);
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setAllowed(motionAllowed());
-    sync();
-    media.addEventListener("change", sync);
-    return () => {
-      observer.disconnect();
-      media.removeEventListener("change", sync);
-    };
+    return () => observer.disconnect();
   }, []);
 
   const go = (i: number) => {
@@ -217,16 +198,14 @@ export function EventMediaSlideshow({ items, orientation, title, interval = 3000
               </button>
             ))}
           </div>
-          {allowed && (
-            <button
-              type="button"
-              onClick={() => setPaused((p) => !p)}
-              aria-label={paused ? "Play slideshow" : "Pause slideshow"}
-              className="flex size-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
-            >
-              {paused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+            className="flex size-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+          >
+            {paused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+          </button>
         </div>
       )}
     </div>

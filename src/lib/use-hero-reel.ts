@@ -12,17 +12,11 @@ export interface ReelClip {
   updatedAt?: string;
 }
 
-interface NetworkInformationLike {
-  saveData?: boolean;
-  effectiveType?: string;
-}
-
 /**
  * A muted background reel: plays `clips` one after another (each from
  * `start` to `end`), crossfading into the next and looping back to the first.
- * Same playback policy as useAmbientPlayback: only while the section is on
- * screen, never on its own for reduced motion / Save-Data / 2G, and a pause
- * from the toggle sticks. Only the current and the next clip preload.
+ * Same playback policy as useAmbientPlayback: autoplays (muted) for everyone
+ * while the section is on screen, and a pause from the toggle sticks. Only the current and the next clip preload.
  */
 export function useHeroReel(
   section: RefObject<HTMLElement | null>,
@@ -32,7 +26,8 @@ export function useHeroReel(
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [allowed, setAllowed] = useState(false);
+  // Autoplays for everyone (site decision); the toggle is the opt-out.
+  const [allowed, setAllowed] = useState(true);
   const [userPaused, setUserPaused] = useState(false);
   const [failed, setFailed] = useState<Set<number>>(new Set());
   // Once any clip has painted a frame the reel fades in over the still.
@@ -41,12 +36,6 @@ export function useHeroReel(
   const playing = allowed && visible && !userPaused && failed.size < count;
 
   useEffect(() => {
-    const connection = (navigator as Navigator & { connection?: NetworkInformationLike }).connection;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const lowData = connection?.saveData === true || /(^|-)2g$/.test(connection?.effectiveType ?? "");
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads browser-only settings once
-    setAllowed(!reduced && !lowData);
-
     const el = section.current;
     if (!el) return;
     const observer = new IntersectionObserver(([entry]) => setVisible(Boolean(entry?.isIntersecting)), {
@@ -80,6 +69,7 @@ export function useHeroReel(
     if (current.currentTime < clip.start || current.currentTime >= clip.end) {
       current.currentTime = clip.start;
     }
+    current.muted = true;
     current.play().catch(() => {});
     const settle = window.setTimeout(() => {
       videos.current.forEach((video, i) => {
@@ -118,7 +108,7 @@ export function useHeroReel(
     if (playing) {
       setUserPaused(true);
     } else {
-      setAllowed(true); // pressing play opts in, even with reduced motion
+      setAllowed(true);
       setUserPaused(false);
     }
   }, [playing]);

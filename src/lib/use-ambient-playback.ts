@@ -2,19 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 
-interface NetworkInformationLike {
-  saveData?: boolean;
-  effectiveType?: string;
-}
-
 /**
  * Playback policy for decorative, muted, looping videos (hero + ambient
  * clips). Plays only while the video is on screen, so off-screen clips cost
  * no CPU, battery or bandwidth (`preload="none"` means nothing downloads
- * until the first play). It never autoplays for prefers-reduced-motion,
- * Save-Data or 2G connections; the poster image stays and the toggle still
- * lets people start it themselves. A manual pause sticks: scrolling back
- * doesn't restart it.
+ * until the first play). Every visitor gets autoplay (site decision: all
+ * clips autoplay, muted, everywhere); the pause toggle is the opt-out, and a
+ * manual pause sticks — scrolling back doesn't restart it. Browsers that
+ * refuse autoplay outright (e.g. iOS Low Power Mode) keep the poster.
  */
 export function useAmbientPlayback(
   ref: RefObject<HTMLVideoElement | null>,
@@ -31,12 +26,7 @@ export function useAmbientPlayback(
     const el = ref.current;
     if (!el) return;
 
-    const connection = (navigator as Navigator & { connection?: NetworkInformationLike })
-      .connection;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const lowData =
-      connection?.saveData === true || /(^|-)2g$/.test(connection?.effectiveType ?? "");
-    autoplay.current = !reducedMotion && !lowData;
+    el.muted = true; // iOS only autoplays videos that are muted as a property too
 
     const onPlay = () => {
       userPaused.current = false;

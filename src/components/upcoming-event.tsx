@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EventSecondaryActions } from "@/components/event-actions";
 import { Reveal } from "@/components/reveal";
-import { EVENT_CATEGORY_LABELS, formatDate, type EventSummary } from "@/lib/content-shared";
+import { EVENT_CATEGORY_LABELS, formatDate, type EventMedia, type EventSummary } from "@/lib/content-shared";
 
 interface UpcomingEventProps {
   event: EventSummary;
@@ -19,17 +19,14 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
     : formatDate(event.date);
-  // Slideshow: the event's gallery first (photos, and clips via their poster
-  // frame) so it opens on people running, then the cover (often the
-  // after-run coffee), without repeats.
-  const images = [
-    ...new Set([
-      ...(event.gallery ?? []).flatMap((item) =>
-        item.type === "image" ? [item.src] : item.poster ? [item.poster] : [],
-      ),
-      event.cover,
-    ]),
-  ];
+  // Slideshow: the event's gallery first (photos and clips, which autoplay)
+  // so it opens on people running, then the cover (often the after-run
+  // coffee), without repeats.
+  const seenSrc = new Set<string>();
+  const items: EventMedia[] = [
+    ...(event.gallery ?? []),
+    { src: event.cover, type: "image" as const, alt: event.title },
+  ].filter((item) => item.src && !seenSrc.has(item.src) && Boolean(seenSrc.add(item.src)));
 
   return (
     <section className={cn("py-24 md:py-32", className)}>
@@ -46,7 +43,7 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
           <div className="group grid gap-8 lg:grid-cols-12 lg:gap-16">
             <ViewTransition name={`event-cover-${event.slug}`} share="yrc-morph" default="none">
               <EventSlideshow
-                images={images}
+                items={items}
                 alt={event.title}
                 sizes="(min-width: 1024px) 58vw, 100vw"
                 className="aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted lg:col-span-7"

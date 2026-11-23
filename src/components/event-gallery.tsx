@@ -16,8 +16,7 @@ import { cn } from "@/lib/utils";
  * tall cards with gradient overlays, arrows and dot pagination). Changes for
  * YRC: ImageKit images and portrait clips instead of article cards; the
  * first card lines up with the page column and the row bleeds to the right
- * edge; one clip plays at a time (the hovered card, or the snapped one on
- * touch) so the page never streams several videos at once; tapping a card
+ * edge; every clip on screen autoplays muted; tapping a card
  * opens a full-screen viewer with sound, arrows/keys and a counter.
  */
 
@@ -41,25 +40,13 @@ function label(item: EventMedia, index: number, total: number, eventTitle: strin
   return `${kind} ${index + 1} of ${total}: ${item.alt ?? eventTitle}`;
 }
 
-/** Autoplay is off for reduced motion and data-saver / 2G connections. */
-function autoplayAllowed() {
-  if (typeof window === "undefined") return false;
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
-    .connection;
-  return (
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-    connection?.saveData !== true &&
-    !/(^|-)2g$/.test(connection?.effectiveType ?? "")
-  );
-}
-
 /**
- * A muted card clip that plays only while `active` and on screen. Shows the
- * poster image until it plays; with no poster (or one that fails to load)
- * the clip's own first frame stands in — metadata loads once the card is
- * near the viewport, never earlier.
+ * A muted card clip that autoplays whenever at least half of it is on
+ * screen (every visible card plays). Shows the poster image until it plays;
+ * with no poster (or one that fails to load) the clip's own first frame
+ * stands in — metadata loads once the card is near the viewport.
  */
-function CardClip({ item, active }: { item: EventMedia; active: boolean }) {
+function CardClip({ item }: { item: EventMedia }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -89,12 +76,13 @@ function CardClip({ item, active }: { item: EventMedia; active: boolean }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (active && visible && autoplayAllowed()) {
+    if (visible) {
+      el.muted = true;
       el.play().catch(() => {});
     } else if (!el.paused) {
       el.pause();
     }
-  }, [active, visible]);
+  }, [visible]);
 
   const showFrame = !usePoster && near;
 
@@ -144,7 +132,6 @@ export function EventGallery({ items, eventTitle, className }: EventGalleryProps
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [snapCount, setSnapCount] = useState(0);
-  const [hovered, setHovered] = useState<number | null>(null);
   const [open, setOpen] = useState<number | null>(null);
   const [inset, setInset] = useState(16);
   // Read by Embla's align callback (Embla compares option functions by
@@ -256,15 +243,11 @@ export function EventGallery({ items, eventTitle, className }: EventGalleryProps
               <button
                 type="button"
                 onClick={() => setOpen(index)}
-                onMouseEnter={() => setHovered(index)}
-                onMouseLeave={() => setHovered(null)}
-                onFocus={() => setHovered(index)}
-                onBlur={() => setHovered(null)}
                 aria-label={label(item, index, total, eventTitle)}
                 className="group relative block aspect-3/4 w-full cursor-zoom-in overflow-hidden rounded-xl bg-muted text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 {item.type === "video" ? (
-                  <CardClip item={item} active={(hovered ?? selected) === index} />
+                  <CardClip item={item} />
                 ) : (
                   <Image
                     src={item.src}
