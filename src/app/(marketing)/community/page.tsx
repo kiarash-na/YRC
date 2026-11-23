@@ -9,6 +9,7 @@ import { StravaClub } from "@/components/strava-club";
 import { StridesLeaderboard } from "@/components/strides-leaderboard";
 import { WhoIsYrcFor } from "@/components/who-is-yrc-for";
 import { Reveal } from "@/components/reveal";
+import { getSlotsMedia } from "@/lib/site-media-db";
 
 export const metadata: Metadata = {
   title: "Community — YRC",
@@ -20,24 +21,25 @@ export const metadata: Metadata = {
 // same cadence, so the leaderboard + homepage strip share one Supabase read).
 export const revalidate = 300;
 
-export default function CommunityPage() {
+export default async function CommunityPage() {
+  const media = await getSlotsMedia(["community.hero", "community.who", "community.challenges", "community.gallery"]);
   return (
     <main id="main" className="flex-1">
-      <CommunityHero />
+      <CommunityHero media={media["community.hero"]} />
       <Reveal>
         <CommunityPhilosophy />
       </Reveal>
       <Reveal>
-        <WhoIsYrcFor />
+        <WhoIsYrcFor media={media["community.who"]} />
       </Reveal>
       <Reveal>
         <StridesLeaderboard />
       </Reveal>
       <Reveal>
-        <CommunityChallenges />
+        <CommunityChallenges media={media["community.challenges"]} />
       </Reveal>
       <Reveal>
-        <CommunityGallery />
+        <CommunityGallery photos={media["community.gallery"]} />
       </Reveal>
       <Reveal>
         <StravaClub />

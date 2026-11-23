@@ -5,6 +5,7 @@ import { NewsletterSignup } from "@/components/newsletter-signup";
 import { PostCard } from "@/components/post-card";
 import { getAllTags, getPostSummaries, getPostsByTag } from "@/lib/posts-db";
 import { Reveal } from "@/components/reveal";
+import { getSlotsMedia } from "@/lib/site-media-db";
 
 export const metadata: Metadata = {
   title: "Journal — YRC",
@@ -16,12 +17,13 @@ export const metadata: Metadata = {
 export const revalidate = 900;
 
 export default async function JournalPage() {
+  const media = await getSlotsMedia(["journal.hero"]);
   const summaries = await getPostSummaries();
   const tags = getAllTags(summaries);
 
   return (
     <main id="main" className="flex-1">
-      <Blog52 />
+      <Blog52 image={media["journal.hero"][0]} />
 
       <section className="bg-background pb-32">
         <div className="container">

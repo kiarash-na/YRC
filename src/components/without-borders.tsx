@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
-
-const landscape: { src: string; alt: string; updatedAt?: string } = {
-  src: "/YRC/Community/IMG_2475.JPG",
-  alt: "YRC community running together on a group run",
-};
 
 const markers = [
   {
@@ -23,10 +19,13 @@ const markers = [
 ];
 
 interface WithoutBordersProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const WithoutBorders = ({ className }: WithoutBordersProps) => {
+const WithoutBorders = ({ className, media }: WithoutBordersProps) => {
+  const [landscape] = media ?? slotDefaults("about.borders");
   return (
     <section className={cn("py-32", className)}>
       <div className="container">

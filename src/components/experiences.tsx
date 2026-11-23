@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Reveal } from "@/components/reveal";
@@ -9,12 +10,6 @@ interface Experience {
   number: string;
   title: string;
   description: string;
-  image: {
-    src: string;
-    alt: string;
-    updatedAt?: string;
-    width?: number;
-  };
 }
 
 const experiences: Experience[] = [
@@ -23,41 +18,29 @@ const experiences: Experience[] = [
     title: "International Events",
     description:
       "Selected road, trail and endurance events chosen with attention to quality, experience and the needs of athletes.",
-    image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
-      alt: "YRC runners racing through Istanbul at the Istanbul Marathon",
-      updatedAt: "1789992716323",
-    },
   },
   {
     number: "02",
     title: "Sports Trips & Camps",
     description:
       "Specialized camps and trips built around sporting experiences, preparation, motivation and meaningful time together.",
-    image: {
-      src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
-      alt: "A YRC runner climbing a forest trail with poles on a trail trip",
-      updatedAt: "1789993034690",
-      width: 1600,
-    },
   },
   {
     number: "03",
     title: "Yas Rise Community",
     description:
       "A community built around sustainable training, shared goals, continuous growth and people moving forward together.",
-    image: {
-      src: "/YRC/Community/IMG_2475.JPG",
-      alt: "YRC runners sharing an easy run on a park path",
-    },
   },
 ];
 
 interface ExperiencesProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const Experiences = ({ className }: ExperiencesProps) => {
+const Experiences = ({ className, media }: ExperiencesProps) => {
+  const cards = withMedia(experiences, media ?? slotDefaults("home.experiences"));
   return (
     <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
@@ -75,7 +58,7 @@ const Experiences = ({ className }: ExperiencesProps) => {
         </Reveal>
 
         <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-3 md:gap-8">
-          {experiences.map((experience, index) => (
+          {cards.map((experience, index) => (
             <Reveal key={experience.number} delay={index * 120}>
               <div className="group flex flex-col gap-6">
                 <div className="relative aspect-4/5 w-full overflow-hidden rounded-xl border bg-muted">

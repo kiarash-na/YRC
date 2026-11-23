@@ -13,6 +13,7 @@ import {
 
 import { Image } from "@/components/imagekit";
 import { cn } from "@/lib/utils";
+import { slotDefaults } from "@/lib/site-media";
 
 /*
  * Community gallery: a 3D cover flow that morphs into a grid and back
@@ -32,49 +33,6 @@ export interface GalleryPhoto {
 }
 
 type View = "flow" | "grid";
-
-const communityPhotos: GalleryPhoto[] = [
-  {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
-    alt: "YRC runners on the course at Istanbul Marathon 2025",
-    updatedAt: "1789681147875",
-  },
-  {
-    src: "/YRC/Community/IMG_2466.JPG",
-    alt: "YRC runners celebrating together after a run",
-    position: "50% 60%",
-  },
-  {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/09.jpg",
-    alt: "A YRC runner mid-race at Istanbul Marathon",
-    updatedAt: "1789681141241",
-  },
-  {
-    src: "/YRC/Home/SRK09793.jpg",
-    alt: "The YRC pack together on a group run",
-    updatedAt: "1789992741992",
-    width: 1600,
-  },
-  {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M05.jpg",
-    alt: "YRC runners pushing through Istanbul Marathon 2025",
-    updatedAt: "1789681152474",
-  },
-  {
-    src: "/YRC/Home/photo_2026-11-22_14-57-09.jpg",
-    alt: "A still lake at dawn before a YRC run",
-  },
-  {
-    src: "/YRC/Community/IMG_2477.JPG",
-    alt: "The YRC crew sharing coffee at Café Tante Chylla after a run",
-    updatedAt: "1790070385515",
-  },
-  {
-    src: "/YRC/Community/photo_5877443723178741687_w.jpg",
-    alt: "The YRC community gathered after a run",
-    updatedAt: "1790017039009",
-  },
-];
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
@@ -228,7 +186,7 @@ const CommunityGallery = ({
     </>
   ),
   description = "Cold mornings, shared miles, finish-line noise. The community, as it actually is.",
-  photos = communityPhotos,
+  photos = slotDefaults("community.gallery"),
   className,
 }: CommunityGalleryProps) => {
   const total = photos.length;

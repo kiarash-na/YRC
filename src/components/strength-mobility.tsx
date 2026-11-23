@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
@@ -7,11 +8,6 @@ import { TALLY_POPUP_HASH } from "@/lib/tally";
 interface TrainingElement {
   title: string;
   description: string;
-  image: {
-    src: string;
-    alt: string;
-    updatedAt: string;
-  };
   href: string;
 }
 
@@ -20,53 +16,36 @@ const elements: TrainingElement[] = [
     title: "Functional Strength",
     description:
       "Strength work built around the movements that running actually demands.",
-    image: {
-      src: "/YRC/Stickers/6.png",
-      alt: "YRC runners in motion on a group run",
-      updatedAt: "1789773268258",
-    },
     href: TALLY_POPUP_HASH,
   },
   {
     title: "Mobility & Movement",
     description:
       "Mobility sessions that keep your movement quality high through demanding training weeks.",
-    image: {
-      src: "/YRC/Stickers/8.png",
-      alt: "YRC runners training together",
-      updatedAt: "1789773267962",
-    },
     href: TALLY_POPUP_HASH,
   },
   {
     title: "Balanced Training",
     description:
       "Strength and mobility woven into the training week — part of the program, not an afterthought.",
-    image: {
-      src: "/YRC/Stickers/12.png",
-      alt: "YRC group sharing a moment after training",
-      updatedAt: "1789773268698",
-    },
     href: TALLY_POPUP_HASH,
   },
   {
     title: "Preparation",
     description:
       "Arrive at sessions, races and camps feeling prepared for the challenges ahead.",
-    image: {
-      src: "/YRC/Stickers/7.png",
-      alt: "YRC runner during a marathon race day",
-      updatedAt: "1789773268672",
-    },
     href: TALLY_POPUP_HASH,
   },
 ];
 
 interface StrengthMobilityProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const StrengthMobility = ({ className }: StrengthMobilityProps) => {
+const StrengthMobility = ({ className, media }: StrengthMobilityProps) => {
+  const cards = withMedia(elements, media ?? slotDefaults("events.strength"));
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -86,7 +65,7 @@ const StrengthMobility = ({ className }: StrengthMobilityProps) => {
           </div>
 
           <div className="border-t border-border">
-            {elements.map((element) => (
+            {cards.map((element) => (
               <a
                 key={element.title}
                 href={element.href}
@@ -98,7 +77,7 @@ const StrengthMobility = ({ className }: StrengthMobilityProps) => {
                     alt={element.image.alt}
                     fill
                     sizes="64px"
-                    queryParameters={{ updatedAt: element.image.updatedAt }}
+                    queryParameters={element.image.updatedAt ? { updatedAt: element.image.updatedAt } : undefined}
                     className="object-cover object-center"
                   />
                 </div>

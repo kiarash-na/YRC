@@ -4,19 +4,18 @@ import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 import { lqip } from "@/lib/imagekit";
 
-const heroImage = {
-  src: "/YRC/Community/photo_5877443723178741687_w.jpg",
-  alt: "The YRC crew together on a mountain road after a run",
-  updatedAt: "1789681295806",
-};
 
 interface EventsHeroProps {
+  /** The slot's image (from /admin/media); defaults to the built-in one. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const EventsHero = ({ className }: EventsHeroProps) => {
+const EventsHero = ({ className, media }: EventsHeroProps) => {
+  const heroImage = (media ?? slotDefaults("events.hero"))[0];
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -54,7 +53,7 @@ const EventsHero = ({ className }: EventsHeroProps) => {
             fill
             priority
             sizes="(min-width: 1280px) 1280px, 100vw"
-            queryParameters={{ updatedAt: heroImage.updatedAt }}
+            queryParameters={heroImage.updatedAt ? { updatedAt: heroImage.updatedAt } : undefined}
             className="yrc-drift object-cover object-center"
             style={{
               backgroundImage: `url(${lqip(heroImage.src, heroImage.updatedAt)})`,

@@ -1,14 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
 import { TALLY_POPUP_HASH } from "@/lib/tally";
 
 interface CollageImage {
-  src: string;
-  alt: string;
-  updatedAt: string;
   className: string;
   // Bounds oversized ImageKit originals (>25MP ELIMIT) — see 6a79ba2.
   width?: number;
@@ -23,37 +21,27 @@ const items = [
 
 const images: CollageImage[] = [
   {
-    src: "/YRC/Community/photo_2026-11-16_18-56-58.jpg",
-    alt: "A YRC runner climbing a mountain trail with poles",
-    updatedAt: "1789681338492",
     className: "row-span-2",
-    width: 1600,
   },
   {
-    src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/M06.jpg",
-    alt: "YRC runners crossing the Bosphorus at Istanbul Marathon 2025",
-    updatedAt: "1789681140651",
     className: "col-span-2",
   },
   {
-    src: "/YRC/Stickers/12.png",
-    alt: "YRC sticker artwork",
-    updatedAt: "1789773268698",
     className: "",
   },
   {
-    src: "/YRC/Stickers/20.png",
-    alt: "YRC sticker artwork",
-    updatedAt: "1789773268422",
     className: "",
   },
 ];
 
 interface InternationalEventsProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const InternationalEvents = ({ className }: InternationalEventsProps) => {
+const InternationalEvents = ({ className, media }: InternationalEventsProps) => {
+  const tiles = withMedia(images, media ?? slotDefaults("events.international")).map(({ image, ...layout }) => ({ ...layout, ...image }));
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -101,7 +89,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
           </div>
 
           <div className="grid h-72 grid-cols-3 grid-rows-2 gap-3 sm:h-96 lg:h-[440px]">
-            {images.map((image) => (
+            {tiles.map((image) => (
               <div
                 key={image.src}
                 className={cn(
@@ -114,7 +102,7 @@ const InternationalEvents = ({ className }: InternationalEventsProps) => {
                   alt={image.alt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  queryParameters={{ updatedAt: image.updatedAt }}
+                  queryParameters={image.updatedAt ? { updatedAt: image.updatedAt } : undefined}
                   transformation={
                     image.width ? [{ width: image.width }] : undefined
                   }

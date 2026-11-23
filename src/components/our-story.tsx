@@ -1,12 +1,7 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
-
-const portrait = {
-  src: "/YRC/24.png",
-  alt: "YRC runner pushing through a training session",
-  updatedAt: "1789773516640",
-};
 
 const chapters = [
   {
@@ -27,10 +22,13 @@ const chapters = [
 ];
 
 interface OurStoryProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const OurStory = ({ className }: OurStoryProps) => {
+const OurStory = ({ className, media }: OurStoryProps) => {
+  const [portrait] = media ?? slotDefaults("about.story");
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -73,7 +71,7 @@ const OurStory = ({ className }: OurStoryProps) => {
               alt={portrait.alt}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              queryParameters={{ updatedAt: portrait.updatedAt }}
+              queryParameters={portrait.updatedAt ? { updatedAt: portrait.updatedAt } : undefined}
               className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
             />
           </div>

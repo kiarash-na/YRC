@@ -3,12 +3,13 @@
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { slotDefaults } from "@/lib/site-media";
 import { lqip } from "@/lib/imagekit";
 
 interface Blog52Image {
   src: string;
   alt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 interface Blog52Props {
@@ -26,11 +27,7 @@ const defaultProps: Required<
   heading: "RUN. MOVE. GROW.",
   description:
     "Stories, ideas and practical insights about running, training, movement and building a life around an active community.",
-  image: {
-    src: "/YRC/Community/SRK09740%20(1).jpg",
-    alt: "The YRC crew running together along a ridge road at golden hour",
-    updatedAt: "1790005645712",
-  },
+  image: slotDefaults("journal.hero")[0],
 };
 
 type Props = Partial<Blog52Props>;
@@ -62,7 +59,7 @@ const Blog52 = (props: Props) => {
               fill
               priority
               sizes="(min-width: 1024px) 1024px, 100vw"
-              queryParameters={{ updatedAt: image.updatedAt }}
+              queryParameters={image.updatedAt ? { updatedAt: image.updatedAt } : undefined}
               className="yrc-drift object-cover object-center"
               style={{
                 backgroundImage: `url(${lqip(image.src, image.updatedAt)})`,

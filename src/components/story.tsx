@@ -1,26 +1,18 @@
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Reveal } from "@/components/reveal";
 
-const portrait = {
-  src: "/YRC/41.png",
-  alt: "YRC runner during a marathon race day",
-  updatedAt: "1789773516271",
-};
-
-const landscape = {
-  src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/03.jpg",
-  alt: "YRC community sharing a moment together outdoors",
-  updatedAt: "1789681140856",
-};
-
 interface StoryProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const Story = ({ className }: StoryProps) => {
+const Story = ({ className, media }: StoryProps) => {
+  const [portrait, landscape] = media ?? slotDefaults("home.story");
   return (
     <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
@@ -32,7 +24,7 @@ const Story = ({ className }: StoryProps) => {
                 alt={portrait.alt}
                 fill
                 sizes="(min-width: 1024px) 42vw, 100vw"
-                queryParameters={{ updatedAt: portrait.updatedAt }}
+                queryParameters={portrait.updatedAt ? { updatedAt: portrait.updatedAt } : undefined}
                 transformation={[
                   { aspectRatio: "3-4", crop: "maintain_ratio", focus: "auto" },
                 ]}
@@ -76,7 +68,7 @@ const Story = ({ className }: StoryProps) => {
                   alt={landscape.alt}
                   fill
                   sizes="(min-width: 1024px) 58vw, 100vw"
-                  queryParameters={{ updatedAt: landscape.updatedAt }}
+                  queryParameters={landscape.updatedAt ? { updatedAt: landscape.updatedAt } : undefined}
                   transformation={[
                     { aspectRatio: "3-2", crop: "maintain_ratio", focus: "auto" },
                   ]}

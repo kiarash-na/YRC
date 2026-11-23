@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Image, Video } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
 import { lqip, ORIGINAL_VIDEO } from "@/lib/imagekit";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 import { useHeroReel, type ReelClip } from "@/lib/use-hero-reel";
 
 /*
@@ -56,7 +57,20 @@ interface HeroProps {
   fallback: HeroMedia;
   className?: string;
 }
-type Props = Partial<HeroProps>;
+type Props = Partial<HeroProps> & {
+  /** The reel and still slots from /admin/media (override the defaults). */
+  media?: { reel?: SiteMediaItem[]; still?: SiteMediaItem[] };
+};
+
+/** Slot items (from /admin/media) → reel clips; no end mark = play to the end. */
+function reelFrom(items: SiteMediaItem[]): ReelClip[] {
+  return items.map((item) => ({
+    src: item.src,
+    start: item.start ?? 0,
+    end: item.end ?? Number.POSITIVE_INFINITY,
+    updatedAt: item.updatedAt,
+  }));
+}
 
 const defaultProps: HeroProps = {
   badge: {
@@ -77,22 +91,8 @@ const defaultProps: HeroProps = {
       url: "/events",
     },
   },
-  // All four are 1168×768, 5.4 s originals; 4 s of each, in this order.
-  clips: [
-    // The crew talking at golden hour, mountains behind (the original clip).
-    { src: "/YRC/Home/hf_20261122_111745_bc09fc36-b5d4-4bb9-bd12-f5d1a2d06393.mp4", start: 0, end: 4 },
-    // Wide: the crew on a ridge road above the hills, pine overhead.
-    { src: "/YRC/Home/hf_20261123_144438_3e8a9609-c839-4c0d-89d4-e7155ea83a60.mp4", start: 0, end: 4, updatedAt: "1795446288277" },
-    // Warm-up drills on the road, backlit.
-    { src: "/YRC/Home/hf_20261123_145015_802d71d1-d4c4-4bf0-b3f3-097f5698618c.mp4", start: 0, end: 4, updatedAt: "1795446280237" },
-    // The group under a blue sky (its last second has someone leaving frame).
-    { src: "/YRC/Home/hf_20261123_144337_e8cf8a88-27aa-444d-b98c-45133304256f.mp4", start: 0, end: 4, updatedAt: "1795446279260" },
-  ],
-  fallback: {
-    src: "/YRC/Community/SRK09740%20(1).jpg",
-    alt: "",
-    updatedAt: "1790005645712",
-  },
+  clips: reelFrom(slotDefaults("home.hero.reel")),
+  fallback: slotDefaults("home.hero.still")[0],
 };
 
 const Hero = (props: Props) => {
@@ -108,6 +108,8 @@ const Hero = (props: Props) => {
   } = {
     ...defaultProps,
     ...props,
+    ...(props.media?.reel ? { clips: reelFrom(props.media.reel) } : {}),
+    ...(props.media?.still?.[0] ? { fallback: props.media.still[0] } : {}),
   };
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -168,6 +170,7 @@ const Hero = (props: Props) => {
                 tabIndex={-1}
                 onPlaying={reel.onPlaying}
                 onTimeUpdate={() => reel.onTimeUpdate(i)}
+                onEnded={() => reel.onTimeUpdate(i)}
                 onError={() => reel.onError(i)}
                 className={cn(
                   "absolute inset-0 size-full object-cover object-center transition-opacity duration-1000",

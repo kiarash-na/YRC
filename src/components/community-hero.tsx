@@ -3,18 +3,18 @@
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 import { lqip } from "@/lib/imagekit";
 
-const heroImage: { src: string; alt: string; updatedAt?: string } = {
-  src: "/YRC/Community/photo_5877443723178741686_w.jpg",
-  alt: "YRC community group run — runners of every pace moving together as one pack",
-};
 
 interface CommunityHeroProps {
+  /** The slot's image (from /admin/media); defaults to the built-in one. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const CommunityHero = ({ className }: CommunityHeroProps) => {
+const CommunityHero = ({ className, media }: CommunityHeroProps) => {
+  const heroImage = (media ?? slotDefaults("community.hero"))[0];
   return (
     <section className={cn("py-32", className)}>
       <div className="container">

@@ -11,6 +11,7 @@ import {
   Sparkles,
   Star,
   Users,
+  Images,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ const NAV_ITEMS: {
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/agent", label: "Agent", icon: Sparkles, highlight: true },
   { href: "/admin/events", label: "Events", icon: CalendarDays },
+  { href: "/admin/media", label: "Media", icon: Images },
   { href: "/admin/scoring", label: "Scoring", icon: Star },
   { href: "/admin/members", label: "Members", icon: Users },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },

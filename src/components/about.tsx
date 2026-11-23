@@ -1,13 +1,10 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Reveal } from "@/components/reveal";
 
 interface AboutImage {
-  src: string;
-  alt: string;
-  updatedAt?: string;
-  width?: number;
   /** Grid placement in the asymmetric editorial pair. */
   span: string;
   /** Frame aspect classes (literal, so Tailwind's scanner sees them). */
@@ -16,26 +13,23 @@ interface AboutImage {
 
 const images: AboutImage[] = [
   {
-    src: "/YRC/Community/IMG_2469.JPG",
-    alt: "YRC community members connecting after a run",
     span: "md:col-span-7",
     frame: "aspect-4/3",
   },
   {
-    src: "/YRC/Home/SRK09793.jpg",
-    alt: "YRC runner pushing through a training session",
-    updatedAt: "1789992741992",
-    width: 1600,
     span: "md:col-span-5 md:mb-24",
     frame: "aspect-4/3 md:aspect-3/4",
   },
 ];
 
 interface AboutProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const About = ({ className }: AboutProps) => {
+const About = ({ className, media }: AboutProps) => {
+  const tiles = withMedia(images, media ?? slotDefaults("home.about")).map(({ image, ...layout }) => ({ ...layout, ...image }));
   return (
     <section className={cn("py-24 md:py-32", className)}>
       <div className="container">
@@ -59,7 +53,7 @@ const About = ({ className }: AboutProps) => {
         </Reveal>
 
         <div className="mt-14 grid items-end gap-4 md:mt-20 md:grid-cols-12 md:gap-6">
-          {images.map((image, index) => (
+          {tiles.map((image, index) => (
             <Reveal key={image.src} delay={index * 120} className={image.span}>
               <div
                 className={cn(

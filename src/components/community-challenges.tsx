@@ -1,19 +1,15 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Reveal } from "@/components/reveal";
 
-const marathonBase = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
 
 interface Challenge {
   heading: string;
   subheading: string;
   description: string;
   example: string;
-  image: {
-    src: string;
-    alt: string;
-  };
 }
 
 const challenges: Challenge[] = [
@@ -24,10 +20,6 @@ const challenges: Challenge[] = [
       "Pick a monthly distance that scares you a little, then chip away at it with the rest of the pack. Big targets get smaller when hundreds of kilometers of company come with them.",
     example:
       "Think: one long month, one shared target, everyone's kilometers on the same board.",
-    image: {
-      src: "/YRC/Community/SRK09740%20(1).jpg",
-      alt: "Runners covering distance together on a long run",
-    },
   },
   {
     heading: "Consistency streaks",
@@ -36,10 +28,6 @@ const challenges: Challenge[] = [
       "Not faster, not longer — just there. Streak challenges reward the only training secret that actually works: weeks of unglamorous, dependable showing up.",
     example:
       "Think: a run every week for a season, whatever the weather has to say about it.",
-    image: {
-      src: `${marathonBase}/M06.jpg`,
-      alt: "YRC runners keeping a training streak alive",
-    },
   },
   {
     heading: "Community goals",
@@ -48,10 +36,6 @@ const challenges: Challenge[] = [
       "Sometimes the challenge belongs to all of us: a collective distance no single runner could cover alone, reached one shared run at a time. Every kilometer counts the same.",
     example:
       "Think: the whole community's miles stacked toward a single finish line.",
-    image: {
-      src: "/YRC/29.png",
-      alt: "The YRC community gathered before a group run",
-    },
   },
   {
     heading: "Event countdowns",
@@ -60,18 +44,17 @@ const challenges: Challenge[] = [
       "A race on the calendar changes everything. Countdown challenges turn the weeks before an event into a shared build-up — same plan, same nerves, same finish-line photo.",
     example:
       "Think: a training block that ends with all of us on the same start line.",
-    image: {
-      src: "/YRC/41.png",
-      alt: "YRC runners on course during an event",
-    },
   },
 ];
 
 interface CommunityChallengesProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
+const CommunityChallenges = ({ className, media }: CommunityChallengesProps) => {
+  const cards = withMedia(challenges, media ?? slotDefaults("community.challenges"));
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -90,7 +73,7 @@ const CommunityChallenges = ({ className }: CommunityChallengesProps) => {
         </div>
 
         <Reveal className="yrc-stagger mt-14 flex flex-col gap-5 md:mt-20">
-          {challenges.map((challenge, idx) => (
+          {cards.map((challenge, idx) => (
             <div
               key={challenge.heading}
               className="group relative isolate min-h-72 overflow-hidden rounded-xl border border-border px-5 py-14 lg:px-12 lg:py-20"

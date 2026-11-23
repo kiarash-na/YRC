@@ -7,7 +7,7 @@ export interface ReelClip {
   src: string;
   /** Seconds into the file where this clip's part starts. */
   start: number;
-  /** Seconds into the file where it hands over to the next clip. */
+  /** Seconds into the file where it hands over to the next clip (Infinity = at its end). */
   end: number;
   updatedAt?: string;
 }
@@ -93,7 +93,7 @@ export function useHeroReel(
   const onTimeUpdate = useCallback(
     (i: number) => {
       const video = videos.current[i];
-      if (i !== index || !video || video.currentTime < clips[i].end) return;
+      if (i !== index || !video || (video.currentTime < clips[i].end && !video.ended)) return;
       const next = nextIndex(i);
       if (next === i) {
         video.currentTime = clips[i].start; // a reel of one: loop its part

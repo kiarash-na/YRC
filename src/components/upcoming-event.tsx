@@ -19,14 +19,15 @@ const UpcomingEvent = ({ event, className }: UpcomingEventProps) => {
   const dateLabel = event.endDate
     ? `${formatDate(event.date)} – ${formatDate(event.endDate)}`
     : formatDate(event.date);
-  // Slideshow: the cover, then every photo in the gallery (clips show their
-  // poster frame), without repeats.
+  // Slideshow: the event's gallery first (photos, and clips via their poster
+  // frame) so it opens on people running, then the cover (often the
+  // after-run coffee), without repeats.
   const images = [
     ...new Set([
-      event.cover,
       ...(event.gallery ?? []).flatMap((item) =>
         item.type === "image" ? [item.src] : item.poster ? [item.poster] : [],
       ),
+      event.cover,
     ]),
   ];
 

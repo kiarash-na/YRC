@@ -665,3 +665,14 @@
     animation-delay: 0s !important;
   }
 }
+
+/* ImageKit Media Library widget (admin /admin/media): its modal ships with
+   z-index 1 — lift it above the admin header/sidebar and dialogs. */
+.ik-media-library-widget-modal {
+  z-index: 100 !important;
+  padding-top: 1.5vh !important;
+}
+.ik-media-library-widget-modal-content {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}

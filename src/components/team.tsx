@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import { Reveal } from "@/components/reveal";
@@ -6,8 +7,6 @@ import { Reveal } from "@/components/reveal";
 interface Coach {
   name: string;
   role: string;
-  image: string;
-  alt: string;
   bio: string[];
 }
 
@@ -15,8 +14,6 @@ const coaches: Coach[] = [
   {
     name: "Reza",
     role: "Running, Marathon, Half Marathon & Functional Training for Runners",
-    image: "/YRC/About/Team/Reza-couch.jpg",
-    alt: "Reza, YRC running coach",
     bio: [
       "Reza focuses on Running, Marathon, Half Marathon, and Functional Training for Runners. His primary focus is helping runners build the physical and mental readiness they need to perform at their best. His approach combines a structured training plan with strength development, endurance, and functional exercises.",
       "He believes that every runner is different and should have a training plan based on their goals, level of readiness, and physical capacity — a path that leads to a stronger body and more sustainable performance.",
@@ -25,8 +22,6 @@ const coaches: Coach[] = [
   {
     name: "Kambiz",
     role: "Hybrid Endurance & Strength Coach (Online)",
-    image: "/YRC/About/Team/Kambiz-coach.jpg",
-    alt: "Kambiz, YRC online hybrid endurance and strength coach",
     bio: [
       "Kambiz is a Hybrid Endurance and Strength Coach with extensive experience in endurance sports and competitions. He has participated in more than 150 races, ranging from Trail, Ultra, and SwimRun to Ironman.",
       "Today, as an Online Endurance Coach at TrainingPeaks, he uses his experience and knowledge to design personalized training programs for Running, Road Racing, and Marathon.",
@@ -36,10 +31,13 @@ const coaches: Coach[] = [
 ];
 
 interface TeamProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const Team = ({ className }: TeamProps) => {
+const Team = ({ className, media }: TeamProps) => {
+  const portraits = media ?? slotDefaults("about.coaches");
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -56,15 +54,15 @@ const Team = ({ className }: TeamProps) => {
         </div>
 
         <Reveal className="yrc-stagger mt-14 grid gap-4 sm:grid-cols-2 md:mt-20">
-          {coaches.map((coach) => (
+          {coaches.map((coach, index) => (
             <article
               key={coach.name}
               className="flex flex-col gap-5 rounded-xl border border-border p-6 lg:p-8"
             >
               <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg bg-muted">
                 <Image
-                  src={coach.image}
-                  alt={coach.alt}
+                  src={(portraits[index] ?? portraits[0]).src}
+                  alt={(portraits[index] ?? portraits[0]).alt}
                   fill
                   sizes="(min-width: 640px) 50vw, 100vw"
                   className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"

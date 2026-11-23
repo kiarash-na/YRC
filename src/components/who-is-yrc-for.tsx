@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 import {
@@ -14,12 +15,6 @@ interface Persona {
   title: string;
   value: string;
   summary: string;
-  image: {
-    src: string;
-    alt: string;
-    updatedAt?: string;
-    width?: number;
-  };
 }
 
 const personas: Persona[] = [
@@ -28,51 +23,35 @@ const personas: Persona[] = [
     value: "first-timer",
     summary:
       "Never run a kilometer in your life? Perfect. Most of us started exactly there — with shoes that felt wrong and a pace that felt embarrassing. It wasn't. Nobody's watching your watch here.",
-    image: {
-      src: "/YRC/Community/IMG_2469.JPG",
-      alt: "The YRC crew welcoming new runners after a Tuesday morning run",
-      width: 1600,
-    },
   },
   {
     title: "The returner",
     value: "returner",
     summary:
       "Injury, kids, a job that ate your evenings, a few quiet years — whatever pressed pause, the community is the easiest way to press play again. Comeback seasons are our favorite seasons.",
-    image: {
-      src: "/YRC/Community/pexels-emrah-yazicioglu-275583761-12918258.jpg",
-      alt: "Runners back on the trail, returning to training and racing",
-      updatedAt: "1789681314310",
-    },
   },
   {
     title: "The regular",
     value: "regular",
     summary:
       "You already run — you just run alone, and the solo miles are starting to feel long. Bring your routine to the pack: same you, same runs, better company and a reason to keep the streak alive.",
-    image: {
-      src: "/YRC/Community/photo_5877443723178741687_w.jpg",
-      alt: "Regular runner sharing the miles with the YRC pack",
-    },
   },
   {
     title: "The chaser",
     value: "chaser",
     summary:
       "A first marathon, a faster 10K, a start line abroad — you have a goal with a date on it. Good. You'll find training partners here who take goals seriously without taking themselves too seriously.",
-    image: {
-      src: "/YRC/Events/Upcoming/Istanbul%20Marathon%202025/03.jpg",
-      alt: "Runner chasing a race-day goal at a marathon",
-      updatedAt: "1789681346908",
-    },
   },
 ];
 
 interface WhoIsYrcForProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
+const WhoIsYrcFor = ({ className, media }: WhoIsYrcForProps) => {
+  const cards = withMedia(personas, media ?? slotDefaults("community.who"));
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -94,7 +73,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
           defaultValue={[personas[0].value]}
           className="mt-14 overflow-hidden rounded-xl border border-border md:mt-20 lg:hidden"
         >
-          {personas.map((persona, index) => (
+          {cards.map((persona, index) => (
             <AccordionItem
               key={persona.value}
               value={persona.value}
@@ -145,7 +124,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
             variant="line"
             className="!h-auto !w-full flex-col !gap-0 !rounded-none !border-r !border-border !bg-muted/50 !p-0"
           >
-            {personas.map((persona, index) => (
+            {cards.map((persona, index) => (
               <TabsTrigger
                 key={persona.value}
                 value={persona.value}
@@ -166,7 +145,7 @@ const WhoIsYrcFor = ({ className }: WhoIsYrcForProps) => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {personas.map((persona) => (
+          {cards.map((persona) => (
             <TabsContent
               key={persona.value}
               value={persona.value}

@@ -3,18 +3,18 @@
 import { cn } from "@/lib/utils";
 
 import { Image } from "@/components/imagekit";
+import { slotDefaults, type SiteMediaItem } from "@/lib/site-media";
 import { lqip } from "@/lib/imagekit";
 
-const heroImage: { src: string; alt: string; updatedAt?: string } = {
-  src: "/YRC/Community/IMG_2477.JPG",
-  alt: "YRC community sharing coffee together after a group run",
-};
 
 interface AboutHeroProps {
+  /** The slot's image (from /admin/media); defaults to the built-in one. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const AboutHero = ({ className }: AboutHeroProps) => {
+const AboutHero = ({ className, media }: AboutHeroProps) => {
+  const heroImage = (media ?? slotDefaults("about.hero"))[0];
   return (
     <section className={cn("py-32", className)}>
       <div className="container">

@@ -10,6 +10,7 @@ import { ServicesDefinition } from "@/components/services-definition";
 import { Team } from "@/components/team";
 import { WithoutBorders } from "@/components/without-borders";
 import { Reveal } from "@/components/reveal";
+import { getSlotsMedia } from "@/lib/site-media-db";
 
 // FounderSection and ShapersSection exist (src/components/) but stay OFF the
 // page until the real founder/shapers/bio copy arrives — no placeholder text
@@ -21,15 +22,19 @@ export const metadata: Metadata = {
     "The story, philosophy and values behind Yas Rise Community — a running and endurance community built around the journey, not just the finish line.",
 };
 
-export default function AboutPage() {
+// Page media comes from /admin/media; saves refresh it on demand.
+export const revalidate = 900;
+
+export default async function AboutPage() {
+  const media = await getSlotsMedia(["about.hero", "about.story", "about.journey", "about.borders", "about.coaches"]);
   return (
     <main id="main" className="flex-1">
-      <AboutHero />
+      <AboutHero media={media["about.hero"]} />
       <Reveal>
-        <OurStory />
+        <OurStory media={media["about.story"]} />
       </Reveal>
       <Reveal>
-        <LivedJourney />
+        <LivedJourney media={media["about.journey"]} />
       </Reveal>
       <Reveal>
         <AboutPhilosophy />
@@ -41,10 +46,10 @@ export default function AboutPage() {
         <ServicesDefinition />
       </Reveal>
       <Reveal>
-        <WithoutBorders />
+        <WithoutBorders media={media["about.borders"]} />
       </Reveal>
       <Reveal>
-        <Team />
+        <Team media={media["about.coaches"]} />
       </Reveal>
       <Reveal>
         <NewsletterSignup />

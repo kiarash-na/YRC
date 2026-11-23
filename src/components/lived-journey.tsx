@@ -1,29 +1,25 @@
 import { cn } from "@/lib/utils";
+import { slotDefaults, withMedia, type SiteMediaItem } from "@/lib/site-media";
 
 import { Image } from "@/components/imagekit";
 
-const basePath = "/YRC/Events/Upcoming/Istanbul%20Marathon%202025";
-
 const images = [
   {
-    src: `${basePath}/03.jpg`,
-    alt: "YRC runners gathering before a community run",
-    updatedAt: "1789681291699",
     className: "aspect-4/3",
   },
   {
-    src: `${basePath}/4.jpg`,
-    alt: "Runners on the course during a YRC event",
-    updatedAt: "1789681290358",
     className: "aspect-4/3 md:aspect-3/4",
   },
 ];
 
 interface LivedJourneyProps {
+  /** The slot's media (from /admin/media); defaults to the built-in set. */
+  media?: SiteMediaItem[];
   className?: string;
 }
 
-const LivedJourney = ({ className }: LivedJourneyProps) => {
+const LivedJourney = ({ className, media }: LivedJourneyProps) => {
+  const tiles = withMedia(images, media ?? slotDefaults("about.journey")).map(({ image, ...layout }) => ({ ...layout, ...image }));
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -67,30 +63,30 @@ const LivedJourney = ({ className }: LivedJourneyProps) => {
             <div
               className={cn(
                 "relative w-full overflow-hidden rounded-xl border bg-muted",
-                images[0].className
+                tiles[0].className
               )}
             >
               <Image
-                src={images[0].src}
-                alt={images[0].alt}
+                src={tiles[0].src}
+                alt={tiles[0].alt}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                queryParameters={{ updatedAt: images[0].updatedAt }}
+                queryParameters={tiles[0].updatedAt ? { updatedAt: tiles[0].updatedAt } : undefined}
                 className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>
             <div
               className={cn(
                 "relative w-full overflow-hidden rounded-xl border bg-muted sm:mt-12",
-                images[1].className
+                tiles[1].className
               )}
             >
               <Image
-                src={images[1].src}
-                alt={images[1].alt}
+                src={tiles[1].src}
+                alt={tiles[1].alt}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                queryParameters={{ updatedAt: images[1].updatedAt }}
+                queryParameters={tiles[1].updatedAt ? { updatedAt: tiles[1].updatedAt } : undefined}
                 className="object-cover object-center grayscale transition-[filter] duration-500 hover:filter-none active:filter-none"
               />
             </div>

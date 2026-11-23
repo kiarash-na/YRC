@@ -10,12 +10,14 @@ import { Gallery } from "@/components/gallery";
 import { HomeEvents } from "@/components/home-events";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getUpcomingEvents, splitWeekly, toEventSummary } from "@/lib/events-db";
+import { getSlotsMedia } from "@/lib/site-media-db";
 
 // ISR: matches the 15-min event-lifecycle cron cadence; admin edits
 // revalidate on demand via revalidateEventPaths().
 export const revalidate = 900;
 
 export default async function Home() {
+  const media = await getSlotsMedia(["home.hero.reel", "home.hero.still", "home.about", "home.experiences", "home.story", "home.gallery"]);
   const upcoming = (await getUpcomingEvents()).map(toEventSummary);
   // Weekly series get their own strip under the hero (one row per series),
   // so the highlight card and the closing grid show one-off events only.
@@ -27,15 +29,15 @@ export default async function Home() {
 
   return (
     <main id="main" className="flex-1">
-      <Hero />
+      <Hero media={{ reel: media["home.hero.reel"], still: media["home.hero.still"] }} />
       {weekly.length > 0 ? <WeeklyStrip events={weekly} /> : null}
       <StridesBoard />
       {nextEvent ? <UpcomingEvent event={nextEvent} /> : null}
-      <About />
-      <Experiences />
+      <About media={media["home.about"]} />
+      <Experiences media={media["home.experiences"]} />
       <Philosophy />
-      <Story />
-      <Gallery />
+      <Story media={media["home.story"]} />
+      <Gallery media={media["home.gallery"]} />
       {moreEvents.length > 0 ? <HomeEvents events={moreEvents} /> : null}
       <NewsletterSignup />
     </main>
