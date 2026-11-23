@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 import { Image, Video } from "@/components/imagekit";
 import { Button } from "@/components/ui/button";
 import { lqip, ORIGINAL_VIDEO } from "@/lib/imagekit";
-import { useAmbientPlayback } from "@/lib/use-ambient-playback";
+import { useHeroReel, type ReelClip } from "@/lib/use-hero-reel";
 
 /*
- * Home hero — adapted from shadcnblocks hero185 (split hero + bento photo
- * grid), extended with a full-bleed background video. This is the ONE
+ * Home hero — adapted from shadcnblocks hero185, now a text-only stack over
+ * a full-bleed background reel of four crew clips. This is the ONE
  * intentional overlay/full-bleed hero in the YRC layout language (see the
  * "Hero anatomy" note in globals.css); every other page keeps the
  * text-stack + bordered-media hero.
@@ -22,8 +22,6 @@ interface HeroMedia {
   src: string;
   alt: string;
   updatedAt?: string;
-  /** ImageKit crop focus for the 3:4 card (default "auto"). */
-  focus?: string;
 }
 interface HeroButton {
   text: string;
@@ -44,8 +42,11 @@ interface HeroProps {
   subheading?: string;
   description: string;
   buttons?: Buttons;
-  /** Full-bleed background video (ImageKit path). */
-  video: { src: string };
+  /**
+   * Full-bleed background reel: each clip plays from `start` to `end`
+   * (seconds), then crossfades into the next; loops.
+   */
+  clips: ReelClip[];
   /**
    * Still shown until the video plays, and instead of it when motion is
    * reduced, autoplay is refused or the video fails. A real ImageKit image:
@@ -53,8 +54,6 @@ interface HeroProps {
    * the account's video quota is exhausted.
    */
   fallback: HeroMedia;
-  /** The two photo cards, shown side by side at the same size. */
-  images: [HeroMedia, HeroMedia];
   className?: string;
 }
 type Props = Partial<HeroProps>;
@@ -78,28 +77,22 @@ const defaultProps: HeroProps = {
       url: "/events",
     },
   },
-  video: {
-    // The crew at golden hour: 1168×768, 5.4 s loop, ~7 MB.
-    src: "/YRC/Home/hf_20261122_111745_bc09fc36-b5d4-4bb9-bd12-f5d1a2d06393.mp4",
-  },
+  // All four are 1168×768, 5.4 s originals; 4 s of each, in this order.
+  clips: [
+    // The crew talking at golden hour, mountains behind (the original clip).
+    { src: "/YRC/Home/hf_20261122_111745_bc09fc36-b5d4-4bb9-bd12-f5d1a2d06393.mp4", start: 0, end: 4 },
+    // Wide: the crew on a ridge road above the hills, pine overhead.
+    { src: "/YRC/Home/hf_20261123_144438_3e8a9609-c839-4c0d-89d4-e7155ea83a60.mp4", start: 0, end: 4, updatedAt: "1795446288277" },
+    // Warm-up drills on the road, backlit.
+    { src: "/YRC/Home/hf_20261123_145015_802d71d1-d4c4-4bf0-b3f3-097f5698618c.mp4", start: 0, end: 4, updatedAt: "1795446280237" },
+    // The group under a blue sky (its last second has someone leaving frame).
+    { src: "/YRC/Home/hf_20261123_144337_e8cf8a88-27aa-444d-b98c-45133304256f.mp4", start: 0, end: 4, updatedAt: "1795446279260" },
+  ],
   fallback: {
     src: "/YRC/Community/SRK09740%20(1).jpg",
     alt: "",
     updatedAt: "1790005645712",
   },
-  images: [
-    {
-      // 2:3 original; the runners sit in the lower third, so crop from the bottom.
-      src: "/YRC/Home/Untitled%20design%20(5).png",
-      alt: "The YRC crew running uphill together on a road at golden hour, pines overhead",
-      updatedAt: "1789991758872",
-      focus: "bottom",
-    },
-    {
-      src: "/YRC/Community/photo_5877443723178741686_w.jpg",
-      alt: "YRC community group run — runners of every pace moving together as one pack",
-    },
-  ],
 };
 
 const Hero = (props: Props) => {
@@ -109,27 +102,22 @@ const Hero = (props: Props) => {
     subheading,
     description,
     buttons,
-    video,
+    clips,
     fallback,
-    images,
     className,
   } = {
     ...defaultProps,
     ...props,
   };
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   // Plays while on screen; never autoplays for reduced motion / Save-Data.
-  const { playing, toggle: togglePlayback } = useAmbientPlayback(videoRef, 0.1);
-  const [videoFailed, setVideoFailed] = useState(false);
-  // The video fades in over the fallback once its first frame is playing.
-  const [videoShown, setVideoShown] = useState(false);
+  const reel = useHeroReel(sectionRef, clips);
   const [fallbackLoaded, setFallbackLoaded] = useState(false);
-
-  const [tall, supporting] = images;
 
   return (
     <section
+      ref={sectionRef}
       className={cn(
         // `dark` scopes the dark token set to the hero so shadcn primitives
         // (outline button, borders, muted text) adapt automatically.
@@ -161,25 +149,33 @@ const Hero = (props: Props) => {
           onLoad={() => setFallbackLoaded(true)}
           className="object-cover object-center"
         />
-        {!videoFailed && (
-          <Video
-            ref={videoRef}
-            src={video.src}
-            queryParameters={ORIGINAL_VIDEO}
-            muted
-            loop
-            playsInline
-            preload="none"
-            controls={false}
-            tabIndex={-1}
-            onPlaying={() => setVideoShown(true)}
-            onError={() => setVideoFailed(true)}
-            className={cn(
-              "absolute inset-0 size-full object-cover object-center transition-opacity duration-1000",
-              videoShown ? "opacity-100" : "opacity-0",
-            )}
-          />
-        )}
+        {!reel.allFailed &&
+          clips.map((clip, i) =>
+            reel.failed.has(i) ? null : (
+              <Video
+                key={clip.src}
+                ref={(el: HTMLVideoElement | null) => {
+                  reel.videos.current[i] = el;
+                }}
+                src={clip.src}
+                queryParameters={
+                  clip.updatedAt ? { ...ORIGINAL_VIDEO, updatedAt: clip.updatedAt } : ORIGINAL_VIDEO
+                }
+                muted
+                playsInline
+                preload={reel.preloadFor(i)}
+                controls={false}
+                tabIndex={-1}
+                onPlaying={reel.onPlaying}
+                onTimeUpdate={() => reel.onTimeUpdate(i)}
+                onError={() => reel.onError(i)}
+                className={cn(
+                  "absolute inset-0 size-full object-cover object-center transition-opacity duration-1000",
+                  reel.started && i === reel.index ? "opacity-100" : "opacity-0",
+                )}
+              />
+            ),
+          )}
       </div>
 
       {/* Scrims: left-weighted for text contrast + bottom fade into the next band */}
@@ -198,8 +194,8 @@ const Hero = (props: Props) => {
       />
 
       <div className="container flex items-center pt-32 pb-24 md:pt-40 md:pb-32">
-        <div className="grid w-full items-center gap-14 lg:grid-cols-12 lg:gap-16">
-          <div className="flex flex-col gap-7 lg:col-span-7">
+        <div className="w-full">
+          <div className="flex max-w-3xl flex-col gap-7">
             {badge && (
               <a
                 href={badge.url ?? "#"}
@@ -270,60 +266,19 @@ const Hero = (props: Props) => {
               </div>
             )}
           </div>
-
-          {/* Two equal photo cards */}
-          <div
-            className="yrc-hero-in grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-5"
-            style={{ animationDelay: "320ms" }}
-          >
-            <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-muted">
-              <Image
-                src={tall.src}
-                alt={tall.alt}
-                fill
-                loading="eager"
-                sizes="(min-width: 1024px) 20vw, 50vw"
-                queryParameters={
-                  tall.updatedAt ? { updatedAt: tall.updatedAt } : undefined
-                }
-                transformation={[
-                  { aspectRatio: "3-4", crop: "maintain_ratio", focus: tall.focus ?? "auto" },
-                ]}
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-muted">
-              <Image
-                src={supporting.src}
-                alt={supporting.alt}
-                fill
-                loading="eager"
-                sizes="(min-width: 1024px) 20vw, 50vw"
-                queryParameters={
-                  supporting.updatedAt
-                    ? { updatedAt: supporting.updatedAt }
-                    : undefined
-                }
-                transformation={[
-                  { aspectRatio: "3-4", crop: "maintain_ratio", focus: "auto" },
-                ]}
-                className="object-cover object-center"
-              />
-            </div>
-          </div>
         </div>
       </div>
 
-      {!videoFailed && (
+      {!reel.allFailed && (
         <button
           type="button"
-          onClick={togglePlayback}
+          onClick={reel.toggle}
           aria-label={
-            playing ? "Pause background video" : "Play background video"
+            reel.playing ? "Pause background video" : "Play background video"
           }
           className="absolute right-4 bottom-4 flex size-9 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 backdrop-blur-sm transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:right-6 sm:bottom-6"
         >
-          {playing ? (
+          {reel.playing ? (
             <Pause className="size-3.5" />
           ) : (
             <Play className="size-3.5" />
