@@ -14,7 +14,7 @@
 
 begin;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('your-first-long-run-how-far-is-far-enough', 'Your first long run: how far is far enough?', 'The long run is the backbone of every training week, but the right distance depends on where you are, not where the plan says you should be.', '/YRC/5.png', '2026-06-23', 'YRC Coaching Team', '{"Training"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('your-first-long-run-how-far-is-far-enough', 'Your first long run: how far is far enough?', 'The long run is the backbone of every training week, but the right distance depends on where you are, not where the plan says you should be.', '/YRC/Community/photo_5877443723178741686_w.jpg', '2026-06-23', 'YRC Coaching Team', '{"Training"}', '{}', $yrc$
 Ask five runners how long a long run should be and you will get six answers. The honest one is simpler: long is relative. For someone building toward their first 10K, 50 minutes on their feet is a long run. For a marathoner, that same 50 minutes barely counts as a warm-up.
 
 ## Start from what you can already do
@@ -25,7 +25,7 @@ Pace matters less than you think on these runs. If you cannot hold a conversatio
 
 Finally, protect the day after. A long run followed by a forced rest day because everything hurts is not progress. Finish feeling like you could have gone a little further, and you chose the right distance.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('why-we-run-together-on-sundays', 'Why we run together on Sundays', 'The Sunday group run is the oldest tradition in the club, and it survives because it is about much more than the kilometers.', '/YRC/43.png', '2026-06-28', 'YRC Community', '{"Community"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('why-we-run-together-on-sundays', 'Why we run together on Sundays', 'The Sunday group run is the oldest tradition in the club, and it survives because it is about much more than the kilometers.', '/YRC/Community/photo_5877443723178741687_w.jpg', '2026-06-28', 'YRC Community', '{"Community"}', '{}', $yrc$
 Ask any long-time member when the club really happens and they will not point to a race or a track session. They will point to Sunday morning. The group run is where YRC stops being a logo and becomes a set of people you recognize by their stride.
 
 The format has barely changed over the years. Meet early, split into pace groups so nobody runs alone and nobody gets dropped, loop back for coffee. The fast group and the easy group leave together and, more importantly, finish together.
@@ -36,7 +36,7 @@ The conversation is the real training. New members get their first questions ans
 
 If you have been running alone and wondering whether a club is for you, Sunday is the low-stakes answer. Show up, say you are new, and let the group do the rest. The distance will pass faster than you expect. It always does when you are not watching your watch.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('fueling-the-morning-run', 'Fueling the morning run', 'Should you eat before an early run or head out empty? The answer depends on how far you are going and how your stomach feels about 6 AM.', '/YRC/24.png', '2026-07-01', 'YRC Editorial', '{"Nutrition"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('fueling-the-morning-run', 'Fueling the morning run', 'Should you eat before an early run or head out empty? The answer depends on how far you are going and how your stomach feels about 6 AM.', '/YRC/Home/photo_2026-11-22_14-57-07.jpg', '2026-07-01', 'YRC Editorial', '{"Nutrition"}', '{}', $yrc$
 The 6 AM crowd at the club splits into two camps: those who cannot run without breakfast and those who cannot run with one. Both are right, for their own runs. The deciding factors are distance, intensity and what your stomach tolerates before sunrise.
 
 For an easy run under an hour, most people can head out on water alone. Your body stores enough glycogen from the night before to cover a relaxed effort. Just drink a glass of water first, since you wake up mildly dehydrated whether you feel it or not.
@@ -47,7 +47,7 @@ Anything longer than an hour, or anything fast, deserves fuel. Keep it small and
 
 Afterward, eat a real breakfast within an hour. Protein and carbohydrates together help you recover and stop the late-morning crash. Experiment on training days, write down what worked, and never test a new pre-run meal for the first time on race morning.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('easy-pace-is-not-a-failure', 'Easy pace is not a failure', 'Running slowly on purpose is one of the hardest habits for new runners to accept, and one of the most valuable.', '/YRC/11.png', '2026-07-08', 'YRC Editorial', '{"Training"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('easy-pace-is-not-a-failure', 'Easy pace is not a failure', 'Running slowly on purpose is one of the hardest habits for new runners to accept, and one of the most valuable.', '/YRC/Home/SRK09793.jpg', '2026-07-08', 'YRC Editorial', '{"Training"}', '{}', $yrc$
 Every club has the same story. A new member joins the Sunday group, spends the whole run trying to keep up with the front pack, and finishes wrecked. Three weeks later they are injured or gone. The pace that broke them was never the goal.
 
 Most of your running, roughly eighty percent of it, should feel genuinely easy. Easy enough to chat, to notice the street, to finish with energy left. This is not a concession to weakness. It is how endurance actually gets built: more oxygen delivered, more efficient movement, more consistency week after week.
@@ -58,7 +58,7 @@ The talk test beats any watch. If you can speak in full sentences without gaspin
 
 Running slowly in a group takes more discipline than running fast alone. Trust that the runners who look relaxed at the back are not slacking. They are the ones who will still be improving in six months, while the heroes of week one are icing their knees.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('how-to-pace-your-first-10k', 'How to pace your first 10K', 'Ten kilometers is short enough to feel fast and long enough to punish a bad first kilometer. Here is how to split it.', '/YRC/33.png', '2026-07-21', 'YRC Coaching Team', '{"Races"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('how-to-pace-your-first-10k', 'How to pace your first 10K', 'Ten kilometers is short enough to feel fast and long enough to punish a bad first kilometer. Here is how to split it.', '/YRC/Events/Upcoming/Istanbul%20Marathon%202025/09.jpg', '2026-07-21', 'YRC Coaching Team', '{"Races"}', '{}', $yrc$
 The first kilometer of a 10K is a trap. The crowd is loud, your taper has you feeling springy, and everyone around you goes out like it is a 5K. If you follow them, you will meet the consequences at kilometer six, and they will not be friendly.
 
 ## Think in three parts
@@ -69,7 +69,7 @@ Kilometers four to seven are the race. Settle into goal pace and hold it while o
 
 From kilometer eight, empty the tank gradually. Pick a runner ahead and reel them in, then another. A strong finish will not fix a blown first half, but a controlled first half makes the finish possible. Finish upright, and your second 10K will be faster than your first.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('strength-work-that-fits-a-runners-week', 'Strength work that fits a runner''s week', 'You do not need a gym membership or two-hour sessions. Twenty focused minutes, twice a week, will keep most running injuries away.', '/YRC/17.png', '2026-08-19', 'YRC Coaching Team', '{"Training"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('strength-work-that-fits-a-runners-week', 'Strength work that fits a runner''s week', 'You do not need a gym membership or two-hour sessions. Twenty focused minutes, twice a week, will keep most running injuries away.', '/YRC/Community/IMG_2466.JPG', '2026-08-19', 'YRC Coaching Team', '{"Training"}', '{}', $yrc$
 Runners tend to treat strength training like flossing: universally recommended, quietly skipped. The excuse is always time. But the strength work that protects a runner has very little in common with bodybuilding, and it takes far less time than a single tempo run.
 
 ## The short list that matters
@@ -80,7 +80,7 @@ Twice a week is enough. Slot the sessions after easy runs or on rest days, never
 
 The payoff is not visible in the mirror. It shows up at kilometer thirty of a long run, when your form holds instead of collapsing, and in the seasons you complete without a physio appointment. Twenty minutes, twice a week. That is the whole secret.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('new-to-the-club-your-first-month', 'New to the club? Your first month at YRC', 'Four weeks, four steps: how to go from nervous first-timer to the person who knows everyone''s name at the start line.', '/YRC/Home/pexels-runffwpu-18409430.jpg', '2026-08-27', 'YRC Community', '{"Community"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('new-to-the-club-your-first-month', 'New to the club? Your first month at YRC', 'Four weeks, four steps: how to go from nervous first-timer to the person who knows everyone''s name at the start line.', '/YRC/Community/IMG_2477.JPG', '2026-08-27', 'YRC Community', '{"Community"}', '{}', $yrc$
 Joining a running club feels harder than it is. You imagine a pack of elites who will judge your pace. What you actually find is a group of ordinary people who once stood exactly where you are standing, checking their phone near the meeting point and pretending not to be nervous.
 
 ## Week by week
@@ -91,7 +91,7 @@ Week two: try a weekday session, even if it is out of your comfort zone. The wee
 
 By week four, something shifts. You stop being the new person because a newer person has arrived, and you find yourself doing the adopting. That is the whole system. Nobody formally welcomes you into YRC; the club just keeps handing you forward until one day you realize you belong. See you on Sunday.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('what-to-eat-the-week-before-race-day', 'What to eat the week before race day', 'Race-week nutrition is less about superfoods and more about boring, familiar meals eaten at the right times.', '/YRC/29.png', '2026-09-02', 'YRC Editorial', '{"Nutrition"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('what-to-eat-the-week-before-race-day', 'What to eat the week before race day', 'Race-week nutrition is less about superfoods and more about boring, familiar meals eaten at the right times.', '/YRC/Community/IMG_2476.JPG', '2026-09-02', 'YRC Editorial', '{"Nutrition"}', '{}', $yrc$
 The week before a race is when runners get strange. Suddenly everyone is loading pasta like it is a competitive sport and buying supplements they cannot pronounce. Most of it is noise. Race-week eating is about arriving at the start line rested, hydrated and unstressed, and boring food does that best.
 
 In the early part of the week, eat normally. Your training volume drops during the taper, so your appetite may dip slightly, and that is fine. Focus on balanced plates: carbohydrates, protein, vegetables, nothing extreme in any direction.
@@ -102,7 +102,7 @@ Two days out, shift the balance toward carbohydrates. Rice, bread, potatoes and 
 
 The day before the race, eat your last big meal at lunch rather than dinner, keep dinner light and early, and skip anything new, spicy or greasy. On race morning, repeat the breakfast you have tested in training. Hydrate steadily all week instead of chugging water the night before. Your legs will thank you for the unremarkable menu.$yrc$) on conflict (slug) do update set title = excluded.title, excerpt = excluded.excerpt, cover = excluded.cover, date = excluded.date, author = excluded.author, tags = excluded.tags, highlights = excluded.highlights, body = excluded.body;
 
-insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('race-morning-checklist-from-alarm-to-start-line', 'Race morning checklist: from alarm to start line', 'A calm race morning is built the night before. This simple routine removes the panic and leaves only the running.', '/YRC/38.png', '2026-09-10', 'YRC Editorial', '{"Races"}', '{}', $yrc$
+insert into public.posts (slug, title, excerpt, cover, date, author, tags, highlights, body) values ('race-morning-checklist-from-alarm-to-start-line', 'Race morning checklist: from alarm to start line', 'A calm race morning is built the night before. This simple routine removes the panic and leaves only the running.', '/YRC/Events/Upcoming/Istanbul%20Marathon%202025/03.jpg', '2026-09-10', 'YRC Editorial', '{"Races"}', '{}', $yrc$
 Every experienced runner has a race morning routine so rehearsed it runs itself. Every first-timer has a story about pinning their bib on in a parking lot. The difference is not luck. It is a checklist.
 
 Start the night before. Lay out your full kit: shoes, socks, shorts, shirt, watch, and the bib already pinned to the front. Put your post-race layer and some small cash in a bag by the door. Charge your watch. Set two alarms, because race morning is not the day to test your reliability.

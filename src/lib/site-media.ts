@@ -111,7 +111,7 @@ export const SITE_MEDIA_SLOTS: SiteMediaSlot[] = [
     kind: "image",
     itemLabels: ["Portrait", "Landscape"],
     defaults: [
-      { src: "/YRC/41.png", alt: "YRC runner during a marathon race day", updatedAt: "1789773516271" },
+      { src: "/YRC/Events/TRAILS.%20SKILLS.%20COFFEE.%20Event/IMG_2795-poster.jpg", alt: "A YRC runner climbing a mountain trail with poles" },
       { src: `${IST}/03.jpg`, alt: "YRC community sharing a moment together outdoors", updatedAt: "1789681140856" },
     ],
   }),
@@ -215,7 +215,7 @@ export const SITE_MEDIA_SLOTS: SiteMediaSlot[] = [
     itemLabels: ["The first-timer", "The returner", "The regular", "The chaser"],
     defaults: [
       { src: "/YRC/Community/IMG_2469.JPG", alt: "The YRC crew welcoming new runners after a Tuesday morning run", width: 1600 },
-      { src: "/YRC/Community/pexels-emrah-yazicioglu-275583761-12918258.jpg", alt: "Runners back on the trail, returning to training and racing", updatedAt: "1789681314310" },
+      { src: "/YRC/Community/SRK09740%20(1).jpg", alt: "Runners back on the road together, returning to training and racing", updatedAt: "1790005645712" },
       { src: "/YRC/Community/photo_5877443723178741687_w.jpg", alt: "Regular runner sharing the miles with the YRC pack" },
       { src: `${IST}/03.jpg`, alt: "Runner chasing a race-day goal at a marathon", updatedAt: "1789681346908" },
     ],
@@ -230,8 +230,8 @@ export const SITE_MEDIA_SLOTS: SiteMediaSlot[] = [
     defaults: [
       { src: "/YRC/Community/SRK09740%20(1).jpg", alt: "Runners covering distance together on a long run" },
       { src: `${IST}/M06.jpg`, alt: "YRC runners keeping a training streak alive" },
-      { src: "/YRC/29.png", alt: "The YRC community gathered before a group run" },
-      { src: "/YRC/41.png", alt: "YRC runners on course during an event" },
+      { src: "/YRC/Community/photo_5877443723178741687_w.jpg", alt: "The YRC community gathered before a group run" },
+      { src: `${IST}/M05.jpg`, alt: "YRC runners on course at the Istanbul Marathon", updatedAt: "1789992716323" },
     ],
   }),
   {
@@ -269,7 +269,7 @@ export const SITE_MEDIA_SLOTS: SiteMediaSlot[] = [
     label: "Our story — portrait",
     shape: "Portrait",
     kind: "image",
-    defaults: [{ src: "/YRC/24.png", alt: "YRC runner pushing through a training session", updatedAt: "1789773516640" }],
+    defaults: [{ src: "/YRC/Events/RUN.%20TECHNIQUE.%20COFFEE.%20Event/IMG_2955.HEIC", alt: "A YRC runner on the balance board at a Munich training session" }],
   }),
   fixed({
     key: "about.journey",
